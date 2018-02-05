@@ -29,12 +29,12 @@
 
 module adas_bms_splines
 !DEC$ IF DEFINED (NTCC)
-      use EZspline_obj
-      use EZspline
-      
+      use ezspline_obj
+      use ezspline
+
       implicit none
       INTEGER, PARAMETER :: R8=SELECTED_REAL_KIND(12,100)
-      
+
 !
 ! beamE           : beam energy
 ! beamEA          : beam energy per nucleon
@@ -57,31 +57,31 @@ module adas_bms_splines
       integer :: Nspl
       integer :: beamZ
       real*8  :: beamE, beamEA
-      
+
       real*8, ALLOCATABLE :: targetZ(:)
       real*8, ALLOCATABLE :: svref(:), ebref(:), niref(:), tiref(:)
-      
+
       type(EZspline3_r8) :: sigvex_ezspl
       type(EZspline2_r8), ALLOCATABLE :: en_ezspl(:)
       type(EZspline1_r8), ALLOCATABLE :: t_ezspl(:)
       type(EZspline1_r8) :: sigv1_ezspl
-      
+
       integer :: bcs_e(2), bcs_n(2), bcs_t(2)
-      
+
       save Nspl, beamZ, beamE, beamEA, targetZ
       save svref, ebref, niref, tiref
       save sigvex_ezspl, en_ezspl, t_ezspl,sigv1_ezspl, bcs_e, bcs_n, bcs_t
-      
-      
-      
+
+
+
 CONTAINS
 
 ! initialise spline object arrays and spline objects
 subroutine adas_initSplines(tN, iErr)
       integer :: tN, iErr, tErr
-      
+
       iErr = 0
-      
+
       ! EzSpline boundary conditions
       bcs_e = (/0, 0/)     ! not-a-knot boundary conditions
       bcs_n = (/0, 0/)     ! not-a-knot boundary conditions
@@ -89,76 +89,76 @@ subroutine adas_initSplines(tN, iErr)
 
       ! init arrays
       Nspl = tN
-      
-      
+
+
       ALLOCATE(targetZ(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 'targetZ'"
          return
       endif
-      
+
       ALLOCATE(ebref(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 'ebref'"
          return
       endif
-      
+
       ALLOCATE(niref(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 'niref'"
          return
       endif
-      
+
       ALLOCATE(tiref(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 'tiref'"
          return
       endif
-      
+
       ALLOCATE(svref(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 'svref'"
          return
       endif
-      
+
       ALLOCATE(en_ezspl(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 'en_ezspl'"
          return
       endif
-      
+
       ALLOCATE(t_ezspl(Nspl), STAT=tErr)
       if (tErr .gt. 0) then ! array could not be allocated
          iErr = 9
          write(*,*) "ADAS Error: could not allocate array 't_ezspl'"
          return
       endif
-      
+
       return
     end subroutine adas_initSplines
 
 
 ! set spline data for species with index iSpl
-subroutine adas_setSplineData(iSpl,                & 
+subroutine adas_setSplineData(iSpl,                &
            &                  nESpl, nNSpl, nTSpl, &
            &                  pESpl, pNSpl, pTSpl, &
            &                  dENSpl, dTSpl,       &
            &                  iErr)
-      
+
       integer :: iSpl, nESpl, nNSpl, nTSpl, iErr, sErr
       real*8  :: tSVRef
       real*8  :: pESpl(nESpl), pNSpl(nNSpl), pTSpl(nTSpl)
       real*8  :: dENSpl(nESpl, nNSpl), dTSpl(nTSpl)
       real*8  :: logESpl(nESpl), logNSpl(nNSpl), logTSpl(nTSpl)
       real*8  :: logdENSpl(nESpl, nNSpl), logdTSpl(nTSpl)
-     
-      integer :: ie, in, it 
+
+      integer :: ie, in, it
 !
 ! iSpl            : species index
 ! iErr            : error code
@@ -176,36 +176,36 @@ subroutine adas_setSplineData(iSpl,                &
 !
 ! ie, in, it      : loop variables
 !
-      
+
       ! check if all data/spline arrays are allocated
       if (.NOT. (ALLOCATED(svref) .AND. ALLOCATED(en_ezspl) &
                 &                 .AND. ALLOCATED(t_ezspl)) ) then
          iErr = 8
          return
       endif
-      
-      
+
+
       ! calculate logarithms
       do ie=1,nESpl
          logESpl(ie) = dlog(pESpl(ie))
       enddo
-      
+
       do in=1,nNSpl
          logNSpl(in) = dlog(pNSpl(in))
       enddo
-      
+
       do in=1,nNSpl
          do ie=1,nESpl
             logdENSpl(ie,in) = dlog(dENSpl(ie,in))
          enddo
       enddo
-      
+
       do it=1,nTSpl
          logTSpl(it) = dlog(pTSpl(it))
          logdTSpl(it) = dlog(dTSpl(it))
       enddo
-            
-            
+
+
       ! S(EBA, NI)
       call EZspline_init(en_ezspl(iSpl), nESpl, nNSpl, bcs_e, bcs_n, sErr) ! initialise spline object grid and boundary conditions
       call EZspline_error(sErr)                            ! print error message
@@ -221,8 +221,8 @@ subroutine adas_setSplineData(iSpl,                &
          iERR = 7
          return
       endif
-      
-      
+
+
       ! S(TIA)
       call EZspline_init(t_ezspl(iSpl), nTSpl, bcs_t, sErr) ! initialise spline object grid and boundary conditions
       call EZspline_error(sErr)                             ! print error message
@@ -237,22 +237,22 @@ subroutine adas_setSplineData(iSpl,                &
          iERR = 7
          return
       endif
-      
+
       return
     end subroutine adas_setSplineData
-! set spline data for one species 
+! set spline data for one species
 subroutine adas_setSplineData3(nESpl, nNSpl, nTSpl, &
            &                  pESpl, pNSpl, pTSpl, &
            &                  dENSpl, iErr)
-      
+
       integer :: nESpl, nNSpl, nTSpl, iErr, sErr,tErr
       real*8  :: tSVRef
       real*8  :: pESpl(nESpl), pNSpl(nNSpl), pTSpl(nTSpl)
       real*8  :: dENSpl(nESpl, nNSpl, nTSpl)
       real*8  :: logESpl(nESpl), logNSpl(nNSpl), logTSpl(nTSpl)
       real*8  :: logdENSpl(nESpl, nNSpl, nTSpl)
-     
-      integer :: ie, in, it 
+
+      integer :: ie, in, it
 !
 ! iErr            : error code
 !
@@ -272,17 +272,17 @@ subroutine adas_setSplineData3(nESpl, nNSpl, nTSpl, &
       bcs_e = (/0, 0/)     ! not-a-knot boundary conditions
       bcs_n = (/0, 0/)     ! not-a-knot boundary conditions
       bcs_t = (/0, 0/)     ! not-a-knot boundary conditions
-      
-      
+
+
       ! calculate logarithms
       do ie=1,nESpl
          logESpl(ie) = dlog(pESpl(ie))
       enddo
-      
+
       do in=1,nNSpl
          logNSpl(in) = dlog(pNSpl(in))
       enddo
-      
+
       do it=1,nTSpl
          logTSpl(it) = dlog(pTSpl(it))
          do in=1,nNSpl
@@ -290,17 +290,17 @@ subroutine adas_setSplineData3(nESpl, nNSpl, nTSpl, &
                logdENSpl(ie,in,it) = dlog(dENSpl(ie,in,it))
             enddo
          enddo
-      
+
       enddo
-            
-            
+
+
       ! S(EBA, NI, T)
       if(EZspline_allocated(sigvex_ezspl))then
          call EZspline_free(sigvex_ezspl, tErr)
          call EZspline_error(tErr)
       endif
-      call EZspline_init(sigvex_ezspl, nESpl, nNSpl, nTSpl, bcs_e, bcs_n, bcs_t, sErr) ! initialise spline 
-                                                                                           ! object grid and boundary 
+      call EZspline_init(sigvex_ezspl, nESpl, nNSpl, nTSpl, bcs_e, bcs_n, bcs_t, sErr) ! initialise spline
+                                                                                           ! object grid and boundary
                                                                                            ! conditions
       call EZspline_error(sErr)                            ! print error message
       if (sErr .ne. 0) then                                ! interrupt routine in case of error
@@ -316,18 +316,18 @@ subroutine adas_setSplineData3(nESpl, nNSpl, nTSpl, &
          iERR = 7
          return
       endif
-      
-      
+
+
       return
     end subroutine adas_setSplineData3
 subroutine adas_setSplineData1(nESpl, pESpl,dENSpl, iErr)
-      
+
       integer :: nESpl,  iErr, sErr, tErr
       real*8  :: pESpl(nESpl)
       real*8  :: dENSpl(nESpl)
       real*8  :: logESpl(nESpl)
       real*8  :: logdENSpl(nESpl)
-     
+
       integer :: ie
 !
 ! iErr            : error code
@@ -342,25 +342,25 @@ subroutine adas_setSplineData1(nESpl, pESpl,dENSpl, iErr)
 !
       ! EzSpline boundary conditions
       bcs_e = (/0, 0/)     ! not-a-knot boundary conditions
-      
-      
+
+
       ! calculate logarithms
       do ie=1,nESpl
          logESpl(ie) = dlog(pESpl(ie))
       enddo
-      
+
       do ie=1,nESpl
          logdENSpl(ie) = dlog(dENSpl(ie))
       enddo
-            
-            
+
+
       ! S(EBA)
       if(EZspline_allocated(sigv1_ezspl))then
             call EZspline_free(sigv1_ezspl, tErr)
             call EZspline_error(tErr)
       endif
-      call EZspline_init(sigv1_ezspl, nESpl, bcs_e, sErr) ! initialise spline 
-                                                                                           ! object grid and boundary 
+      call EZspline_init(sigv1_ezspl, nESpl, bcs_e, sErr) ! initialise spline
+                                                                                           ! object grid and boundary
                                                                                            ! conditions
       call EZspline_error(sErr)                            ! print error message
       if (sErr .ne. 0) then                                ! interrupt routine in case of error
@@ -374,8 +374,8 @@ subroutine adas_setSplineData1(nESpl, pESpl,dENSpl, iErr)
          iERR = 7
          return
       endif
-      
-      
+
+
       return
     end subroutine adas_setSplineData1
 
@@ -432,7 +432,7 @@ end function
 ! get interpolated value
 subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
            &               reqSV, iErr                  )
-           
+
       real*8  :: reqEA, reqNeff, reqTi, reqSV
       real*8  :: rsven, rsvt, rsvratio
 !mg real*8  ::  Tieff
@@ -459,7 +459,7 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
 !
 
       iErr     = 0
-      
+
       ! check if all data/spline arrays are allocated
       if (.NOT. (ALLOCATED(svref) .AND. ALLOCATED(en_ezspl) &
                 &                 .AND. ALLOCATED(t_ezspl)  &
@@ -467,8 +467,8 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
          iErr = 8
          return
       endif
-      
-      
+
+
       ! scale target temperature by nuclear number of requested isotope
       ! up to now only for H-isotopes (H,D,T)
 !mg      if (targetZ(iSpl) .eq. 1) then
@@ -480,12 +480,12 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
          reqSV    = 0.0_R8
          return
       else
-         
+
          logEA   = dlog(reqEA)
          logTi   = dlog(reqTi)
          logNeff = dlog(reqNeff)
       endif
-      
+
       ! check if requested beam energy and target density is within
       ! the available domain
       call EZspline_isInDomain(en_ezspl(iSpl), logEA, logNeff, sErr)
@@ -592,8 +592,8 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
                x_tables(2)=en_ezspl(iSpl)%x2(en_ezspl(iSpl)%n2-1)
                f_tables(1,1)=logSVn1
                f_tables(1,2)=logSVn2
-              
-               call linear_interp (logNeff,x_tables(1:2),f_tables(1,1:2),logSVen,ierr_extrapol)            
+
+               call linear_interp (logNeff,x_tables(1:2),f_tables(1,1:2),logSVen,ierr_extrapol)
 
                if(ierr_extrapol.ne.0) then !extrapolation error
                   iErr = 7
@@ -604,12 +604,12 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
             if(logEA .le. en_ezspl(iSpl)%x1min) then
                call EZspline_interp(en_ezspl(iSpl), en_ezspl(iSpl)%x1(1), logNeff, logSVn1, sErr)
                call EZspline_interp(en_ezspl(iSpl), en_ezspl(iSpl)%x1(2), logNeff, logSVn2, sErr)
-               
+
                x_tables(1)=en_ezspl(iSpl)%x1(1)
                x_tables(2)=en_ezspl(iSpl)%x1(2)
                f_tables(1,1)=logSVn1
                f_tables(1,2)=logSVn2
-               call linear_interp (logEA,x_tables(1:2),f_tables(1,1:2),logSVen,ierr_extrapol)            
+               call linear_interp (logEA,x_tables(1:2),f_tables(1,1:2),logSVen,ierr_extrapol)
 
                if(ierr_extrapol.ne.0) then !extrapolation error
                   iErr = 7
@@ -622,7 +622,7 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
                x_tables(2)=en_ezspl(iSpl)%x1(en_ezspl(iSpl)%n1-1)
                f_tables(1,1)=logSVn1
                f_tables(1,2)=logSVn2
-               call linear_interp (logEA,x_tables(1:2),f_tables(1,1:2),logSVen,ierr_extrapol)            
+               call linear_interp (logEA,x_tables(1:2),f_tables(1,1:2),logSVen,ierr_extrapol)
 
                if(ierr_extrapol.ne.0) then !extrapolation error
                   iErr = 7
@@ -639,7 +639,7 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
             return
          endif
       endif
-      
+
       ! check if requested target temperature is within the available domain
       call EZspline_isInDomain(t_ezspl(iSpl), logTi, sErr)
       if (sErr .ne. 0) then
@@ -647,13 +647,13 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
          if (logTi .le. t_ezspl(iSpl)%x1min) then
             call EZspline_interp(t_ezspl(iSpl), t_ezspl(iSpl)%x1(1), logSVt1, sErr)
             call EZspline_interp(t_ezspl(iSpl), t_ezspl(iSpl)%x1(2), logSVt2, sErr)
-            
+
             x_tables(1)=t_ezspl(iSpl)%x1(1)
             x_tables(2)=t_ezspl(iSpl)%x1(2)
             f_tables(1,1)=logSVt1
             f_tables(1,2)=logSVt2
-            call linear_interp (logTi,x_tables(1:2),f_tables(1,1:2),logSVt,ierr_extrapol)            
-            
+            call linear_interp (logTi,x_tables(1:2),f_tables(1,1:2),logSVt,ierr_extrapol)
+
             if(ierr_extrapol.ne.0) then !extrapolation error
                iErr = 7
                return
@@ -661,13 +661,13 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
          else if (logTi .ge. t_ezspl(iSpl)%x1max) then
             call EZspline_interp(t_ezspl(iSpl), t_ezspl(iSpl)%x1(t_ezspl(iSpl)%n1),   logSVt1, sErr)
             call EZspline_interp(t_ezspl(iSpl), t_ezspl(iSpl)%x1(t_ezspl(iSpl)%n1-1), logSVt2, sErr)
-            
+
             x_tables(1)=t_ezspl(iSpl)%x1(t_ezspl(iSpl)%n1)
             x_tables(2)=t_ezspl(iSpl)%x1(t_ezspl(iSpl)%n1-1)
             f_tables(1,1)=logSVt1
             f_tables(1,2)=logSVt2
-            call linear_interp (logTi,x_tables(1:2),f_tables(1,1:2),logSVt,ierr_extrapol)            
-            
+            call linear_interp (logTi,x_tables(1:2),f_tables(1,1:2),logSVt,ierr_extrapol)
+
             if(ierr_extrapol.ne.0) then !extrapolation error
                iErr = 7
                return
@@ -686,58 +686,58 @@ subroutine adas_evalSpline(iSpl, reqEA, reqNeff, reqTi, &
             return
          endif
       endif
-      
+
       rsven = dexp(logSVen)
       rsvt  = dexp(logSVt)
-      
+
       ! check if interpolated values are sensible (positive)
       if (rsven .lt. 0.0 .OR. rsvt .lt. 0.0) then
          iErr = 6
          return
       endif
-      
+
       ! scale S(EB,Ni) according to temperature
       rsvratio = rsvt / svref(iSpl)
       reqSV    = rsven * rsvratio
-      
+
       return
     end subroutine adas_evalSpline
 ! get interpolated value
 subroutine adas_evalSpline1( reqEA, reqSV, iErr  )
-           
+
       real*8  :: reqEA,  reqSV
       real*8  :: logEA
       real*8  :: logSVen
-      integer :: i 
+      integer :: i
       integer :: iErr, sErr, tErr
-      
+
 !
 ! iErr            : error code
 ! sErr            : EzSpline error code
 !
-! reqEA           : requested beam energy per nucleon 
+! reqEA           : requested beam energy per nucleon
 ! reqSV           : requested beam stopping coefficient
 !
 !
 !
 
       iErr     = 0
-      
-      
+
+
       if((reqEA.eq.0.0_R8)) then
          reqSV    = 0.0_R8
          return
       else
          logEA   = dlog(reqEA)
       endif
-      
+
       ! check if requested beam energy and target density is within
       ! the available domain
       call EZspline_isInDomain(sigv1_ezspl, logEA, sErr)
       if (sErr .ne. 0) then
          reqSV=0.0_R8
          return
-      else  
+      else
          ! get interpolation of beam stopping coefficient S(EB)
          call EZspline_interp(sigv1_ezspl, logEA, logSVen, sErr)
          call EZspline_error(sErr)
@@ -746,30 +746,30 @@ subroutine adas_evalSpline1( reqEA, reqSV, iErr  )
             return
          endif
       endif
-      
+
       reqSV    = dexp(logSVen)
-      
+
       return
     end subroutine adas_evalSpline1
 !
 subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
            &               reqSV, il_extrp, iErr                  )
-           
+
       real*8  :: reqEA, reqNeff, reqTi, reqSV
       real*8  :: x_tables(2),logSVn(2)
       real*8  :: logEA, logNeff, logTi
       real*8  :: logSVen
       logical,intent(in) :: il_extrp !if .true. make an extrapolation
-      integer :: i 
+      integer :: i
       integer :: iErr, sErr, tErr,ierr_extrapol
       logical :: il_E_min,il_N_min,il_T_min
       logical :: il_E_max,il_N_max,il_T_max
-      
+
 !
 ! iErr            : error code
 ! sErr            : EzSpline error code
 !
-! reqEA           : requested beam energy per nucleon 
+! reqEA           : requested beam energy per nucleon
 ! reqNeff         : requested effective density
 ! reqTi           : requested target temperature per nucleon
 ! reqSV           : requested beam stopping coefficient
@@ -779,8 +779,8 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
 !
 
       iErr     = 0
-      
-      
+
+
       if((reqEA.eq.0.0_R8).or.(reqTi.eq.0.0_R8).or.(reqNeff.eq.0.0_R8)) then
          reqSV    = 0.0_R8
          return
@@ -789,7 +789,7 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
          logTi   = dlog(reqTi)
          logNeff = dlog(reqNeff)
       endif
-      
+
       ! check if requested beam energy and target density is within
       ! the available domain
       call EZspline_isInDomain(sigvex_ezspl, logEA, logNeff, logTi, sErr)
@@ -816,13 +816,13 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
             do i=1,2
                x_tables(i)=sigvex_ezspl%x1(i)
             enddo
-! linear extrapolation            
+! linear extrapolation
             call linear_interp(logEA,x_tables(1:2),logSVn(1:2),logSVen,ierr_extrapol)
             if(ierr_extrapol.ne.0) then !extrapolation error
                iErr = 4
                return
             endif
-            
+
          else if(logEA .ge. sigvex_ezspl%x1max) then
             if(il_N_min.or.il_N_max.or.il_T_min.or.il_T_max) then
                call EZspline_error(sErr)
@@ -834,7 +834,7 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
             do i=1,2
                x_tables(i)=sigvex_ezspl%x1(sigvex_ezspl%n1-i+1)
             enddo
-            ! linear extrapolation     
+            ! linear extrapolation
             call linear_interp(logEA,x_tables(1:2),logSVn(1:2),logSVen,ierr_extrapol)
             if(ierr_extrapol.ne.0) then !extrapolation error
                iErr = 4
@@ -874,17 +874,17 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
                iErr = 4
                return
             endif
-         else 
+         else
             call EZspline_error(sErr)
             reqSV=0.0_R8
             iErr = 4
             write(*,'(3(A,E10.3))') " **EZspline** EB/Amu = ",reqEA,"   NEeff = ",reqNeff,"   NTi = ",reqTi
             return
-            
+
          endif
-      else 
-         
-         
+      else
+
+
          ! get interpolation of beam stopping coefficient S(EB,Ni,Ti)
          call EZspline_interp(sigvex_ezspl, logEA, logNeff,  logTi, logSVen, sErr)
          call EZspline_error(sErr)
@@ -894,9 +894,9 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
             return
          endif
       endif
-      
+
       reqSV    = dexp(logSVen)
-      
+
       return
     end subroutine adas_evalSpline3
 
@@ -904,9 +904,9 @@ subroutine adas_evalSpline3( reqEA, reqNeff, reqTi, &
 ! free spline objects and data arrays
 subroutine adas_closeSplines(iErr)
       integer :: i, iErr, tErr
-      
+
       iErr = 0
-      
+
       if (ALLOCATED(targetZ)) then
          DEALLOCATE(targetZ, STAT=tErr)
          if (tErr .gt. 0) then
@@ -959,7 +959,7 @@ subroutine adas_closeSplines(iErr)
             return
          endif
       endif
-      
+
       if (ALLOCATED(t_ezspl)) then
          do i = 1,Nspl
             call EZspline_free(t_ezspl(i), tErr)
@@ -972,10 +972,10 @@ subroutine adas_closeSplines(iErr)
             return
          endif
       endif
-      
+
       return
 end subroutine
 
-!DEC$ ENDIF  
+!DEC$ ENDIF
 
 end module

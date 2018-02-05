@@ -2,8 +2,7 @@
 #            Define User Specific Output Paths
 #######################################################################
   # Set a default directory if one has not already been defined.
-  $STELLOPT_HOME ?= $(HOME)/bin
-
+  $STELLOPT_HOME ?= /Volumes/NawName/Workshop/STELLOPT/bin
 
 #######################################################################
 #            Define Basic Utilities
@@ -27,18 +26,20 @@
 #  FLAGS_R = -O2 -g -fexternal-blas -fbacktrace -fcheck=all
   FLAGS_R = -O2 -fexternal-blas -Wmissing-include-dirs
   FLAGS_D = -g -O0 -fcheck=all
-  # LIBS    = -L/opt/local/lib -lopenblas -lscalapack
-  LIBS    = -L/opt/local/lib -lopenblas -libscalapack.dylib
+#  LIBS    = -L/opt/local/lib -lopenblas -lscalapack
+  LIBS    = -L/opt/local/lib -lopenblas
+  LIBS   += -L$(EXTVOLP)/lib -lscalapack
+#  INCLUDE =
 
 #######################################################################
 #            MPI Options
 #######################################################################
   LMPI    = T
-  MPI_COMPILE = $(MPIHOME)/bin/mpif90
-  MPI_COMPILE_FREE = $(MPIHOME)/bin/mpif90 -ffree-form \
+  MPI_COMPILE = /opt/local/bin/mpif90
+  MPI_COMPILE_FREE = /opt/local/bin/mpif90 -ffree-form \
                      -ffree-line-length-none -ffixed-line-length-none
   MPI_COMPILE_C = gcc -shared -Wl,-no_compact_unwind
-  MPI_LINK = $(MPIHOME)/bin/mpif90
+  MPI_LINK = /opt/local/bin/mpif90
 
   # For GCC6
   #MPI_COMPILE = mpif90
@@ -57,8 +58,8 @@
 #            NETCDF Options
 #######################################################################
   LNETCDF = T
-  NETCDF_INC = -I$(NETCDF_HOME)/include
-  NETCDF_LIB = -L$(NETCDF_HOME)/lib -lnetcdf -lnetcdff
+  NETCDF_INC = -I/opt/local/include
+  NETCDF_LIB = -L/opt/local/lib -lnetcdf -lnetcdff
 
   # FOR GCC6
   #NETCDF_LIB = -L$(NETCDF_HOME)/lib -lnetcdff
@@ -67,10 +68,8 @@
 #            NTCC Options
 #######################################################################
   LNTCC = F
-  # NTCC_INC = -I/Users/slazerso/Sims_PPPL/STELLOPT/NTCC/MAC/mod
-  # NTCC_LIB = -L/Users/slazerso/Sims_PPPL/STELLOPT/NTCC/MAC/lib \
-  NTCC_INC = -I$(NTCCHOME)/NTCC/MAC/mod
-  NTCC_LIB = -L$(NTCCHOME)/NTCC/MAC/lib \
+  NTCC_INC = -I$(NTCCHOME)/mod
+  NTCC_LIB = -L$(NTCCHOME)/lib \
              -lpreact -lsigsub -laladdinsub -lpreact -lpspline \
              -lportlib -lezcdf
 
@@ -78,24 +77,24 @@
 #            HDF5 Options
 #######################################################################
   LHDF5 = T
-  HDF5_INC = -I$(HDF5_HOME)/include
-  HDF5_LIB = -L$(HDF5_HOME)/lib -lhdf5 -lhdf5hl_fortran -lhdf5_hl \
+  HDF5_INC = -I/opt/local/include
+  HDF5_LIB = -L/opt/local/lib -lhdf5 -lhdf5hl_fortran -lhdf5_hl \
              -lhdf5_fortran
 
 #######################################################################
 #             PGPLOT Options
 #######################################################################
   LPGPLOT = F
-  PGPLOT_INC = -I$(PGPLOT_DIR)
-  PGPLOT_LIB = -L$(PGPLOT_DIR) -lpgplot -L/usr/X11R6/lib -lX11
-  PGPLOT_LIB = -L$(PGPLOT_DIR) -lpgplot -L/usr/X11R6/lib -lX11
+  PGPLOT_INC = -I/opt/local/include
+  PGPLOT_LIB = -L/opt/local/lib -lpgplot -lX11
 
 #######################################################################
 #             SILO Options
 #######################################################################
   LSILO = F
   SILO_INC = -I$(SILOHOME)/include
-  SILO_LIB = -L$(SILOHOME)/lib -lsilo
+  # SILO_LIB = -L$(SILOHOME)/lib -lsilo
+  SILO_LIB = -L$(SILOHOME)/lib -lsiloh5
 
 #######################################################################
 #            DKES/NEO Options
@@ -111,7 +110,7 @@
   GENE_DIR = $(GENE_PATH)
   LIB_GENE = libgene.a
   GENE_LIB = $(GENE_DIR)/$(LIB_GENE) \
-             -L$(GENE_DIR)/futils/src -lfutils \
+             -L$(EXTVOLP)/genecode/futils/src -lfutils \
              -L$(FFTWHOME)/lib -lfftw3 \
              -L$(SLEPC_DIR)/$(PETSC_ARCH)/lib -lslepc \
              -L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc -lX11
@@ -120,11 +119,15 @@
 #            COILOPT++ Options
 #######################################################################
   LCOILOPT = F
-  COILOPT_INC = -I$(COILOPT_PATH)
+  COILOPT_INC = -I$(COILOPT_PATH)/include
   COILOPTPP_DIR = $(COILOPT_PATH)
   LIB_COILOPTPP = libcoilopt++.a
-  COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP) \
-                -L$(GSLHOME)/lib -lgsl -lgslcblas -lstdc++ -lmpi_cxx
+  # COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP) \
+  #             -L$(GSLHOME)/lib -lgsl -lgslcblas -lstdc++ -lmpi_cxx
+  COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP)
+  COILOPT_LIB += -L$(GSLHOME)/lib -lgsl -lgslcblas
+  COILOPT_LIB += -L$(MPIHOME)/lib/mpich-gcc5 -lmpicxx
+  COILOPT_LIB += -L/opt/local/lib/gcc5 -lstdc++
 
 #######################################################################
 #            TERPSICHORE Options
@@ -140,7 +143,7 @@
 #######################################################################
   LTRAVIS= T
   TRAVIS_DIR = $(TRAVIS_PATH)
-  LIB_TRAVIS = libtravis64_sopt.a
+  LIB_TRAVIS = libtravis64.a
   LIB_MCONF  = libmconf64.a
   TRAVIS_LIB = $(TRAVIS_DIR)/lib/$(LIB_TRAVIS) \
                $(TRAVIS_DIR)/mag_conf/lib/$(LIB_MCONF) -lstdc++
@@ -159,7 +162,7 @@ LIB_SHARE = /opt/local/lib/libnetcdf.dylib \
          /opt/local/lib/gcc5/libstdc++.dylib \
          /opt/local/lib/libopenblas.dylib \
          /opt/local/lib/mpich-gcc5/libmpi.dylib \
-         /opt/local/lib/mpich-gcc5/libmpi_mpifh.12.dylib \
+         /opt/local/lib/mpich-gcc5/libmpifort.dylib \
          /opt/local/lib/libz.dylib \
          /usr/lib/libc.dylib \
          /usr/lib/libm.dylib \
@@ -186,7 +189,8 @@ LIB_SHARE = /opt/local/lib/libnetcdf.dylib \
 
 # Home bin specifies where the build scripts are located,
 # for example awk_cdir.awk.
-HOME_BIN = ../../
+HOME_BIN = $(STELLOPT_HOME)
+# HOME_BIN = ../../
 
 MOD1_PATH = -I$(MYHOME)/libstell_dir
 MOD_PATH =

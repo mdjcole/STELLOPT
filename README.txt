@@ -17,3 +17,11 @@ build and compile all the files.
 A Python interface using CTYPES is also included but it requires a
 static shared build of LIBSTELL.  This is still a highly experimental
 option.
+
+Note:
+Failure on Gavin’s MAC laptop when trying to make.
+The make file tries to look for the “awk_cdir.awk” file (which is automatically
+written) in $MY_HOME/bin halfway through the build process.  This fails because
+it writes the file to $MY_HOME.  To fix this problem, make a copy of
+“awk_cdir.awk” in the $MY_HOME/bin directory.
+Attempt to make -> it will fail.  Copy the file. Attempt to make again.

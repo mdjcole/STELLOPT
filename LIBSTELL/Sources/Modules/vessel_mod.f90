@@ -23,12 +23,12 @@
 !     Libraries
 !-----------------------------------------------------------------------
       USE safe_open_mod
-      USE EZspline_obj
-      USE EZspline
-      
+      USE ezspline_obj
+      USE ezspline
+
 !-----------------------------------------------------------------------
 !     Module Variables
-!         
+!
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       INTEGER   :: nvertex_ves, nu_ves, nv_ves
@@ -39,7 +39,7 @@
       CHARACTER(LEN=256) :: machine_string
       CHARACTER(LEN=256) :: date
       TYPE(EZspline2_r8) :: R_ves_spl, Z_ves_spl
-      
+
 !-----------------------------------------------------------------------
 !     Subroutines
 !         vessel_load_txt:   Reads a vessel file and loads the vessel.
@@ -51,7 +51,7 @@
          MODULE PROCEDURE vessel_dist_cyl_flt, vessel_dist_cyl_dbl
       END INTERFACE
       CONTAINS
-      
+
       SUBROUTINE vessel_load_txt(filename,istat)
       IMPLICIT NONE
       CHARACTER(LEN=*), INTENT(in) :: filename
@@ -107,7 +107,7 @@
          SNX_ves(uv) = SNX_ves(uv-nu_ves)
          SNY_ves(uv) = SNY_ves(uv-nu_ves)
          SNZ_ves(uv) = SNZ_ves(uv-nu_ves)
-         uv = uv + 1       
+         uv = uv + 1
       END DO
       ! Handle the last toroidal point
       DO u = 1, nu_ves - 1
@@ -150,10 +150,10 @@
       CALL EZspline_setup(R_ves_spl,r_temp,ier)
       CALL EZspline_setup(Z_ves_spl,z_temp,ier)
       DEALLOCATE(r_temp,z_temp)
-      
+
       RETURN
       END SUBROUTINE vessel_load_txt
-      
+
       SUBROUTINE vessel_dist_cyl_flt(rp,phip,zp,dist,out)
       IMPLICIT NONE
       REAL, INTENT(in) :: rp, phip, zp
@@ -166,7 +166,7 @@
       CALL vessel_dist_cart(xp,yp,zp,dist,out)
       RETURN
       END SUBROUTINE vessel_dist_cyl_flt
-      
+
       SUBROUTINE vessel_dist_cyl_dbl(rp,phip,zp,dist,out)
       IMPLICIT NONE
       DOUBLE PRECISION, INTENT(in) :: rp, phip, zp
@@ -181,7 +181,7 @@
       dist   = dist_flt
       RETURN
       END SUBROUTINE vessel_dist_cyl_dbl
-      
+
       SUBROUTINE vessel_dist_cart(xp,yp,zp,dist,out)
       IMPLICIT NONE
       REAL, INTENT(in) :: xp, yp, zp
@@ -199,7 +199,7 @@
       out = SIGN(1.0,(dx*SNX_ves(loc))+(dy*SNY_ves(loc))+(dz*SNZ_ves(loc)))
       RETURN
       END SUBROUTINE vessel_dist_cart
-      
+
       SUBROUTINE vessel_info(iunit)
       IMPLICIT NONE
       INTEGER, INTENT(in)    :: iunit
@@ -212,7 +212,7 @@
       WRITE(iunit,'(3X,A,I7)')   'NV         : ',nv_ves
       RETURN
       END SUBROUTINE vessel_info
-      
+
       SUBROUTINE vessel_free(istat)
       IMPLICIT NONE
       INTEGER, INTENT(inout) :: istat

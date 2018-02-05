@@ -6,7 +6,8 @@ def read_vmec(file):
     import numpy as np
     # Load Libraries
     #libstell = ct.cdll.LoadLibrary("/u/slazerso/src/STELLOPT_GCC/LIBSTEL/Release/libstell.so")
-    libstell = ct.cdll.LoadLibrary("/home/jonathan/bin/libstell.so")
+    # libstell = ct.cdll.LoadLibrary("/home/jonathan/bin/libstell.so")
+    libstell = ct.cdll.LoadLibrary("/Volume/NawName/Workshop/STELLOPT/bin/libstell.a")
     # Read File
     read_wout = getattr(libstell,'__read_wout_mod_MOD_readw_and_open')
     read_wout.argparse=[ct.c_char_p, ct.c_int, ct.c_int, ct.c_int]
@@ -163,7 +164,7 @@ def cfunct(theta,zeta,fmnc,xm,xn):
     cosnz=np.cos(nz)
     sinnz=np.sin(nz)
     f = np.zeros((ns,lt,lz))
-    
+
     fmn = np.ndarray((mn,lt))
     for k in range(ns):
         fmn = np.broadcast_to(fmnc[k,:],(lt,mn)).T
@@ -171,7 +172,7 @@ def cfunct(theta,zeta,fmnc,xm,xn):
         fmnsinmt=(fmn*sinmt).T
         f[k,:,:]=np.matmul(fmncosmt, cosnz)-np.matmul(fmnsinmt, sinnz)
     return f
-    
+
 def sfunct(theta,zeta,fmnc,xm,xn):
     import numpy as np
     f=0
@@ -261,7 +262,7 @@ def calc_jll(vmec_data, theta, zeta ):
     # CALC_JLL(vmec_data,theta,zeta) Calculates the parallel current density.
     # This funciton takes a VMEC data structure (as read by read_vmec) and
     # theta/zeta arrays as input and outputs the parallel current density.
-    
+
     # Example usage (Matlab)
     #      theta=0:2*pi/359:2*pi;
     #      zeta=0:2*pi/63:2*pi;
@@ -273,18 +274,18 @@ def calc_jll(vmec_data, theta, zeta ):
     #      zeta=np.linspace(0, 2*np.pi, 64)
     #      vmec_data=read_vmec('wout.nc')
     #      jll=calc_jll(vmec_data, theta, zeta)
-    
-    
+
+
     # Maintained by: Samuel Lazerson (lazerson@pppl.gov)
     # Version:       1.00
-    
+
     b =cfunct(theta,zeta,vmec_data['bmnc'],    vmec_data['xm'],vmec_data['xn'])
     g =cfunct(theta,zeta,vmec_data['gmnc'],    vmec_data['xm'],vmec_data['xn'])
     bu=cfunct(theta,zeta,vmec_data['bsubumnc'],vmec_data['xm'],vmec_data['xn'])
     bv=cfunct(theta,zeta,vmec_data['bsubvmnc'],vmec_data['xm'],vmec_data['xn'])
     ju=cfunct(theta,zeta,vmec_data['currumnc'],vmec_data['xm'],vmec_data['xn'])
     jv=cfunct(theta,zeta,vmec_data['currvmnc'],vmec_data['xm'],vmec_data['xn'])
-    
+
     if (vmec_data['iasym']):
         b =b +sfunct(theta,zeta,vmec_data['bmns'],    vmec_data['xm'],vmec_data['xn'])
         g =g +sfunct(theta,zeta,vmec_data['gmns'],    vmec_data['xm'],vmec_data['xn'])
@@ -292,16 +293,16 @@ def calc_jll(vmec_data, theta, zeta ):
         bv=bv+sfunct(theta,zeta,vmec_data['bsubvmns'],vmec_data['xm'],vmec_data['xn'])
         ju=ju+sfunct(theta,zeta,vmec_data['currumns'],vmec_data['xm'],vmec_data['xn'])
         jv=jv+sfunct(theta,zeta,vmec_data['currvmns'],vmec_data['xm'],vmec_data['xn'])
-    
-    
+
+
     jll = (bu*ju+bv*jv)/(g*b)
     return jll
 
 
 
-    
-    
-    
+
+
+
 #def safe_open(file,iunit):
 #    import ctypes as ct
 #    # Load Libraries

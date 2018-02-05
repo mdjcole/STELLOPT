@@ -21,11 +21,11 @@
 !                    zmns_temp(:,1)=zmns(:,ns-1)
 !                    zmns_temp(:,2)=zmns(:,ns)
 !                    bumnc_temp(:,1) = (1.5*bsupumnc(:,ns) - 0.5*bsupumnc(:,ns-1))
-!                    bvmnc_temp(:,1) = (1.5*bsupvmnc(:,ns) - 0.5*bsupvmnc(:,ns-1))                    
+!                    bvmnc_temp(:,1) = (1.5*bsupvmnc(:,ns) - 0.5*bsupvmnc(:,ns-1))
 !                    CALL init_virtual_casing(mnmax,nu2,nv2,xm_temp,xn_temp,&
 !                                         rmnc_temp,zmns_temp,nfp,&
 !                                         BUMNC=bumnc_temp,BVMNC=bvmnc_temp)
-!                               -or-                    
+!                               -or-
 !                    CALL init_virtual_casing(mnmax,nu2,nv2,xm_temp,xn_temp,&
 !                                         rmnc_temp,zmns_temp,nfp,&
 !                                         RMNS=rmns_temp, ZMNC=zmnc_temp,&
@@ -56,7 +56,7 @@
 !                    to use non-adaptive integration routines.  Also note
 !                    that if the code is compiled without the NTCC PSLPLINE
 !                    routines the calls will default to non-adaptive integration.
-!                 
+!
 !
 !
 !     Notes:         6/15/12 - SAL
@@ -94,8 +94,8 @@
 !-----------------------------------------------------------------------
 !     Libraries
 !-----------------------------------------------------------------------
-      USE EZspline_obj
-      USE EZspline
+      USE ezspline_obj
+      USE ezspline
 !-----------------------------------------------------------------------
 !     Module Variables
 !-----------------------------------------------------------------------
@@ -171,7 +171,7 @@
          MODULE PROCEDURE vecpot_vc_flt, vecpot_vc_dbl
       END INTERFACE
       CONTAINS
-      
+
       !-----------------------------------------------------------------
       SUBROUTINE init_virtual_casing_dbl(mnmax,nu,nv,xm,xn,rmnc,zmns,nfp,bumnc,bvmnc,&
                                      rmns,zmnc,bsmns,bsmnc,bumns,bvmns,dr)
@@ -185,7 +185,7 @@
       DOUBLE PRECISION, INTENT(in), OPTIONAL :: bumns(1:mnmax,1),bvmns(1:mnmax,1)
       DOUBLE PRECISION, INTENT(in), OPTIONAL :: rmns(1:mnmax,2),zmnc(1:mnmax,2)
       DOUBLE PRECISION, INTENT(in), OPTIONAL :: dr
-      
+
       ! LOCAL VARIABLES
       INTEGER :: nuv, mn, uv, i, u, v, dex1, dex2, ier, nuvm
       INTEGER :: bcs1(2), bcs2(2)
@@ -208,7 +208,7 @@
       IF (ALLOCATED(zsurf)) DEALLOCATE(zsurf)
       IF (ALLOCATED(nxsurf)) DEALLOCATE(nxsurf)
       IF (ALLOCATED(nysurf)) DEALLOCATE(nysurf)
-      IF (ALLOCATED(nzsurf)) DEALLOCATE(nzsurf) 
+      IF (ALLOCATED(nzsurf)) DEALLOCATE(nzsurf)
       IF (ALLOCATED(btopx)) DEALLOCATE(btopx)
       IF (ALLOCATED(btopy)) DEALLOCATE(btopy)
       IF (ALLOCATED(btopz)) DEALLOCATE(btopz)
@@ -266,7 +266,7 @@
       IF (PRESENT(bumns)) CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,bumns,xm,xn,bu_temp,1,0)
       IF (PRESENT(bvmns)) CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,bvmns,xm,xn,bv_temp,1,0)
       IF (PRESENT(dr)) dr_temp = dr
-      
+
       xreal = zero; yreal = zero; zreal=zero
       uv = 1
       DO v = 1, nv
@@ -284,18 +284,18 @@
       xreal(nu+1,:) = xreal(1,:)
       yreal(nu+1,:) = yreal(1,:)
       zreal(nu+1,:) = zreal(1,:)
-      
+
       ! Now we calculate the edge metric elements
       ALLOCATE(fmn_temp(1:mnmax,1))
       rs = zero; zs = zero; ru = zero; zu = zero; rv = zero; zv = zero
       FORALL(mn = 1:mnmax) fmn_temp(mn,1) = -rmnc(mn,2)*xm(mn)
       CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,ru,1,0)
       FORALL(mn = 1:mnmax) fmn_temp(mn,1) = -rmnc(mn,2)*xn(mn)
-      CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,rv,1,0)  
+      CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,rv,1,0)
       FORALL(mn = 1:mnmax) fmn_temp(mn,1) = zmns(mn,2)*xm(mn)
-      CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zu,0,0) 
+      CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zu,0,0)
       FORALL(mn = 1:mnmax) fmn_temp(mn,1) = zmns(mn,2)*xn(mn)
-      CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zv,0,0)  
+      CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zv,0,0)
       IF (PRESENT(rmns)) THEN
          FORALL(mn = 1:mnmax) fmn_temp(mn,1) = rmns(mn,2)*xm(mn)
          CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,ru,0,0)
@@ -304,7 +304,7 @@
       END IF
       IF (PRESENT(zmnc)) THEN
          FORALL(mn = 1:mnmax) fmn_temp(mn,1) = -zmnc(mn,2)*xm(mn)
-         CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zu,1,0)  
+         CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zu,1,0)
          FORALL(mn = 1:mnmax) fmn_temp(mn,1) = -zmnc(mn,2)*xn(mn)
          CALL mntouv_local(1,1,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,zv,1,0)
       END IF
@@ -314,7 +314,7 @@
             zs(u,v,1)     = (z_temp(u,v,2) - z_temp(u,v,1))
          END DO
       END DO
-      
+
       ALLOCATE(btopx(1:nuvp), btopy(1:nuvp), btopz(1:nuvp),btops(1:nuvp))
       btopx = zero; btopy = zero; btopz = zero; btops = zero; btopreal = zero
       kxreal = zero; kyreal = zero; kzreal = zero;
@@ -506,7 +506,7 @@
       ! END SUBROUTINE
       END SUBROUTINE init_virtual_casing_dbl
       !-----------------------------------------------------------------
-         
+
       !-----------------------------------------------------------------
       SUBROUTINE init_virtual_casing_realspace_dbl(nu,nv,nfp,phi,&
                                                    rreal,zreal,&
@@ -536,7 +536,7 @@
       IF (ALLOCATED(zsurf)) DEALLOCATE(zsurf)
       IF (ALLOCATED(nxsurf)) DEALLOCATE(nxsurf)
       IF (ALLOCATED(nysurf)) DEALLOCATE(nysurf)
-      IF (ALLOCATED(nzsurf)) DEALLOCATE(nzsurf) 
+      IF (ALLOCATED(nzsurf)) DEALLOCATE(nzsurf)
       IF (ALLOCATED(btopx)) DEALLOCATE(btopx)
       IF (ALLOCATED(btopy)) DEALLOCATE(btopy)
       IF (ALLOCATED(btopz)) DEALLOCATE(btopz)
@@ -590,7 +590,7 @@
       xreal(nu+1,:) = xreal(1,:)
       yreal(nu+1,:) = yreal(1,:)
       zreal2(nu+1,:) = zreal2(1,:)
-      
+
       ALLOCATE(btopx(1:nuvp), btopy(1:nuvp), btopz(1:nuvp),btops(1:nuvp))
       btopx = zero; btopy = zero; btopz = zero; btops = zero; btopreal = zero
       uv = 1
@@ -747,8 +747,8 @@
       DEALLOCATE(nxreal,nyreal,nzreal)
       ! END SUBROUTINE
       END SUBROUTINE init_virtual_casing_realspace_dbl
-      !-----------------------------------------------------------------        
-      
+      !-----------------------------------------------------------------
+
       !-----------------------------------------------------------------
       !  Note optional arguments must have a different name so the
       !  Interface will pick the proper variables.  Here:  _FLT
@@ -801,8 +801,8 @@
                                    DR=drt)
       ! END SUBROUTINE
       END SUBROUTINE init_virtual_casing_flt
-      !-----------------------------------------------------------------        
-      
+      !-----------------------------------------------------------------
+
       !-----------------------------------------------------------------
       !  Note optional arguments must have a different name so the
       !  Interface will pick the proper variables.  Here:  _FLT
@@ -839,8 +839,8 @@
       ! END SUBROUTINE
       END SUBROUTINE init_virtual_casing_realspace_flt
       !-----------------------------------------------------------------
-      
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE free_virtual_casing
       IMPLICIT NONE
@@ -871,10 +871,10 @@
       IF (EZspline_allocated(jz3d_spl)) CALL EZspline_free(jz3d_spl,ier)
 
       ! END SUBROUTINE
-      END SUBROUTINE free_virtual_casing                        
+      END SUBROUTINE free_virtual_casing
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_virtual_casing_dbl(x,y,z,bx,by,bz)
       IMPLICIT NONE
@@ -901,8 +901,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_virtual_casing_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_virtual_casing_flt(x_flt,y_flt,z_flt,bx_flt,by_flt,bz_flt)
       IMPLICIT NONE
@@ -926,8 +926,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_virtual_casing_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_virtual_casing_adapt_dbl(x,y,z,bx,by,bz,istat)
       IMPLICIT NONE
@@ -978,7 +978,7 @@
       adapt_rerun = .true.
       subs = 1
       restar = 0
-      DO WHILE (adapt_rerun) 
+      DO WHILE (adapt_rerun)
 
 #ifdef NAG
          CALL D01EAF(ndim_nag,a_nag,b_nag,mincls_nag,maxcls_nag,nfun_nag,funsub_nag_b,absreq_nag,&
@@ -1047,8 +1047,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_virtual_casing_adapt_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_virtual_casing_adapt_flt(x_flt,y_flt,z_flt,bx_flt,by_flt,bz_flt,istat)
       IMPLICIT NONE
@@ -1073,8 +1073,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_virtual_casing_adapt_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE funsub_nag_b(ndim, vec, nfun, f)
       IMPLICIT NONE
@@ -1107,8 +1107,8 @@
       ! END SUBROUTINE
       END SUBROUTINE funsub_nag_b
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_virtual_casing_dbl(x,y,z,ax,ay,az)
       IMPLICIT NONE
@@ -1127,8 +1127,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_virtual_casing_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_virtual_casing_flt(x_flt,y_flt,z_flt,ax_flt,ay_flt,az_flt)
       IMPLICIT NONE
@@ -1153,8 +1153,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_virtual_casing_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_virtual_casing_adapt_dbl(x,y,z,ax,ay,az,istat)
       IMPLICIT NONE
@@ -1183,7 +1183,7 @@
       EXTERNAL :: dcuhre
 
 #endif
-      ! BEGIN SUBROUTINE 
+      ! BEGIN SUBROUTINE
       IF (adapt_tol < 0) THEN
          CALL vecpot_virtual_casing_dbl(x,y,z,ax,ay,az)
          RETURN
@@ -1272,8 +1272,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_virtual_casing_adapt_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_virtual_casing_adapt_flt(x_flt,y_flt,z_flt,ax_flt,ay_flt,az_flt,istat)
       IMPLICIT NONE
@@ -1284,7 +1284,7 @@
       ! LOCAL VARIABLES
       DOUBLE PRECISION  :: xt, yt, zt
       DOUBLE PRECISION  :: axt, ayt,azt
-      ! BEGIN SUBROUTINE 
+      ! BEGIN SUBROUTINE
       xt   = x_flt
       yt   = y_flt
       zt   = z_flt
@@ -1299,8 +1299,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_virtual_casing_adapt_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE funsub_nag_a(ndim, vec, nfun, f)
       IMPLICIT NONE
@@ -1329,13 +1329,13 @@
       gf   = one/DSQRT((x_nag-xs)*(x_nag-xs)+(y_nag-ys)*(y_nag-ys)+(z_nag-zs)*(z_nag-zs))
       f(1) = norm_nag*(ax+bn*nx)*gf
       f(2) = norm_nag*(ay+bn*ny)*gf
-      f(3) = norm_nag*(az+bn*nz)*gf    
+      f(3) = norm_nag*(az+bn*nz)*gf
       RETURN
       ! END SUBROUTINE
       END SUBROUTINE funsub_nag_a
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE virtual_casing_info(iunit)
       IMPLICIT NONE
@@ -1344,7 +1344,7 @@
       ! LOCAL VARIABLES
       ! BEGIN SUBROUTINE
       WRITE(iunit,'(A)')                     '----- Virtual Casing Information -----'
-#ifdef NAG 
+#ifdef NAG
       WRITE(iunit,'(A,A,A)')                   '   INTEGRAL TYPE: ',TRIM(vc_type_str),' (NAG) '
 #else
       WRITE(iunit,'(A,A,A)')                   '   INTEGRAL TYPE: ',TRIM(vc_type_str),' (DCUHRE) '
@@ -1363,8 +1363,8 @@
       ! END SUBROUTINE
       END SUBROUTINE virtual_casing_info
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE virtual_casing_surf_dump(iunit)
       IMPLICIT NONE
@@ -1391,8 +1391,8 @@
       ! END SUBROUTINE
       END SUBROUTINE virtual_casing_surf_dump
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       DOUBLE PRECISION FUNCTION virtual_casing_dist_dbl(xp,yp,zp)
       IMPLICIT NONE
@@ -1404,8 +1404,8 @@
       ! END FUNCTION
       END FUNCTION virtual_casing_dist_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       REAL FUNCTION virtual_casing_dist_flt(xp_flt,yp_flt,zp_flt)
       IMPLICIT NONE
@@ -1417,8 +1417,8 @@
       ! END FUNCTION
       END FUNCTION virtual_casing_dist_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE init_volint_dbl(mnmax,nu,nv,ns,xm,xn,rmnc,zmns,nfp,jumnc,jvmnc,&
                                      rmns,zmnc,jumns,jvmns)
@@ -1479,7 +1479,7 @@
       ALLOCATE(jr(nu,nvp,ns),jphi(nu,nvp,ns),jz(nu,nvp,ns))
       ALLOCATE(jx_3d(nu*nvp*ns),jy_3d(nu*nvp*ns),jz_3d(nu*nvp*ns))
       ALLOCATE(xsurf(nu*nvp*ns),ysurf(nu*nvp*ns),zsurf(nu*nvp*ns))
-      
+
       ! Get the major quantities (not require use the VMEC convenction of j of j=j*jac
       r_temp=zero; z_temp=zero; ju_temp=zero; jv_temp=zero
       FORALL(u=1:nu) xu(u) = DBLE(u-1)/DBLE(nu-1)
@@ -1497,20 +1497,20 @@
       FORALL(mn = 1:mnmax) fmn_temp(mn,:) = -rmnc(mn,:)*xm(mn)
       CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,ru,1,0)
       FORALL(mn = 1:mnmax) fmn_temp(mn,:) = -rmnc(mn,:)*xn(mn)
-      CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,rv,1,0)  
+      CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,rv,1,0)
       FORALL(mn = 1:mnmax) fmn_temp(mn,:) = zmns(mn,:)*xm(mn)
-      CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zu,0,0) 
+      CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zu,0,0)
       FORALL(mn = 1:mnmax) fmn_temp(mn,:) = zmns(mn,:)*xn(mn)
-      CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zv,0,0)  
+      CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zv,0,0)
       IF (PRESENT(rmns)) THEN
          FORALL(mn = 1:mnmax) fmn_temp(mn,:) = rmns(mn,:)*xm(mn)
          CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,ru,0,0)
          FORALL(mn = 1:mnmax) fmn_temp(mn,:) = rmns(mn,:)*xn(mn)
-         CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,rv,0,0)  
-      END IF 
+         CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,rv,0,0)
+      END IF
       IF (PRESENT(zmnc)) THEN
          FORALL(mn = 1:mnmax) fmn_temp(mn,:) = -zmnc(mn,:)*xm(mn)
-         CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zu,1,0)  
+         CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zu,1,0)
          FORALL(mn = 1:mnmax) fmn_temp(mn,:) = -zmnc(mn,:)*xn(mn)
          CALL mntouv_local(1,ns,mnmax,nu,nvp,xu,xv,fmn_temp,xm,xn,zv,1,0)
       END IF
@@ -1587,9 +1587,9 @@
       DEALLOCATE(jx,jy,jr,jphi,jz)
       ! END SUBROUTINE
       END SUBROUTINE init_volint_dbl
-                              
-      !-----------------------------------------------------------------      
-      
+
+      !-----------------------------------------------------------------
+
       !-----------------------------------------------------------------
       !  Note optional arguments must have a different name so the
       !  Interface will pick the proper variables.  Here:  _FLT
@@ -1633,9 +1633,9 @@
       !                             JUMNC=jumnct, JVMNC=jvmnct)
       ! END SUBROUTINE
       END SUBROUTINE init_volint_flt
-      !----------------------------------------------------------------- 
-         
-         
+      !-----------------------------------------------------------------
+
+
       !-----------------------------------------------------------------
       SUBROUTINE funsub_nag_a3d(ndim, vec, nfun, f)
       IMPLICIT NONE
@@ -1661,13 +1661,13 @@
       !PRINT *,xs,ys,zs,ax,ay,ax,gf
       f(1) = norm_3d*ax*gf
       f(2) = norm_3d*ay*gf
-      f(3) = norm_3d*az*gf    
+      f(3) = norm_3d*az*gf
       RETURN
       ! END SUBROUTINE
       END SUBROUTINE funsub_nag_a3d
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE funsub_nag_b3d(ndim, vec, nfun, f)
       IMPLICIT NONE
@@ -1699,8 +1699,8 @@
       ! END SUBROUTINE
       END SUBROUTINE funsub_nag_b3d
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_volint_adapt_flt(x_flt,y_flt,z_flt,ax_flt,ay_flt,az_flt,istat)
       IMPLICIT NONE
@@ -1711,7 +1711,7 @@
       ! LOCAL VARIABLES
       DOUBLE PRECISION  :: xt, yt, zt
       DOUBLE PRECISION  :: axt, ayt,azt
-      ! BEGIN SUBROUTINE 
+      ! BEGIN SUBROUTINE
       xt   = x_flt
       yt   = y_flt
       zt   = z_flt
@@ -1726,8 +1726,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_volint_adapt_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_volint_dbl(x,y,z,ax,ay,az)
       IMPLICIT NONE
@@ -1745,8 +1745,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_volint_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_volint_dbl(x,y,z,bx,by,bz)
       IMPLICIT NONE
@@ -1765,8 +1765,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_volint_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_volint_adapt_dbl(x,y,z,ax,ay,az,istat)
       IMPLICIT NONE
@@ -1793,7 +1793,7 @@
       EXTERNAL :: dcuhre
 
 #endif
-      ! BEGIN SUBROUTINE 
+      ! BEGIN SUBROUTINE
       IF (adapt_tol < 0) THEN
          ! Not implmented
          CALL vecpot_volint_dbl(x,y,z,ax,ay,az)
@@ -1879,8 +1879,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_volint_adapt_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_volint_adapt_flt(x_flt,y_flt,z_flt,bx_flt,by_flt,bz_flt,istat)
       IMPLICIT NONE
@@ -1905,8 +1905,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_volint_adapt_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_vc_flt(x_flt,y_flt,z_flt,bx_flt,by_flt,bz_flt,istat)
       IMPLICIT NONE
@@ -1936,8 +1936,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_vc_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_vc_flt(x_flt,y_flt,z_flt,bx_flt,by_flt,bz_flt,istat)
       IMPLICIT NONE
@@ -1967,8 +1967,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_vc_flt
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_vc_dbl(x_dbl,y_dbl,z_dbl,bx_dbl,by_dbl,bz_dbl,istat)
       IMPLICIT NONE
@@ -1988,8 +1988,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_vc_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE vecpot_vc_dbl(x_dbl,y_dbl,z_dbl,bx_dbl,by_dbl,bz_dbl,istat)
       IMPLICIT NONE
@@ -2009,8 +2009,8 @@
       ! END SUBROUTINE
       END SUBROUTINE vecpot_vc_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE bfield_volint_adapt_dbl(x,y,z,bx,by,bz,istat)
       IMPLICIT NONE
@@ -2123,8 +2123,8 @@
       ! END SUBROUTINE
       END SUBROUTINE bfield_volint_adapt_dbl
       !-----------------------------------------------------------------
-         
-         
+
+
       !-----------------------------------------------------------------
       SUBROUTINE mntouv_local(k1,k,mnmax,nu,nv,xu,xv,fmn,xm,xn,f,signs,calc_trig)
       IMPLICIT NONE
@@ -2135,7 +2135,7 @@
       INTEGER, INTENT(in) :: nu
       INTEGER, INTENT(in) :: nv
       DOUBLE PRECISION, INTENT(in) :: xu(1:nu)
-      DOUBLE PRECISION, INTENT(in) :: xv(1:nv)           
+      DOUBLE PRECISION, INTENT(in) :: xv(1:nv)
       DOUBLE PRECISION, INTENT(in) :: fmn(1:mnmax,k1:k)
       INTEGER, INTENT(in) :: xm(1:mnmax)
       INTEGER, INTENT(in) :: xn(1:mnmax)
@@ -2195,7 +2195,7 @@
       ! END SUBROUTINE
       END SUBROUTINE mntouv_local
       !-----------------------------------------------------------------
-         
+
       !-----------------------------------------------------------------
       SUBROUTINE uvtomn_local(k1,k,mnmax,nu,nv,xu,xv,fmn,xm,xn,f,signs,calc_trig)
       IMPLICIT NONE
@@ -2275,10 +2275,8 @@
       ! END SUBROUTINE
       END SUBROUTINE uvtomn_local
       !-----------------------------------------------------------------
-      
+
 !-----------------------------------------------------------------------
 !     End Module
 !-----------------------------------------------------------------------
       END MODULE virtual_casing_mod
-      
-      

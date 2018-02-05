@@ -3,7 +3,7 @@
 !     Authors:       S. Lazerson (lazerson@pppl.gov)
 !     Date:          02/21/2012
 !     Description:   This module contains routines for working with
-!                    mgrid files.  
+!                    mgrid files.
 !-----------------------------------------------------------------------
       MODULE mgrid_field_mod
 !-----------------------------------------------------------------------
@@ -15,27 +15,27 @@
 !                           zminb, zmaxb, nr0b, np0b, nz0b, bvac,&
 !                           nextcur_mgrid => nextcur, free_mgrid, &
 !                           curlabel, mgrid_path_old
-      USE EZspline_obj
-      USE EZspline
+      USE ezspline_obj
+      USE ezspline
 !DEC$ IF DEFINED (MPI_OPT)
       USE mpi_params                                                    ! MPI
       USE mpi_inc
-!DEC$ ENDIF  
-      
+!DEC$ ENDIF
+
 !-----------------------------------------------------------------------
 !     Module Variables
-!         
+!
 !-----------------------------------------------------------------------
       IMPLICIT NONE
 !DEC$ IF DEFINED (MPI_OPT)
 !      INCLUDE 'mpif.h'                                                          ! MPI
-!DEC$ ENDIF  
+!DEC$ ENDIF
       INTEGER            :: nr_mgrid, nphi_mgrid, nz_mgrid
       REAL(rprec)        :: pi2, rmin_mgrid, rmax_mgrid, zmin_mgrid,&
                             zmax_mgrid, phimin_mgrid, phimax_mgrid
       CHARACTER(256)     :: mgrid_filename
       TYPE(EZspline3_r8) :: brm_spl, bzm_spl, bphim_spl
-      
+
 !-----------------------------------------------------------------------
 !     Subroutines
 !         mgrid_load:   Reads an mgrid file and loads a splines
@@ -44,7 +44,7 @@
 !         mgrid_info:   Displays information about the mgrid file
 !-----------------------------------------------------------------------
       CONTAINS
-      
+
       SUBROUTINE mgrid_load(filename,extcur,ncur,nv,nfp,istat,ithread)
       IMPLICIT NONE
       CHARACTER(LEN=*), INTENT(in) :: filename
@@ -140,7 +140,7 @@
       bphi_vac(:,nphi_mgrid,:) = bphi_vac(:,1,:)
       bz_vac(:,nphi_mgrid,:)   = bz_vac(:,1,:)
       phimax_mgrid = MAXVAL(phi_vac)
-      phimin_mgrid = MINVAL(phi_vac)  
+      phimin_mgrid = MINVAL(phi_vac)
       bcs1=(/ 0, 0/)
       bcs2=(/-1,-1/)
       bcs3=(/ 0, 0/)
@@ -166,7 +166,7 @@
       DEALLOCATE(r_vac,phi_vac,z_vac)
       RETURN
       END SUBROUTINE mgrid_load
-      
+
       SUBROUTINE mgrid_bcart(xp,yp,zp,bx,by,bz,istat)
       IMPLICIT NONE
       REAL(rprec), INTENT(in)  :: xp, yp, zp
@@ -181,7 +181,7 @@
       by = br * sin(phip) + bphi * cos(phip)
       RETURN
       END SUBROUTINE mgrid_bcart
-      
+
       SUBROUTINE mgrid_bcyl(rp,phip,zp,br,bphi,bz,istat)
       IMPLICIT NONE
       REAL(rprec), INTENT(in)  :: rp, phip, zp
@@ -198,7 +198,7 @@
       END IF
       RETURN
       END SUBROUTINE mgrid_bcyl
-      
+
       SUBROUTINE mgrid_free(istat)
       IMPLICIT NONE
       INTEGER, INTENT(out) :: istat
@@ -209,7 +209,7 @@
       IF (ALLOCATED(curlabel)) DEALLOCATE(curlabel)
       mgrid_path_old = " "
       END SUBROUTINE
-      
+
       SUBROUTINE mgrid_info(iunit)
       IMPLICIT NONE
       INTEGER, INTENT(in) :: iunit

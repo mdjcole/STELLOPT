@@ -12,26 +12,26 @@
 !-----------------------------------------------------------------------
       USE stel_kinds, ONLY: rprec
       USE read_boozer_mod ! BOOZER Function in LIBSTELL
-      USE EZspline_obj
-      USE EZspline
-      
+      USE ezspline_obj
+      USE ezspline
+
 !-----------------------------------------------------------------------
 !     Module Variables
-!         
+!
 !-----------------------------------------------------------------------
       INTEGER     ::  domain_flag, nfp
       INTEGER     ::  bcs0(2) = (/ 0, 0/)
       INTEGER     ::  bcs1(2) = (/-1,-1/)
       REAL(rprec) ::  pi2, R_target, Z_target, PHI_target
       TYPE(EZspline3_r8) :: R_spl, Z_spl, P_spl, MODB_spl
-      
+
 !-----------------------------------------------------------------------
 !     Subroutines
 !         load_boozer:     Loads boozer variables
 !         get_boozer_s:    Return boozer s,theta,phi coordiante
 !-----------------------------------------------------------------------
       CONTAINS
-        
+
       SUBROUTINE load_boozer(filename,iflag)
       IMPLICIT NONE
       CHARACTER(LEN=*) :: filename
@@ -115,7 +115,7 @@
       CALL EZspline_setup(MODB_spl,modb_temp,iflag)
       RETURN
       END SUBROUTINE load_boozer
-      
+
       SUBROUTINE rzfunct_booz(m,n,x,fvec,fjac,ldfjac,iflag)
       IMPLICIT NONE
       INTEGER m,n,ldfjac,iflag, ier
@@ -143,7 +143,7 @@
          CALL EZspline_interp(P_spl,x(2),x(3),x(1),P_temp,iflag)
          fvec(1) = (R_temp - R_target)
          fvec(2) = (Z_temp - Z_target)
-         fvec(3) = (x(3) + P_temp - PHI_target) ! PHI(cyl) = PHI(booz)+P(s,u,v) 
+         fvec(3) = (x(3) + P_temp - PHI_target) ! PHI(cyl) = PHI(booz)+P(s,u,v)
          !PRINT *,R_temp,Z_temp,P_temp
       ELSE IF (iflag == 2) THEN
          CALL EZspline_gradient(R_spl,x(2),x(3),x(1),R_grad,iflag)
@@ -161,7 +161,7 @@
       END IF
       RETURN
       END SUBROUTINE rzfunct_booz
-      
+
       SUBROUTINE get_booz_s(r_val,phi_val,z_val,s_val,ier,u_val,v_val)
       IMPLICIT NONE
       REAL(rprec), INTENT(in)    ::  r_val
@@ -238,8 +238,8 @@
       END IF
       RETURN
       END SUBROUTINE get_booz_s
-         
-         
+
+
       SUBROUTINE mntouv(k1,k,mnmax,nu,nv,xu,xv,fmn,xm,xn,f,signs,calc_trig)
       IMPLICIT NONE
       INTEGER, INTENT(in) :: k1
@@ -248,7 +248,7 @@
       INTEGER, INTENT(in) :: nu
       INTEGER, INTENT(in) :: nv
       REAL(rprec), INTENT(in) :: xu(1:nu)
-      REAL(rprec), INTENT(in) :: xv(1:nv)           
+      REAL(rprec), INTENT(in) :: xv(1:nv)
       REAL(rprec), INTENT(in) :: fmn(1:mnmax,k1:k)
       INTEGER, INTENT(in) :: xm(1:mnmax)
       INTEGER, INTENT(in) :: xn(1:mnmax)
@@ -304,7 +304,7 @@
          END DO
       END IF
       END SUBROUTINE mntouv
-      
+
       SUBROUTINE free_booz(ier)
       IMPLICIT NONE
       INTEGER, INTENT(inout) :: ier
@@ -316,5 +316,5 @@
       CALL EZspline_free(MODB_spl,ier)
       RETURN
       END SUBROUTINE free_booz
-      
+
       END MODULE boozer_utils

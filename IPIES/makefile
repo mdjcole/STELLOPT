@@ -1,4 +1,4 @@
-#Type "make release(debug)" at command line to make release(debug) version  
+#Type "make release(debug)" at command line to make release(debug) version
 #DO NOT alter the directory structure or move this makefile (must be in first subdirectory below top_level_dir)
   SHELL = /bin/sh
   DBG = Debug
@@ -7,11 +7,12 @@
   REL_PATH = $(PWD1)/$(REL)
   DBG_PATH = $(PWD1)/$(DBG)
   MOD1_PATH = -I$(MYHOME)/libstell_dir
-  FLAGS_R = -O2 -fexternal-blas 
+  FLAGS_R = -O2 -fexternal-blas
   FLAGS_D = -g
   EXE_F = xipies
   MAKE = makeipies
-  MYHOME = /u/slazerso/bin
+  # MYHOME = /u/slazerso/bin
+  MYHOME = $(STELLOPT_HOME)
   LIB_DIR = $(MYHOME)/libstell_dir
 
 .PHONY: release debug clean_release clean_debug static_release
@@ -29,24 +30,24 @@ release:
 debug:
 	@echo "Beginning debug compilation and linking of ipies"
 	@touch_debug
-	@cd $(DBG); rm -f *.f90 *.c; rm -f $(MAKE); ln -fs ../$(MAKE) .; make -f $(MAKE) $(EXE_F) FLAGS="$(FLAGS_D) $(MOD1_PATH)" TYPE="debug" LOCTYPE="Debug" 
+	@cd $(DBG); rm -f *.f90 *.c; rm -f $(MAKE); ln -fs ../$(MAKE) .; make -f $(MAKE) $(EXE_F) FLAGS="$(FLAGS_D) $(MOD1_PATH)" TYPE="debug" LOCTYPE="Debug"
 	@rm -f $(MYHOME)/$(EXE_F)
 	@-(umask 022; rm -f $(MYHOME)/$(EXE_F); ln -fs $(DBG_PATH)/$(EXE_F) $(MYHOME) 2> /dev/null; umask 077)
 	@echo "Debug version - xipies - is now updated"
 	@echo "To free up space, delete all *.o files from Debug"
 	@echo ""
 
-clean_release: 
+clean_release:
 	@echo "CLEAN REMAKE IN PROGRESS"
 	@cd $(REL); make -f $(MAKE) clean
 	@make release
 
-clean_debug: 
+clean_debug:
 	@echo "CLEAN REMAKE IN PROGRESS"
 	@cd $(DBG); make -f $(MAKE) clean
 	@make debug
-      
-static_release:      
+
+static_release:
 	@echo "MAKING STATIC (RELEASE) EXECUTABLE"
 	@cd $(REL); rm -f *.f *.f90 *.c; rm -f $(MAKE); ln -fs ../$(MAKE) .; make -f $(MAKE) $(EXE_F) FLAGS="$(FLAGS_R) $(MOD1_PATH)" SFLAGS="" TYPE="release"
 	@rm -f $(MYHOME)/$(EXE_F)
