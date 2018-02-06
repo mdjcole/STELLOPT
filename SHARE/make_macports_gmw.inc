@@ -158,7 +158,7 @@
 #######################################################################
 #            TRAVIS Options
 #######################################################################
-  LTRAVIS= F
+  LTRAVIS= T
   TRAVIS_DIR = $(TRAVIS_PATH)
   LIB_TRAVIS = libtravis64.a
   LIB_MCONF  = libmconf64.a
@@ -205,7 +205,6 @@ LIB_SHARE = $(NETCDF_HOME)/lib/libnetcdf.dylib \
 #         /usr/lib/libm.dylib \
 #         /usr/lib/libpthread.dylib
 #
-#     libmpich.dylib
 # ... libmpi_mpifh.12.dylib  from openmpi
 
 #######################################################################
