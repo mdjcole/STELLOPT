@@ -6,7 +6,10 @@
   PWD1 = `pwd`
   REL_PATH = $(PWD1)/$(REL)
   DBG_PATH = $(PWD1)/$(DBG)
-  MOD1_PATH = -I$(MYHOME)/libstell_dir -I$(NTCCHOME)/mod  -I$(NETCDFHOME)/include  -I$(HDF5_HOME)/include -I$(HDF5_HOME)/lib
+  MOD1_PATH = -I$(MYHOME)/libstell_dir -I$(NTCCHOME)/mod  \
+              -I$(NETCDFHOME)/include  -I$(HDF5_HOME)/include \
+              -I$(HDF5_HOME)/include
+#              -I$(HDF5_HOME)/lib
   FLAGS_R = -O2 -fexternal-blas
   FLAGS_D = -g
   EXE_F = xstelltran
