@@ -36,20 +36,20 @@
 #            MPI Options
 #######################################################################
   LMPI    = T
-  MPI_COMPILE = /opt/local/bin/mpif90
-  MPI_COMPILE_FREE = /opt/local/bin/mpif90 -ffree-form \
-                     -ffree-line-length-none -ffixed-line-length-none
-#                     \ -fno-underscoring
-  MPI_COMPILE_C = gcc -shared -Wl,-no_compact_unwind
-  MPI_LINK = /opt/local/bin/mpif90
-
-#  # For GCC6
-#  MPI_COMPILE = mpif90
-#  MPI_COMPILE_FREE = mpif90 -ffree-form \
+#  MPI_COMPILE = $(MPIHOME)/bin/mpif90
+#  MPI_COMPILE_FREE = $(MPIHOME)/bin/mpif90 -ffree-form \
 #                     -ffree-line-length-none -ffixed-line-length-none
-##                     -fno-underscoring
-#  MPI_COMPILE_C = mpicc
-#  MPI_LINK = mpif90
+##                     \ -fno-underscoring
+#  MPI_COMPILE_C = gcc -shared -Wl,-no_compact_unwind
+#  MPI_LINK = $(MPIHOME)/bin/mpif90
+
+  # For GCC6
+  MPI_COMPILE = mpif90
+  MPI_COMPILE_FREE = mpif90 -ffree-form \
+                     -ffree-line-length-none -ffixed-line-length-none
+#                     -fno-underscoring
+  MPI_COMPILE_C = mpicc
+  MPI_LINK = mpif90
 
 #######################################################################
 #            NAG Options
@@ -87,14 +87,14 @@
 #######################################################################
 #             PGPLOT Options
 #######################################################################
-  LPGPLOT = F
+  LPGPLOT = T
   PGPLOT_INC = -I$(PGPLOT_DIR)/include
   PGPLOT_LIB = -L$(PGPLOT_DIR)/lib -lpgplot -lX11
 
 #######################################################################
 #             SILO Options
 #######################################################################
-  LSILO = F
+  LSILO = T
   SILO_INC = -I$(SILOHOME)/include
   # SILO_LIB = -L$(SILOHOME)/lib -lsilo
   SILO_LIB = -L$(SILOHOME)/lib -lsiloh5
@@ -113,10 +113,15 @@
   GENE_DIR = $(GENE_PATH)
   LIB_GENE = libgene.a
   GENE_LIB = $(GENE_DIR)/$(LIB_GENE) \
-             -L$(GENE_PATH)/futils/src -lfutils \
              -L$(FFTWHOME)/lib -lfftw3 \
              -L$(SLEPC_DIR)/$(PETSC_ARCH)/lib -lslepc \
              -L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc -lX11
+
+#  GENE_LIB = $(GENE_DIR)/$(LIB_GENE) \
+#             -L$(GENE_PATH)/futils/src -lfutils \
+#             -L$(FFTWHOME)/lib -lfftw3 \
+#             -L$(SLEPC_DIR)/$(PETSC_ARCH)/lib -lslepc \
+#             -L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc -lX11
 
 #  GENE_LIB = -L$(FFTW_HOME)/lib -lfftw3 -lfftw3f -Xlinker \
 #             -rpath=$(FFTW_HOME)/lib \
@@ -130,21 +135,21 @@
 #######################################################################
 #            COILOPT++ Options
 #######################################################################
-  LCOILOPT = F
-#  COILOPT_INC = -I$(COILOPT_PATH)/include
-#  COILOPTPP_DIR = $(COILOPT_PATH)
-#  LIB_COILOPTPP = libcoilopt++.a
-#  # COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP) \
-#  #             -L$(GSLHOME)/lib -lgsl -lgslcblas -lstdc++ -lmpi_cxx
+  LCOILOPT = T
+  COILOPT_INC = -I$(COILOPT_PATH)/include
+  COILOPTPP_DIR = $(COILOPT_PATH)
+  LIB_COILOPTPP = libcoilopt++.a
+  COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP) \
+               -$(GSLHOME)/lib -lgsl -lgslcblas -lstdc++ -lmpi_cxx
 #  COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP)
 #  COILOPT_LIB += -L$(GSLHOME)/lib -lgsl -lgslcblas
 #  COILOPT_LIB += -L$(MPILIBHOME) -lmpicxx
 #  COILOPT_LIB += -L$(GCCLIBHOME) -lstdc++
 
-  COILOPT_INC = -I$(COILOPT_PATH)
-  COILOPTPP_DIR = $(COILOPT_PATH)
-  LIB_COILOPTPP = libcoilopt++.a
-  COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP)
+#  COILOPT_INC = -I$(COILOPT_PATH)
+#  COILOPTPP_DIR = $(COILOPT_PATH)
+#  LIB_COILOPTPP = libcoilopt++.a
+#  COILOPT_LIB = $(COILOPT_PATH)/$(LIB_COILOPTPP)
 
 #######################################################################
 #            TERPSICHORE Options

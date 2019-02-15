@@ -1,7 +1,7 @@
         subroutine bubble(nskip,nomode,m1,n1,y,ytitle)
         implicit real(a-h,o-z), integer(i-n)
         real y(*)
-        INTEGER m1(*),n1(*)
+        integer m1(*),n1(*)
         character xtitle*15,ytitle*(*)
         data xlen/8./,ylen/8./
         sizex = xlen -.5
@@ -31,12 +31,12 @@
       call agsetr('Y/MAXIMUM.',real(mmax+1))
       call agsetr('Y/NICE.',0.0)
       call agseti('FRAME.',2)
-      CALL AGSETC ('LABEL/NAME.','B')
-      CALL AGSETI ('LINE/NUMBER.',-100)
-      CALL AGSETF ('LINE/CHARACTER.',0.030)
-      CALL AGSETC ('LABEL/NAME.','L')
-      CALL AGSETI ('LINE/NUMBER.',100)
-      CALL AGSETF ('LINE/CHARACTER.',0.030)
+      call agsetc('LABEL/NAME.','B')
+      call agseti('LINE/NUMBER.',-100)
+      call agsetf('LINE/CHARACTER.',0.030)
+      call agsetc('LABEL/NAME.','L')
+      call agseti('LINE/NUMBER.',100)
+      call agsetf('LINE/CHARACTER.',0.030)
       call anotat('n$','m$',0,0,0,0)
         write(xtitle,60) ytitle,ymax
    60   format(a1,' max = ',f7.3)

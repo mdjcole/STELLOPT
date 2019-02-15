@@ -1,0 +1,1068 @@
+Beging build of STELLOPT with options: --clean_release
+make: Nothing to be done for `clean_release'.
+CLEAN REMAKE IN PROGRESS
+rm -f *.o *.mod *.a *.so
+Beginning release compilation and archiving of libstell
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/mpi_params.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/mpi_params.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/safe_open_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/stel_kinds.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/gade_mod.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/GENERIC_Evolve.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/GENERIC_Evolve.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/eval_x_queued.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/eval_x_queued.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/MAP_HYPERS.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/MAP_HYPERS.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/MAP_LINEAR.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/MAP_LINEAR.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/fft991.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/FFTpack/fact.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/FFTpack/fact.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/trigfact.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/fax.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/vpassm.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/fmn_to_uv.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/FFTpack/fftrig.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/FFTpack/fftrig.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/FFTpack/cftfax.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/FFTpack/cftfax.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/fft99a.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/cfft99.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/fft99b.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/FFTpack/cftrig.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/FFTpack/cftrig.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/FFTpack/fftfax.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/FFTpack/fftfax.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/FFTpack/fft99.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/stel_constants.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vcoilpts.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vf_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_vf_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/modular_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_modular_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/saddle_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_saddle_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/tf_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_modular_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/saddle_surface.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_saddle_wsurf.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_modular_wsurf.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_vf_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_saddle_wsurf.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/bcoils_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/bnorm_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/control_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/coilsnamin.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/write_array_generic.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/write_coilsin.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/initialize_coilsin.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_modular_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/bsc_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/biotsavart.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_bg_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_bg_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_tf_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_modular_wsurf.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_modular_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_saddle_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_saddle_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_vf_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_vf_currents.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/load_tf_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Coils/init_saddle_coils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/bootsj_input.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/mpi_inc.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/mpi_inc.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/v3_utilities.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/v3_utilities.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/mddc_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/integration_path.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/sxrch_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/ipch_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/thscte_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/extcurz_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/diagnostic_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/fftpack.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/cyl_flux.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Ezcdf/ezcdf_inqvar.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Ezcdf/ezcdf_inqvar.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Ezcdf/ezcdf_attrib.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Ezcdf/ezcdf_attrib.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Ezcdf/ezcdf_opncls.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Ezcdf/ezcdf_opncls.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Ezcdf/ezcdf_GenGet.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Ezcdf/ezcdf_GenGet.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Ezcdf/ezcdf_GenPut.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Ezcdf/ezcdf_GenPut.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Ezcdf/ezcdf.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/system_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vparams.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vsvd0.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/vmec_input.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/vmec_input.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/mgrid_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/mgrid_mod.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_wout_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/read_wout_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vmec_utils.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/v3post_rfun.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_pies_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/read_pies_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/flint_z.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/optim_params.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/bsc_cdf.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/mddc_cdf.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/v3f_vmec_comm.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_type.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_obj.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/trip3d_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/boundary_T.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/math_utilities.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/stel_tools.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/mir_tools.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_response.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/read_response.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/date_and_computer.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/date_and_computer.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vertex_list.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/ez_hdf5.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/ez_hdf5.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_spec_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/read_spec_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/wall_mod.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_v3post_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/read_v3post_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/de_mod.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/gist_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/compression.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/diagnostic_cdf.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/profiler.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/profiler.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/magnetic_response.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/adas_bms_splines.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/adas_bms_splines.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/adas_mod_simpl.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/adas_mod_simpl.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/packafile.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/linear_interp.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/flin1_z.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/mgrid_field_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/mgrid_field_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vacfield_mod.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/vessel_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/chaotic_coords_mod.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_response_nompi.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/read_response_nompi.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/functions.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/read_boozer_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Modules/read_boozer_mod.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Modules/virtual_casing_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Modules/virtual_casing_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/ga_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/vmec_seq.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/nstab_input_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Modules/boozer_utils.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Modules/coordinate_utilities.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Linpack/liprec.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Linpack/li_gesl.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Linpack/li_gesl.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Linpack/li_gbsl.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Linpack/li_gbsl.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Linpack/li_gbfa.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Linpack/li_gbfa.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Linpack/li_gefa.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Linpack/li_gefa.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/second0.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/second0.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/getcarg.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/getcarg.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/vmec_chdir.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/vmec_chdir.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/power_to_legendre.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/blk3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHDF.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/spline_cubic.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/fmax.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/pxfgetpid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/pxfgetpid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/bextrema.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/spline_akima_int.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/spline.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/pxffork.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/pxffork.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/build_matrices_legendre.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHEZ.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/spline_akima.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHSP.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHFD.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Miscel/init_random_seed.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Miscel/tolower.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/vmec_getenv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/vmec_getenv.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/vmec_system.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/vmec_system.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/line_segment.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/spline_cubic_int.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/legendre_to_power.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/pxfwait.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/pxfwait.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/point_wise_to_power.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/integral.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/fmin.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/solver.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/profile_functions.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/tridslv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/spline_it.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHST.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/ddsum.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/factorial.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/CHFDV.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHIM.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/multxy.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/convert_boundary.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/getfilesize.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/PCHEV.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/erf.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Miscel/read_namelist.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Miscel/read_namelist.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/strip_comments.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/splint.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/parse_extension.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/convert_boundary_PG.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Miscel/vmec_putenv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_restart.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_newgen.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/xvec_eval.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/xvec_eval.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/dpmpar.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/ga_evalout.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/ga_evalout.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ran3.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/DE2_Evolve.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/DE2_Evolve.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/DE_driver.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/DE_driver.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/ga_initial.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/ga_initial.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/DE_Evolve.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/DE_Evolve.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/fdjac_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/fdjac_mod.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/fdjac_parallel.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/fdjac_parallel.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/lmdif1_mp.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/lmpar.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_evaluate.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/GA_preset.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_shuffle.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/multiprocess.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/multiprocess.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/MAP.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/MAP.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/PSO_Evolve.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/PSO_Evolve.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/qrfac.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_select.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/ga_fitness_mpi.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/ga_fitness_mpi.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_niche.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/qrsolv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_possibl.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/ga_sp.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/ga_sp.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/write_gade_nml.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/myfork.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/myfork.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/DE_Evaluate.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/DE_Evaluate.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_selectn.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/lmpar_serial.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_decode.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/unique_boundary.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/lmpar_mod.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/lmpar_mod.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/lmdif.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/lmdif.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/lmpar_parallel.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/lmpar_parallel.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/lmdif1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/lmdif1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_micro.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/ga_fitness_parallel.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/ga_fitness_parallel.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/de_parallel.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/de_parallel.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/enorm.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/crosovr.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/lmder_serial.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/stepopt_mp.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/stepopt_mp.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/GA_driver.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/GA_driver.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_code.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/ga_mutate.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/ROCKET_Evolve.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/ROCKET_Evolve.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/de_mpi.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/Optimization/de_mpi.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Optimization/MAP_PLANE.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Optimization/MAP_PLANE.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/unique_boundary_PG.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Optimization/DE_preset.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Track/spec_kind_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Track/linear1_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Track/spline1_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Track/ajax_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Track/track_mod.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Track/write_mod.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/QMRpack/drandn.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/QMRpack/daxpby.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/QMRpack/dutfx.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SMPINT/dcuhre.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SMPINT/smpint.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SMPINT/dqag.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/TOMS/toms661.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/real_precision.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/qshep2d.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/qshep3d.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/qshepmdata.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/qshepmd.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/cshep2d.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/linear_shepard.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/sheppack.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/givens.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/TOMS/rotate.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkbicubw.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/bcspgrid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecpc3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8cspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8tpspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8herm2ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/spvec.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8zonfind.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_cdfget3.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8pc3ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8util_bcherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspl2zb.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezhybrid_initx.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/seval3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/akherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/splaan.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8v_spline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8bpspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridpc1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/spgrid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/tcspvec.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/akherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/seval2.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_interp.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8evbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/tcspgrid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8spvec.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_setup.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8util_bcherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspl2p.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/pc3ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/pspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8dnherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8spline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspl2z.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecpc2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspl3zb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8evintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspl3zb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8dnherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/psp_tolsum.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8pc2ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8tcspgrid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8util_bcherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vectricub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/splbrk.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8herm3ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/bpspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8cspeval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/akherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8xlookup.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8evintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridpc3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8cubsplb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridtricub.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_setupx.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspl2zb.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_isindomain.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridpc2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8speval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/v_spline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8nspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/pc2ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mktricubw.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8spleen.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/tpspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8bcspvec.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/genxpkg.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/spline_ez1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8dnherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecpc1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkbicubw.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_derivative.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8bcspgrid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/herm1ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8splinck.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/evintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/zonfind.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8bcspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/speval.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_gradient.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8akherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/seval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/pc1ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/tcspeval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/spleen.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspl3pb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vectricub.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_cdfput3.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8evtricub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/cspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecpc1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/herm2ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/f2test.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/evintrp3d.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_init.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8bpsplinb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/util_bcherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/util_bcherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecin3d_argchk.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/bcspeval.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezlinear_init.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_2netcdf.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8pspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/dnherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspl2z.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8psp_tolsum.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8pc1ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mktricubw.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mktricub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8tcspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8seval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecin2d_argchk.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_load.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridpc1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspl2pb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8tcspvec.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8akherm3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/evbicub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8tpsplinb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8splbrk.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/f3test.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/evspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspl2p.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridtricub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8evspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8spgrid.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8seval2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8vecspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/herm3ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/cspeval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/xlookup.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8akherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/pspline_calls.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkspl2pb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridpc3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/tpsplinb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/cubsplb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/tcspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mktricub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/dnherm3.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_cinterp.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecpc2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/ibc_ck.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezhybrid_init.f90
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Pspline/ezspline_save.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Pspline/ezspline_save.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8bcspeval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/util_bcherm1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/bcspvec.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/bpsplinb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8genxpkg.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/vecpc3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspl3pb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/dnherm2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/gridspline.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_free.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/splinck.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/evtricub.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8herm1ev.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridpc2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8tcspeval.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/nspline.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/bcspline.f
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_isgridregular.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.  -c ../Sources/Pspline/ezspline_modulo.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8splaan.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8mkintrp2d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8seval3.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/r8gridintrp3d.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Pspline/mkspline.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/Ezcdf/handle_err.f90
+mpif90 -ffree-form -ffree-line-length-none -ffixed-line-length-none -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I..  -c ../Sources/Ezcdf/handle_err.f90
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/polysvd.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/svdsolveb.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/pythag.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/svdsolveuv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/svd_solve.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/SVBKSB.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/svdinv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/SORTSVD.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/svdinv2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/SVDpack/svdcmp.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/GMRes/gmresr.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/GMRes/dPackgmres.f
+cpp -traditional-cpp -E -P -C -DMACOSX -DMPI_OPT -DNETCDF -DLHDF5 -DH5_USE_16_API -DLADAS -DNTCC -DSILO_AVAI ../Sources/GMRes/gmres.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I.. -c ../Sources/GMRes/gmres.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/dlsode_aux1.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/prepj.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/intdy.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/dlsode_aux2.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/dlsode.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/xerrwv.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/vnorm.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/solsy.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/lsode.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/ewset.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/stode.f
+mpif90 -fPIC -O2 -fexternal-blas -Wmissing-include-dirs -I/Volumes/NawName/Workshop/STELLOPT/bin/libstell_dir -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I/opt/local/include  -I/opt/local/include -I/opt/local/include -I/Volumes/NawName/Codes/NTCC/MAC/mod -I. -c ../Sources/Lsode/cfode.f
+ar -ruvs libstell.a GENERIC_Evolve.o eval_x_queued.o MAP_HYPERS.o MAP_LINEAR.o fft991.o fact.o trigfact.o fax.o vpassm.o fmn_to_uv.o fftrig.o cftfax.o fft99a.o cfft99.o fft99b.o cftrig.o fftfax.o fft99.o init_vf_coils.o load_modular_currents.o load_saddle_currents.o load_modular_coils.o load_saddle_wsurf.o init_modular_wsurf.o load_vf_coils.o init_saddle_wsurf.o write_coilsin.o initialize_coilsin.o init_modular_currents.o init_bg_currents.o load_bg_currents.o init_tf_coils.o load_modular_wsurf.o init_modular_coils.o load_saddle_coils.o init_saddle_currents.o load_vf_currents.o init_vf_currents.o load_tf_coils.o init_saddle_coils.o bootsj_input.o diagnostic_T.o fftpack.o vmec_utils.o v3post_rfun.o read_pies_mod.o system_mod.o saddle_surface.o cyl_flux.o flint_z.o optim_params.o mddc_cdf.o tf_coils.o v3f_vmec_comm.o vparams.o vsvd0.o extcurz_T.o bsc_cdf.o read_wout_mod.o stel_kinds.o trip3d_mod.o boundary_T.o math_utilities.o mpi_inc.o stel_tools.o mir_tools.o read_response.o date_and_computer.o coilsnamin.o vertex_list.o control_mod.o read_spec_mod.o sxrch_T.o saddle_coils.o modular_coils.o wall_mod.o bsc_T.o bnorm_mod.o read_v3post_mod.o gade_mod.o de_mod.o vmec_input.o gist_mod.o compression.o mpi_params.o mgrid_mod.o write_array_generic.o diagnostic_cdf.o magnetic_response.o bcoils_mod.o safe_open_mod.o ez_hdf5.o integration_path.o profiler.o mddc_T.o adas_mod_simpl.o packafile.o linear_interp.o flin1_z.o biotsavart.o stel_constants.o vf_coils.o mgrid_field_mod.o vacfield_mod.o thscte_T.o vessel_mod.o v3_utilities.o chaotic_coords_mod.o vcoilpts.o read_response_nompi.o functions.o read_boozer_mod.o adas_bms_splines.o ipch_T.o virtual_casing_mod.o ga_mod.o vmec_seq.o nstab_input_mod.o boozer_utils.o coordinate_utilities.o liprec.o li_gesl.o li_gbsl.o li_gbfa.o li_gefa.o second0.o getcarg.o vmec_chdir.o power_to_legendre.o blk3d.o PCHDF.o spline_cubic.o fmax.o pxfgetpid.o bextrema.o spline_akima_int.o spline.o pxffork.o build_matrices_legendre.o PCHEZ.o spline_akima.o PCHSP.o PCHFD.o init_random_seed.o tolower.o vmec_getenv.o vmec_system.o line_segment.o spline_cubic_int.o legendre_to_power.o pxfwait.o point_wise_to_power.o integral.o fmin.o solver.o profile_functions.o tridslv.o spline_it.o PCHST.o ddsum.o factorial.o CHFDV.o PCHIM.o multxy.o convert_boundary.o getfilesize.o PCHEV.o erf.o read_namelist.o strip_comments.o splint.o parse_extension.o convert_boundary_PG.o vmec_putenv.o ga_restart.o ga_newgen.o xvec_eval.o dpmpar.o ga_evalout.o ran3.o DE2_Evolve.o DE_driver.o ga_initial.o DE_Evolve.o fdjac_parallel.o lmdif1_mp.o lmpar.o ga_evaluate.o GA_preset.o ga_shuffle.o multiprocess.o MAP.o PSO_Evolve.o qrfac.o ga_select.o ga_fitness_mpi.o ga_niche.o qrsolv.o ga_possibl.o ga_sp.o write_gade_nml.o myfork.o DE_Evaluate.o ga_selectn.o lmpar_serial.o ga_decode.o unique_boundary.o lmdif.o lmpar_parallel.o lmdif1.o ga_micro.o ga_fitness_parallel.o fdjac_mod.o de_parallel.o enorm.o crosovr.o lmder_serial.o stepopt_mp.o GA_driver.o ga_code.o ga_mutate.o ROCKET_Evolve.o de_mpi.o MAP_PLANE.o lmpar_mod.o unique_boundary_PG.o DE_preset.o ajax_mod.o linear1_mod.o spline1_mod.o spec_kind_mod.o track_mod.o write_mod.o drandn.o daxpby.o dutfx.o dcuhre.o smpint.o dqag.o toms661.o sheppack.o givens.o cshep2d.o real_precision.o linear_shepard.o qshep3d.o rotate.o qshepmd.o qshep2d.o qshepmdata.o mkbicubw.o bcspgrid.o vecspline.o r8vecpc3.o r8cspline.o r8gridspline.o r8tpspline.o r8herm2ev.o gridherm1.o spvec.o r8zonfind.o ezspline_cdfget3.o r8pc3ev.o r8util_bcherm2.o mkbicub.o r8vecbicub.o r8mkspl2zb.o ezhybrid_initx.o seval3.o akherm2.o splaan.o r8vecherm2.o mkherm2.o r8v_spline.o r8bpspline.o mkherm3.o r8vecintrp2d.o gridpc1.o r8vecherm3.o spgrid.o tcspvec.o akherm3.o vecherm1.o seval2.o ezspline_interp.o r8evbicub.o mkintrp3d.o tcspgrid.o r8spvec.o ezspline_setup.o r8util_bcherm3.o r8mkspl2p.o pc3ev.o pspline.o r8dnherm1.o r8spline.o r8mkspl2z.o r8vecpc2.o mkintrp2d.o ezspline_type.o mkspl3zb.o r8vecintrp3d.o gridbicub.o r8evintrp2d.o r8mkspl3zb.o r8dnherm3.o psp_tolsum.o gridherm2.o r8pc2ev.o r8tcspgrid.o r8util_bcherm1.o vectricub.o splbrk.o r8herm3ev.o bpspline.o r8cspeval.o akherm1.o vecherm3.o r8xlookup.o r8evintrp3d.o gridpc3.o r8vecherm1.o r8cubsplb.o r8gridtricub.o ezspline_setupx.o mkherm1.o mkspl2zb.o ezspline_isindomain.o gridpc2.o vecherm2.o r8speval.o v_spline.o r8nspline.o pc2ev.o mktricubw.o vecbicub.o r8spleen.o ezspline.o tpspline.o r8bcspvec.o genxpkg.o spline_ez1.o gridherm3.o r8dnherm2.o r8vecpc1.o r8mkbicubw.o ezspline_derivative.o r8bcspgrid.o herm1ev.o r8splinck.o r8gridbicub.o evintrp2d.o zonfind.o r8bcspline.o r8mkbicub.o r8mkspline.o speval.o ezspline_gradient.o r8gridherm2.o r8akherm2.o seval.o pc1ev.o tcspeval.o spleen.o r8mkherm2.o r8mkspl3pb.o r8vectricub.o ezspline_cdfput3.o r8evtricub.o cspline.o vecpc1.o herm2ev.o f2test.o evintrp3d.o ezspline_init.o r8bpsplinb.o util_bcherm2.o util_bcherm3.o vecin3d_argchk.o bcspeval.o ezlinear_init.o ezspline_2netcdf.o r8pspline.o dnherm1.o mkspl2z.o r8psp_tolsum.o r8pc1ev.o r8mktricubw.o mktricub.o r8tcspline.o r8seval.o vecin2d_argchk.o ezspline_load.o r8mkherm3.o r8gridpc1.o mkspl2pb.o r8gridherm3.o r8tcspvec.o r8akherm3.o evbicub.o r8tpsplinb.o r8splbrk.o f3test.o evspline.o mkspl2p.o gridtricub.o vecintrp2d.o r8evspline.o r8spgrid.o r8seval2.o r8vecspline.o herm3ev.o cspeval.o xlookup.o r8gridherm1.o r8akherm1.o pspline_calls.o r8mkspl2pb.o gridintrp3d.o r8gridpc3.o r8mkherm1.o tpsplinb.o cubsplb.o gridintrp2d.o tcspline.o r8mktricub.o dnherm3.o ezspline_cinterp.o vecpc2.o vecintrp3d.o ibc_ck.o ezhybrid_init.o ezspline_save.o r8bcspeval.o util_bcherm1.o bcspvec.o r8gridintrp2d.o bpsplinb.o r8genxpkg.o ezspline_obj.o r8mkintrp3d.o vecpc3.o mkspl3pb.o dnherm2.o gridspline.o ezspline_free.o splinck.o evtricub.o r8herm1ev.o r8gridpc2.o r8tcspeval.o nspline.o bcspline.o ezspline_isgridregular.o ezspline_modulo.o r8splaan.o r8mkintrp2d.o r8seval3.o r8gridintrp3d.o mkspline.o ezcdf_opncls.o ezcdf_inqvar.o ezcdf_attrib.o ezcdf_GenPut.o ezcdf_GenGet.o handle_err.o ezcdf.o polysvd.o svdsolveb.o pythag.o svdsolveuv.o svd_solve.o SVBKSB.o svdinv.o SORTSVD.o svdinv2.o svdcmp.o gmresr.o dPackgmres.o gmres.o dlsode_aux1.o prepj.o intdy.o dlsode_aux2.o dlsode.o xerrwv.o vnorm.o solsy.o lsode.o ewset.o stode.o cfode.o
+a - GENERIC_Evolve.o
+a - eval_x_queued.o
+a - MAP_HYPERS.o
+a - MAP_LINEAR.o
+a - fft991.o
+a - fact.o
+a - trigfact.o
+a - fax.o
+a - vpassm.o
+a - fmn_to_uv.o
+a - fftrig.o
+a - cftfax.o
+a - fft99a.o
+a - cfft99.o
+a - fft99b.o
+a - cftrig.o
+a - fftfax.o
+a - fft99.o
+a - init_vf_coils.o
+a - load_modular_currents.o
+a - load_saddle_currents.o
+a - load_modular_coils.o
+a - load_saddle_wsurf.o
+a - init_modular_wsurf.o
+a - load_vf_coils.o
+a - init_saddle_wsurf.o
+a - write_coilsin.o
+a - initialize_coilsin.o
+a - init_modular_currents.o
+a - init_bg_currents.o
+a - load_bg_currents.o
+a - init_tf_coils.o
+a - load_modular_wsurf.o
+a - init_modular_coils.o
+a - load_saddle_coils.o
+a - init_saddle_currents.o
+a - load_vf_currents.o
+a - init_vf_currents.o
+a - load_tf_coils.o
+a - init_saddle_coils.o
+a - bootsj_input.o
+a - diagnostic_T.o
+a - fftpack.o
+a - vmec_utils.o
+a - v3post_rfun.o
+a - read_pies_mod.o
+a - system_mod.o
+a - saddle_surface.o
+a - cyl_flux.o
+a - flint_z.o
+a - optim_params.o
+a - mddc_cdf.o
+a - tf_coils.o
+a - v3f_vmec_comm.o
+a - vparams.o
+a - vsvd0.o
+a - extcurz_T.o
+a - bsc_cdf.o
+a - read_wout_mod.o
+a - stel_kinds.o
+a - trip3d_mod.o
+a - boundary_T.o
+a - math_utilities.o
+a - mpi_inc.o
+a - stel_tools.o
+a - mir_tools.o
+a - read_response.o
+a - date_and_computer.o
+a - coilsnamin.o
+a - vertex_list.o
+a - control_mod.o
+a - read_spec_mod.o
+a - sxrch_T.o
+a - saddle_coils.o
+a - modular_coils.o
+a - wall_mod.o
+a - bsc_T.o
+a - bnorm_mod.o
+a - read_v3post_mod.o
+a - gade_mod.o
+a - de_mod.o
+a - vmec_input.o
+a - gist_mod.o
+a - compression.o
+a - mpi_params.o
+a - mgrid_mod.o
+a - write_array_generic.o
+a - diagnostic_cdf.o
+a - magnetic_response.o
+a - bcoils_mod.o
+a - safe_open_mod.o
+a - ez_hdf5.o
+a - integration_path.o
+a - profiler.o
+a - mddc_T.o
+a - adas_mod_simpl.o
+a - packafile.o
+a - linear_interp.o
+a - flin1_z.o
+a - biotsavart.o
+a - stel_constants.o
+a - vf_coils.o
+a - mgrid_field_mod.o
+a - vacfield_mod.o
+a - thscte_T.o
+a - vessel_mod.o
+a - v3_utilities.o
+a - chaotic_coords_mod.o
+a - vcoilpts.o
+a - read_response_nompi.o
+a - functions.o
+a - read_boozer_mod.o
+a - adas_bms_splines.o
+a - ipch_T.o
+a - virtual_casing_mod.o
+a - ga_mod.o
+a - vmec_seq.o
+a - nstab_input_mod.o
+a - boozer_utils.o
+a - coordinate_utilities.o
+a - liprec.o
+a - li_gesl.o
+a - li_gbsl.o
+a - li_gbfa.o
+a - li_gefa.o
+a - second0.o
+a - getcarg.o
+a - vmec_chdir.o
+a - power_to_legendre.o
+a - blk3d.o
+a - PCHDF.o
+a - spline_cubic.o
+a - fmax.o
+a - pxfgetpid.o
+a - bextrema.o
+a - spline_akima_int.o
+a - spline.o
+a - pxffork.o
+a - build_matrices_legendre.o
+a - PCHEZ.o
+a - spline_akima.o
+a - PCHSP.o
+a - PCHFD.o
+a - init_random_seed.o
+a - tolower.o
+a - vmec_getenv.o
+a - vmec_system.o
+a - line_segment.o
+a - spline_cubic_int.o
+a - legendre_to_power.o
+a - pxfwait.o
+a - point_wise_to_power.o
+a - integral.o
+a - fmin.o
+a - solver.o
+a - profile_functions.o
+a - tridslv.o
+a - spline_it.o
+a - PCHST.o
+a - ddsum.o
+a - factorial.o
+a - CHFDV.o
+a - PCHIM.o
+a - multxy.o
+a - convert_boundary.o
+a - getfilesize.o
+a - PCHEV.o
+a - erf.o
+a - read_namelist.o
+a - strip_comments.o
+a - splint.o
+a - parse_extension.o
+a - convert_boundary_PG.o
+a - vmec_putenv.o
+a - ga_restart.o
+a - ga_newgen.o
+a - xvec_eval.o
+a - dpmpar.o
+a - ga_evalout.o
+a - ran3.o
+a - DE2_Evolve.o
+a - DE_driver.o
+a - ga_initial.o
+a - DE_Evolve.o
+a - fdjac_parallel.o
+a - lmdif1_mp.o
+a - lmpar.o
+a - ga_evaluate.o
+a - GA_preset.o
+a - ga_shuffle.o
+a - multiprocess.o
+a - MAP.o
+a - PSO_Evolve.o
+a - qrfac.o
+a - ga_select.o
+a - ga_fitness_mpi.o
+a - ga_niche.o
+a - qrsolv.o
+a - ga_possibl.o
+a - ga_sp.o
+a - write_gade_nml.o
+a - myfork.o
+a - DE_Evaluate.o
+a - ga_selectn.o
+a - lmpar_serial.o
+a - ga_decode.o
+a - unique_boundary.o
+a - lmdif.o
+a - lmpar_parallel.o
+a - lmdif1.o
+a - ga_micro.o
+a - ga_fitness_parallel.o
+a - fdjac_mod.o
+a - de_parallel.o
+a - enorm.o
+a - crosovr.o
+a - lmder_serial.o
+a - stepopt_mp.o
+a - GA_driver.o
+a - ga_code.o
+a - ga_mutate.o
+a - ROCKET_Evolve.o
+a - de_mpi.o
+a - MAP_PLANE.o
+a - lmpar_mod.o
+a - unique_boundary_PG.o
+a - DE_preset.o
+a - ajax_mod.o
+a - linear1_mod.o
+a - spline1_mod.o
+a - spec_kind_mod.o
+a - track_mod.o
+a - write_mod.o
+a - drandn.o
+a - daxpby.o
+a - dutfx.o
+a - dcuhre.o
+a - smpint.o
+a - dqag.o
+a - toms661.o
+a - sheppack.o
+a - givens.o
+a - cshep2d.o
+a - real_precision.o
+a - linear_shepard.o
+a - qshep3d.o
+a - rotate.o
+a - qshepmd.o
+a - qshep2d.o
+a - qshepmdata.o
+a - mkbicubw.o
+a - bcspgrid.o
+a - vecspline.o
+a - r8vecpc3.o
+a - r8cspline.o
+a - r8gridspline.o
+a - r8tpspline.o
+a - r8herm2ev.o
+a - gridherm1.o
+a - spvec.o
+a - r8zonfind.o
+a - ezspline_cdfget3.o
+a - r8pc3ev.o
+a - r8util_bcherm2.o
+a - mkbicub.o
+a - r8vecbicub.o
+a - r8mkspl2zb.o
+a - ezhybrid_initx.o
+a - seval3.o
+a - akherm2.o
+a - splaan.o
+a - r8vecherm2.o
+a - mkherm2.o
+a - r8v_spline.o
+a - r8bpspline.o
+a - mkherm3.o
+a - r8vecintrp2d.o
+a - gridpc1.o
+a - r8vecherm3.o
+a - spgrid.o
+a - tcspvec.o
+a - akherm3.o
+a - vecherm1.o
+a - seval2.o
+a - ezspline_interp.o
+a - r8evbicub.o
+a - mkintrp3d.o
+a - tcspgrid.o
+a - r8spvec.o
+a - ezspline_setup.o
+a - r8util_bcherm3.o
+a - r8mkspl2p.o
+a - pc3ev.o
+a - pspline.o
+a - r8dnherm1.o
+a - r8spline.o
+a - r8mkspl2z.o
+a - r8vecpc2.o
+a - mkintrp2d.o
+a - ezspline_type.o
+a - mkspl3zb.o
+a - r8vecintrp3d.o
+a - gridbicub.o
+a - r8evintrp2d.o
+a - r8mkspl3zb.o
+a - r8dnherm3.o
+a - psp_tolsum.o
+a - gridherm2.o
+a - r8pc2ev.o
+a - r8tcspgrid.o
+a - r8util_bcherm1.o
+a - vectricub.o
+a - splbrk.o
+a - r8herm3ev.o
+a - bpspline.o
+a - r8cspeval.o
+a - akherm1.o
+a - vecherm3.o
+a - r8xlookup.o
+a - r8evintrp3d.o
+a - gridpc3.o
+a - r8vecherm1.o
+a - r8cubsplb.o
+a - r8gridtricub.o
+a - ezspline_setupx.o
+a - mkherm1.o
+a - mkspl2zb.o
+a - ezspline_isindomain.o
+a - gridpc2.o
+a - vecherm2.o
+a - r8speval.o
+a - v_spline.o
+a - r8nspline.o
+a - pc2ev.o
+a - mktricubw.o
+a - vecbicub.o
+a - r8spleen.o
+a - ezspline.o
+a - tpspline.o
+a - r8bcspvec.o
+a - genxpkg.o
+a - spline_ez1.o
+a - gridherm3.o
+a - r8dnherm2.o
+a - r8vecpc1.o
+a - r8mkbicubw.o
+a - ezspline_derivative.o
+a - r8bcspgrid.o
+a - herm1ev.o
+a - r8splinck.o
+a - r8gridbicub.o
+a - evintrp2d.o
+a - zonfind.o
+a - r8bcspline.o
+a - r8mkbicub.o
+a - r8mkspline.o
+a - speval.o
+a - ezspline_gradient.o
+a - r8gridherm2.o
+a - r8akherm2.o
+a - seval.o
+a - pc1ev.o
+a - tcspeval.o
+a - spleen.o
+a - r8mkherm2.o
+a - r8mkspl3pb.o
+a - r8vectricub.o
+a - ezspline_cdfput3.o
+a - r8evtricub.o
+a - cspline.o
+a - vecpc1.o
+a - herm2ev.o
+a - f2test.o
+a - evintrp3d.o
+a - ezspline_init.o
+a - r8bpsplinb.o
+a - util_bcherm2.o
+a - util_bcherm3.o
+a - vecin3d_argchk.o
+a - bcspeval.o
+a - ezlinear_init.o
+a - ezspline_2netcdf.o
+a - r8pspline.o
+a - dnherm1.o
+a - mkspl2z.o
+a - r8psp_tolsum.o
+a - r8pc1ev.o
+a - r8mktricubw.o
+a - mktricub.o
+a - r8tcspline.o
+a - r8seval.o
+a - vecin2d_argchk.o
+a - ezspline_load.o
+a - r8mkherm3.o
+a - r8gridpc1.o
+a - mkspl2pb.o
+a - r8gridherm3.o
+a - r8tcspvec.o
+a - r8akherm3.o
+a - evbicub.o
+a - r8tpsplinb.o
+a - r8splbrk.o
+a - f3test.o
+a - evspline.o
+a - mkspl2p.o
+a - gridtricub.o
+a - vecintrp2d.o
+a - r8evspline.o
+a - r8spgrid.o
+a - r8seval2.o
+a - r8vecspline.o
+a - herm3ev.o
+a - cspeval.o
+a - xlookup.o
+a - r8gridherm1.o
+a - r8akherm1.o
+a - pspline_calls.o
+a - r8mkspl2pb.o
+a - gridintrp3d.o
+a - r8gridpc3.o
+a - r8mkherm1.o
+a - tpsplinb.o
+a - cubsplb.o
+a - gridintrp2d.o
+a - tcspline.o
+a - r8mktricub.o
+a - dnherm3.o
+a - ezspline_cinterp.o
+a - vecpc2.o
+a - vecintrp3d.o
+a - ibc_ck.o
+a - ezhybrid_init.o
+a - ezspline_save.o
+a - r8bcspeval.o
+a - util_bcherm1.o
+a - bcspvec.o
+a - r8gridintrp2d.o
+a - bpsplinb.o
+a - r8genxpkg.o
+a - ezspline_obj.o
+a - r8mkintrp3d.o
+a - vecpc3.o
+a - mkspl3pb.o
+a - dnherm2.o
+a - gridspline.o
+a - ezspline_free.o
+a - splinck.o
+a - evtricub.o
+a - r8herm1ev.o
+a - r8gridpc2.o
+a - r8tcspeval.o
+a - nspline.o
+a - bcspline.o
+a - ezspline_isgridregular.o
+a - ezspline_modulo.o
+a - r8splaan.o
+a - r8mkintrp2d.o
+a - r8seval3.o
+a - r8gridintrp3d.o
+a - mkspline.o
+a - ezcdf_opncls.o
+a - ezcdf_inqvar.o
+a - ezcdf_attrib.o
+a - ezcdf_GenPut.o
+a - ezcdf_GenGet.o
+a - handle_err.o
+a - ezcdf.o
+a - polysvd.o
+a - svdsolveb.o
+a - pythag.o
+a - svdsolveuv.o
+a - svd_solve.o
+a - SVBKSB.o
+a - svdinv.o
+a - SORTSVD.o
+a - svdinv2.o
+a - svdcmp.o
+a - gmresr.o
+a - dPackgmres.o
+a - gmres.o
+a - dlsode_aux1.o
+a - prepj.o
+a - intdy.o
+a - dlsode_aux2.o
+a - dlsode.o
+a - xerrwv.o
+a - vnorm.o
+a - solsy.o
+a - lsode.o
+a - ewset.o
+a - stode.o
+a - cfode.o
+Release version - libstell.a - is now updated
+To free up space, delete all *.o files from Release
+
