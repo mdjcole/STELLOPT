@@ -1,5 +1,5 @@
-module EZspline_obj
-  use EZspline_type
+module ezspline_obj
+  use ezspline_type
   interface EZspline_preInit
      !
      ! usage:  call EZspline_preinit(spline_o)
@@ -37,7 +37,7 @@ module EZspline_obj
   contains
 
     subroutine EZspline_preInit1_r8(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline1_r8) :: spline_o
       spline_o%nguard=123456789
       spline_o%isReady=0
@@ -45,7 +45,7 @@ module EZspline_obj
     end subroutine EZspline_preInit1_r8
 
     subroutine EZspline_preInit2_r8(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline2_r8) :: spline_o
       spline_o%nguard=123456789
       spline_o%isReady=0
@@ -53,7 +53,7 @@ module EZspline_obj
     end subroutine EZspline_preInit2_r8
 
     subroutine EZspline_preInit3_r8(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline3_r8) spline_o
       spline_o%nguard=123456789
       spline_o%isReady=0
@@ -61,7 +61,7 @@ module EZspline_obj
     end subroutine EZspline_preInit3_r8
 
     subroutine EZspline_preInit1_r4(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline1_r4) spline_o
       spline_o%nguard=123456789
       spline_o%isReady=0
@@ -69,7 +69,7 @@ module EZspline_obj
     end subroutine EZspline_preInit1_r4
 
     subroutine EZspline_preInit2_r4(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline2_r4) spline_o
       spline_o%nguard=123456789
       spline_o%isReady=0
@@ -77,7 +77,7 @@ module EZspline_obj
     end subroutine EZspline_preInit2_r4
 
     subroutine EZspline_preInit3_r4(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline3_r4) spline_o
       spline_o%nguard=123456789
       spline_o%isReady=0
@@ -85,7 +85,7 @@ module EZspline_obj
     end subroutine EZspline_preInit3_r4
 
     logical function EZspline_allocated1_r8(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline1_r8) spline_o
       EZspline_allocated1_r8 = allocated(spline_o%fspl) &
            & .and. allocated(spline_o%x1) .and. allocated(spline_o%x1pkg) &
@@ -93,7 +93,7 @@ module EZspline_obj
     end function EZspline_allocated1_r8
 
     logical function EZspline_allocated2_r8(spline_o)
-      use EZspline_type
+      use ezspline_type
       type(EZspline2_r8) spline_o
       EZspline_allocated2_r8 = allocated(spline_o%fspl) &
            & .and. allocated(spline_o%x1) .and. allocated(spline_o%x1pkg) &
