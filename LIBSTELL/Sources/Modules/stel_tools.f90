@@ -2,7 +2,7 @@
 !     Module:        stel_tools
 !     Authors:       S. Lazerson (lazerson@pppl.gov)
 !     Date:          01/20/2016
-!     Description:   This module is designed as a replacement to the 
+!     Description:   This module is designed as a replacement to the
 !                    AJAX stellarator utilities.  It provides
 !                    routines for the inversion of stellerator
 !                    equilibira.
@@ -56,12 +56,12 @@
 !-----------------------------------------------------------------------
 !     Libraries
 !-----------------------------------------------------------------------
-      USE EZspline_obj
+      USE ezspline_obj
 !-----------------------------------------------------------------------
 !     Module Variables
 !     PUBLIC
 !        LINTSTEPS     Number of discrete steps for line integrals (256)
-!                      
+!
 !     PRIVATE
 !        DOMAIN_FLAG     Used to determin if in domain durring search
 !        NFP             Field periodicity determined from XN array
@@ -140,7 +140,7 @@
          MODULE PROCEDURE line_modB_dbl, line_modB_sgl
       END INTERFACE
       CONTAINS
-      
+
       SUBROUTINE load_fourier_geom_dbl(k1,k2,mnmax,nu,nv,xm,xn_in,iflag,rmnc,zmns,&
                                    rmns,zmnc,bsmns,bumnc,bvmnc,bsmnc,bumns,bvmns,&
                                    lmns,lmnc,bmnc,bmns,gmnc,gmns)
@@ -322,7 +322,7 @@
          CALL mntouv(k1,k2,mnmax,nu,nv,xu,xv,fmn_temp,xm,xn,f_temp,1,0)
       END IF
       CALL EZspline_setup(Lv_spl,f_temp,iflag); f_temp = 0
-      
+
       ! Calculate rho_s
       IF (PRESENT(gmnc) .or. PRESENT(gmns)) THEN
          ! Allocations
@@ -488,7 +488,7 @@
            GMNC=gmnc_dbl,GMNS=gmns_dbl)
       RETURN
       END SUBROUTINE load_fourier_geom_sgl
-      
+
       SUBROUTINE rzfunct_stel_tool(m,n,x,fvec,fjac,ldfjac,iflag)
       USE EZspline
       IMPLICIT NONE
@@ -541,7 +541,7 @@
       END IF
       RETURN
       END SUBROUTINE rzfunct_stel_tool
-      
+
       SUBROUTINE get_equil_s_dbl(r_val,phi_val,z_val,s_val,ier,u_val)
       ! Purpose:
       !   Given a set of real space (cylindrical) coordinates return
@@ -549,7 +549,7 @@
       !
       ! Error codes:
       !   ier = 9  Value is outside of flux space domain.
-      !  
+      !
       USE EZspline
       IMPLICIT NONE
       DOUBLE PRECISION, INTENT(in)    ::  r_val
@@ -571,7 +571,7 @@
       !LOGICAL :: l_make_guess
 
       DOUBLE PRECISION :: enorm
-      
+
       !l_make_guess = .true.
       !
       !IF (l_make_guess) THEN
@@ -581,8 +581,8 @@
       !   guess_flx(2) = pi2*0.6
       !   guess_flx(3) = MOD(phi_val,pi2/nfp)*nfp
       !END IF
-      
-         
+
+
       IF (s_val > 1 .or. s_val < 0) s_val = 0
       IF (ier < 0) RETURN
       ier = 0
@@ -629,7 +629,7 @@
             ENDIF
             IF (info < 4) EXIT
             ! If we have not achived success, try to bump the fitter into a better space.
-            IF (ik < 4) THEN 
+            IF (ik < 4) THEN
                xc_opt(1) = xc_opt(1) + 1e-4 * 10**(ik-1)
                xc_opt(2) = xc_opt(2) + 1e-4*pi2 * 10**(ik-1)
             END IF
@@ -657,7 +657,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_s_dbl
-      
+
       SUBROUTINE get_equil_s_sgl(r_val,phi_val,z_val,s_val,ier,u_val)
       IMPLICIT NONE
       REAL, INTENT(in)    ::  r_val
@@ -698,16 +698,16 @@
       DOUBLE PRECISION :: edge(3)
       DOUBLE PRECISION :: s_temp, u_temp
       IF (ier < 0) RETURN
-      
+
       v_val = MOD(phi_val, pi2/nfp)*nfp
-      
+
       ! Find the axis at the given phi_value.
       s_temp = 0.0
       u_temp = 0.0
       CALL get_equil_rz(s_temp,u_temp,v_val,axis(1),axis(3),ier)
       axis(2) = phi_val
       IF (ier < 0) RETURN
-      
+
       ! Calculate the u_val guess.
       u_val = atan2(z_val-axis(3), r_val-axis(1))
       IF (u_val < 0D0) THEN
@@ -719,9 +719,9 @@
       CALL get_equil_rz(s_temp,u_val,v_val,edge(1),edge(3),ier)
       edge(2) = phi_val
       IF (ier < 0) RETURN
-      
+
       ! Make a guess for s. This assumes that sqrt(s) is approx proportional
-      ! to real space distance. 
+      ! to real space distance.
       s_val = ((r_val-axis(1))**2 + (z_val-axis(3))**2)/((edge(1)-axis(1))**2+(edge(3)-axis(3))**2)
 
       IF (s_val > 1) THEN
@@ -729,7 +729,7 @@
       ENDIF
       RETURN
       END SUBROUTINE get_equil_guess_flx_dbl
-    
+
       SUBROUTINE get_equil_guess_flx_sgl(r_val,phi_val,z_val,s_val,u_val,v_val,ier)
       IMPLICIT NONE
       REAL, INTENT(in)    ::  r_val
@@ -750,7 +750,7 @@
       s_val = s_dbl; u_val = u_dbl; v_val = v_dbl
       RETURN
       END SUBROUTINE get_equil_guess_flx_sgl
-      
+
       SUBROUTINE get_equil_RZ_dbl(s_val,u_val,v_val,R_val,Z_val,ier,R_grad,Z_grad)
       USE EZspline
       IMPLICIT NONE
@@ -777,7 +777,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_RZ_dbl
-      
+
       SUBROUTINE get_equil_RZ_sgl(s_val,u_val,v_val,R_val,Z_val,ier,R_grad,Z_grad)
       IMPLICIT NONE
       REAL, INTENT(in)    ::  s_val
@@ -804,7 +804,7 @@
       IF(PRESENT(Z_grad)) Z_grad = Z_grad_dbl
       RETURN
       END SUBROUTINE get_equil_RZ_sgl
-      
+
       SUBROUTINE get_equil_L_dbl(s_val,u_val,v_val,L_val,ier,L_grad)
       USE EZspline
       IMPLICIT NONE
@@ -827,7 +827,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_L_dbl
-      
+
       SUBROUTINE get_equil_L_sgl(s_val,u_val,v_val,L_val,ier,L_grad)
       IMPLICIT NONE
       REAL, INTENT(in)    ::  s_val
@@ -848,7 +848,7 @@
       IF(PRESENT(L_grad)) L_grad = L_grad_dbl
       RETURN
       END SUBROUTINE get_equil_L_sgl
-      
+
       SUBROUTINE get_equil_rho_dbl(s_val,rho,vp,gradrho,gradrho2,ier)
       USE EZspline
       IMPLICIT NONE
@@ -872,7 +872,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_rho_dbl
-      
+
       SUBROUTINE get_equil_rho_sgl(s_val,rho,vp,gradrho,gradrho2,ier)
       USE EZspline
       IMPLICIT NONE
@@ -892,7 +892,7 @@
       rho = rho_dbl; vp = vp_dbl; gradrho = gradrho_dbl; gradrho2 = gradrho2_dbl
       RETURN
       END SUBROUTINE get_equil_rho_sgl
-      
+
       SUBROUTINE get_equil_sus_dbl(s_val,s11,s12,s21,s22,ier)
       USE EZspline
       IMPLICIT NONE
@@ -916,7 +916,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_sus_dbl
-      
+
       SUBROUTINE get_equil_sus_sgl(s_val,s11,s12,s21,s22,ier)
       USE EZspline
       IMPLICIT NONE
@@ -936,7 +936,7 @@
       s11 = s11_dbl; s12 = s12_dbl; s21 = s21_dbl; s22 = s22_dbl
       RETURN
       END SUBROUTINE get_equil_sus_sgl
-      
+
       SUBROUTINE get_equil_kappa_dbl(s_val,u_val,v_val,kappa,ier)
       USE EZspline
       IMPLICIT NONE
@@ -967,7 +967,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_kappa_dbl
-      
+
       SUBROUTINE get_equil_kappa_sgl(s_val,u_val,v_val,kappa,ier)
       USE EZspline
       IMPLICIT NONE
@@ -985,7 +985,7 @@
       kappa = kappa_dbl
       RETURN
       END SUBROUTINE get_equil_kappa_sgl
-      
+
       SUBROUTINE get_equil_B_dbl(r_val,phi_val,z_val,bx,by,bz,ier,modb_val,B_grad)
       USE EZspline
       IMPLICIT NONE
@@ -1033,7 +1033,7 @@
       IF (PRESENT(modb_val)) modb_val = sqrt(bx*bx+by*by+bz*bz)
       RETURN
       END SUBROUTINE get_equil_B_dbl
-      
+
       SUBROUTINE get_equil_B_sgl(r_val,phi_val,z_val,bx,by,bz,ier,modb_val,B_grad)
       IMPLICIT NONE
       REAL, INTENT(in)    ::  r_val
@@ -1060,7 +1060,7 @@
       IF(PRESENT(B_grad)) B_grad = B_grad_dbl
       RETURN
       END SUBROUTINE get_equil_B_sgl
-      
+
       SUBROUTINE get_equil_Bcyl_dbl(r_val,phi_val,z_val,Br,Bphi,Bz,ier)
       USE EZspline
       IMPLICIT NONE
@@ -1100,7 +1100,7 @@
       END IF
       RETURN
       END SUBROUTINE get_equil_Bcyl_dbl
-      
+
       SUBROUTINE get_equil_Bcyl_sgl(r_val,phi_val,z_val,Br,Bphi,Bz,ier)
       IMPLICIT NONE
       REAL, INTENT(in)    ::  r_val
@@ -1121,7 +1121,7 @@
       Br = Br_dbl; Bphi = Bphi_dbl; Bz = Bz_dbl
       RETURN
       END SUBROUTINE get_equil_Bcyl_sgl
-      
+
       SUBROUTINE get_equil_Bflx_dbl(s_val,u_val,v_val,bs,bu,bv,ier,modb_val,B_grad)
       USE EZspline
       IMPLICIT NONE
@@ -1144,7 +1144,7 @@
       IF (PRESENT(B_grad)) CALL EZspline_gradient(B_spl,u_val,v_val,rho_val,B_grad,ier)
       RETURN
       END SUBROUTINE get_equil_Bflx_dbl
-      
+
       SUBROUTINE get_equil_Bflx_sgl(s_val,u_val,v_val,bs,bu,bv,ier,modb_val,B_grad)
       USE EZspline
       IMPLICIT NONE
@@ -1212,7 +1212,7 @@
 
       SUBROUTINE pest2vmec_dbl(coord)
       USE EZspline
-      IMPLICIT none 
+      IMPLICIT none
       DOUBLE PRECISION,INTENT(inout) :: coord(3)
       INTEGER :: ier, n1, n2
       DOUBLE PRECISION :: rho_val
@@ -1251,7 +1251,7 @@
       END SUBROUTINE pest2vmec_dbl
 
       SUBROUTINE pest2vmec_sgl(coord)
-      IMPLICIT none 
+      IMPLICIT none
       REAL,INTENT(inout) :: coord(3)
       DOUBLE PRECISION :: coord_dbl(3)
       coord_dbl = coord
@@ -1259,7 +1259,7 @@
       coord = coord_dbl
       RETURN
       END SUBROUTINE pest2vmec_sgl
-      
+
       SUBROUTINE line_modb_dbl(r1,r2,target_B,s,length)
       IMPLICIT NONE
       DOUBLE PRECISION, INTENT(in)   :: r1(3)
@@ -1353,7 +1353,7 @@
       END DO
       RETURN
       END SUBROUTINE line_modb_dbl
-      
+
       SUBROUTINE line_modb_sgl(r1,r2,target_B,s,length)
       IMPLICIT NONE
       REAL, INTENT(in)   :: r1(3)
@@ -1373,7 +1373,7 @@
       length = length_dbl
       RETURN
       END SUBROUTINE line_modb_sgl
-      
+
       SUBROUTINE line_int_dbl(fcn,r1,r2,val,length)
       IMPLICIT NONE
       DOUBLE PRECISION, INTENT(in)   :: r1(3), r2(3)
@@ -1447,7 +1447,7 @@
       val = 0
       delt = one/DBLE(nop-1)
       int_fac = one/DBLE(int_step)
-      IF (PRESENT(length)) length = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)) 
+      IF (PRESENT(length)) length = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1))
       DO i = 1, lintsteps
          DO j = 1, int_step
             xp = x1+dx*(i-1)+(j-1)*int_fac*dx
@@ -1480,7 +1480,7 @@
       END DO
       RETURN
       END SUBROUTINE line_int_dbl
-      
+
       SUBROUTINE line_int_sgl(fcn,r1,r2,val,length)
       IMPLICIT NONE
       REAL, INTENT(in)   :: r1(3), r2(3)
@@ -1507,7 +1507,7 @@
       INTEGER, INTENT(in) :: nu
       INTEGER, INTENT(in) :: nv
       DOUBLE PRECISION, INTENT(in) :: xu(1:nu)
-      DOUBLE PRECISION, INTENT(in) :: xv(1:nv)           
+      DOUBLE PRECISION, INTENT(in) :: xv(1:nv)
       DOUBLE PRECISION, INTENT(in) :: fmn(1:mnmax,k1:k)
       INTEGER, INTENT(in) :: xm(1:mnmax)
       INTEGER, INTENT(in) :: xn(1:mnmax)

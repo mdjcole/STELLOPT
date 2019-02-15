@@ -14,12 +14,12 @@
       USE safe_open_mod
       USE mgrid_mod, ONLY: nr0b, np0b, nz0b, nfper0, &
          rminb, zminb, rmaxb, zmaxb, bvac
-      USE EZspline_obj
-      USE EZspline
-      
+      USE ezspline_obj
+      USE ezspline
+
 !-----------------------------------------------------------------------
 !     Module Variables
-!         
+!
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       INTEGER      :: nr_trip3d, nz_trip3d, nphi_trip3d
@@ -27,7 +27,7 @@
                       rmax_trip3d,zmax_trip3d,phimax_trip3d
       CHARACTER(LEN=256) :: filename_trip3d
       TYPE(EZspline3_r8) :: brt3d_spl, bzt3d_spl, bphit3d_spl
-      
+
 !-----------------------------------------------------------------------
 !     Subroutines
 !         read_trip3d:      Reads a trip3d file.
@@ -37,7 +37,7 @@
 !         trip3d_free:      Free's memory
 !-----------------------------------------------------------------------
       CONTAINS
-      
+
       SUBROUTINE read_trip3d(filename,istat,scale_factor)
       IMPLICIT NONE
       CHARACTER(LEN=*), INTENT(in) :: filename
@@ -65,7 +65,7 @@
       READ(iunit,*) temp_str
       READ(iunit,*) temp_str
       READ(iunit,*) temp_str
-      DO 
+      DO
          READ(iunit,*,IOSTAT=istat) phi_temp,r_temp,z_temp,b1_temp,b2_temp,&
                                     b3_temp,b4_temp,b5_temp
          nlines = nlines + 1
@@ -195,14 +195,14 @@
                      bvac(l,1) = bvac(l,1) + br_temp
                      bvac(l,2) = bvac(l,2) + bphi_temp
                      bvac(l,3) = bvac(l,3) + bz_temp
-                  END IF   
-                  l = l + 1   
+                  END IF
+                  l = l + 1
             END DO
          END DO
       END DO
       RETURN
       END SUBROUTINE trip3d_to_mgrid
-      
+
       SUBROUTINE trip3d_free(istat)
       IMPLICIT NONE
       INTEGER, INTENT(out) :: istat
@@ -214,7 +214,7 @@
       CALL EZspline_free(bzt3d_spl,istat)
       IF (istat /= 0) RETURN
       END SUBROUTINE trip3d_free
-      
+
       SUBROUTINE trip3d_info(iunit)
       IMPLICIT NONE
       INTEGER, INTENT(in) :: iunit
@@ -225,7 +225,7 @@
       CALL FLUSH(iunit)
       RETURN
       END SUBROUTINE trip3d_info
-      
+
       SUBROUTINE trip3d_info_vmec(iunit)
       IMPLICIT NONE
       INTEGER, INTENT(in) :: iunit

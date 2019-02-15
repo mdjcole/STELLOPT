@@ -1,57 +1,57 @@
 !SAME as adas_mog.f90 but have to be sure that all tables existin  $ADASDIR/tables...
 !---------------------------------------------------------------------
-! adas_mog.f90: by M.Gorelenkova                                      
-!               created 07/2009                                       
-!               based on Michael Kraus routines                       
-!                                                                     
+! adas_mog.f90: by M.Gorelenkova
+!               created 07/2009
+!               based on Michael Kraus routines
+!
 !  Module which computes reaction rate coefficient tables once and stores these as files;
 !  once a table is computed, it is not recomputed, but simply read in
-!  for interpolation.  
+!  for interpolation.
 !  All energies & temperatures in KeV/amu
 !  All rate coefficients <sigma*v> in m**3/sec.
 !
 ! subroutine adas_btsigv -- calculates beam-target maxwellian average <sig*v> (Eb/Ab,Ti/Ai)
-!                           for neutralizing CX and II reactions, available for H and He. 
+!                           for neutralizing CX and II reactions, available for H and He.
 
 !
 ! subroutine adas_adas_sigvte_ioniz  --  calculates ionization of neutrals by electron impact
 !                                        rate coefficients <sigma*v> averaged over Maxwellian electron
 !                                        distribution characterized by temperature Te (KeV),
-!                                        available only for H. 
+!                                        available only for H.
 !
-! subroutine adas_zstop_sigvz -- calculates sig*v tables of neutral stopping   
-!                                on fully stripped light impurities (vs. Erel only); 
-!                                as a sum of sig*v for ionization (includes non-neutralazing CX). 
+! subroutine adas_zstop_sigvz -- calculates sig*v tables of neutral stopping
+!                                on fully stripped light impurities (vs. Erel only);
+!                                as a sum of sig*v for ionization (includes non-neutralazing CX).
 !                                Data for H and He neutral atoms are available.
 !
-! subroutine adas_sigv -- calculates sig*v(Eb/Ab) for neutralizing charge-exchange reaction 
-!                         and impact ionization which includes  non-neutralizing 
+! subroutine adas_sigv -- calculates sig*v(Eb/Ab) for neutralizing charge-exchange reaction
+!                         and impact ionization which includes  non-neutralizing
 !                         charge-exchange reaction. Data for H and He neutral atoms are available.
 !
-! subroutine adas_sigv --  creates tables for  CX and ionization cross section sig(Eb/Ab). 
-!                          Data for H and He neutral atoms are available. 
+! subroutine adas_sigv --  creates tables for  CX and ionization cross section sig(Eb/Ab).
+!                          Data for H and He neutral atoms are available.
 !
 ! subroutine adas_bms  -- computes beam stopping rate coefficient on impurities for H - beam.
 !                         Routine uses  EQUIVALENT of  Electron Density [cm**-3]
 !                         N_el*SUM(Z_imp^2* N_imp)/SUM(Z_imp * N_imp)/Z_imp, where
-!                         N_el -- electron density and impurity density 
-!                         N_imp -- impurity density 
+!                         N_el -- electron density and impurity density
+!                         N_imp -- impurity density
 !                         for details see [1],p.794
 !
 ! All routines try to open pre-computed tables for an asking reaction in $ADASDIR/tables/...
 ! directory. If these tables had been created early then data will be read and interpolated, if
 ! not then table will be computed and wrote to the $ADASDIR/tables/... first.
 !
-! References:                                                         
-!                                                                     
-!    1. H. Anderson et al. (2000)                                     
-!       "Neutral beam stopping and emission in fusion plasmas I"      
-!       Plasma Physics and Controlled Fusion Vol. 42, pp 781-806      
-!                                                                     
-!    2. H. P. Summers (2004)                                          
-!       "The ADAS User Manual v2.6"                                   
-!       http://www.adas.ac.uk/manual.php                              
-!                                                                     
+! References:
+!
+!    1. H. Anderson et al. (2000)
+!       "Neutral beam stopping and emission in fusion plasmas I"
+!       Plasma Physics and Controlled Fusion Vol. 42, pp 781-806
+!
+!    2. H. P. Summers (2004)
+!       "The ADAS User Manual v2.6"
+!       http://www.adas.ac.uk/manual.php
+!
 !---------------------------------------------------------------------
 Module adas_mod_simpl
 
@@ -59,17 +59,17 @@ Module adas_mod_simpl
   use ezcdf
      implicit none
       INTEGER, PARAMETER :: R8=SELECTED_REAL_KIND(12,100)
-! 
+!
   character*200 :: env_adasmod !env variable $ADASMOD -- ADAS MODULE LOCATION
   character*140  :: adas_tables_file            !file name for table
   character*9 :: cizneut, cizion                !character izneut and izion
   character*8 nctype                            !for ezcdf
   integer IDIMS(10)                             !for ezcdf
-  real*8, dimension(8) :: axis_param_warmTarget !axis parameters(E[KeV/amu],T[KeV/amu]) for table: 
+  real*8, dimension(8) :: axis_param_warmTarget !axis parameters(E[KeV/amu],T[KeV/amu]) for table:
                                                 !min, max values, number of points,
                                                 !specification 0 for LOG, 1 for LIN
 !
-  real*8, dimension(4) :: axis_param_coldTarget !axis parameters(E[KeV/amu]) for table: 
+  real*8, dimension(4) :: axis_param_coldTarget !axis parameters(E[KeV/amu]) for table:
                                                 !min, max values, number of points,
                                                 !specification 0 for LOG, 1 for LIN
   integer :: npts                               ! number of points for table
@@ -141,7 +141,7 @@ contains
 
   subroutine adas_bms_data(EB_Kev, ZB, N, CONC, TI_Kev, ZI, NE, &
       &            SIGVI, iERR)
-      
+
     use adas_bms_splines
 
     implicit none
@@ -149,12 +149,12 @@ contains
 ! Function Parameters
 !
 !     EB       : Beam Energy                                     [KeV/amu]
-!     ZB       : Beam Particle Nuclear Charge Number             
-!     N        : Number of Target Species                        
+!     ZB       : Beam Particle Nuclear Charge Number
+!     N        : Number of Target Species
 ! CONC(N)           : target species fraction
 !                   : Z_imp * N_imp/SUM(Z_imp*N_imp) (0 < conc(i) <= 1)
 !                   : where,
-!                   : Z_imp -- Particle Nuclear Charge Number 
+!                   : Z_imp -- Particle Nuclear Charge Number
 !                   : N_imp -- impurity density
 !MG NOTE from December 02, 2011 !!!
 !MG I verified and insist that Target temperature TI for beam stopping tables is supposed to be in [Kev]
@@ -162,14 +162,14 @@ contains
 !    it is not  eV/amu but eV.
 !
 !     TI(N)    : Target Temperatures                             [KeV/amu]
-!    
+!
 !     Also note that these data bms/udb/A00001* have been created for regime when T_electron = T_ion
 !MG
-!     ZI(N)    : Target Nuclear Charge Number                    
+!     ZI(N)    : Target Nuclear Charge Number
 !     NE(N)    : EQUIVALENT of  Electron Density                         [cm**-3]
 !                N_el*SUM(Z_imp^2* N_imp)/SUM(Z_imp * N_imp)/Z_imp
 !     SIGVI(N) : Beam Stopping Rate Coefficient for Species N    [cm**3 / s]
-!     iERR     : Error Code (0 = OK,                             
+!     iERR     : Error Code (0 = OK,
 !                            1 = unsupported beam species
 !                            2 = unsupported target species
 !                            3 = input data corrupted (negative beam energy, densities or temperatures)
@@ -188,8 +188,8 @@ contains
     real*8,intent(out)  :: SIGVI(N)
     real*8,intent(in) :: conc(N)
     integer,intent(out) :: iERR
-      
-      
+
+
 ! Local Parameters
 !
 ! nspec : number of plasma species in adas archive
@@ -203,15 +203,15 @@ contains
     integer, parameter :: maxeb = 25
     integer, parameter :: maxni = 25
     integer, parameter :: maxti = 20
-    
+
 ! tape      : data file identifier
 ! fErr      : file reading error code
 ! adas_path : ADAS root path
 !
     integer, parameter       :: tape   = 74
     integer, parameter       :: outdbg = 75
-    
-      
+
+
 ! Variables
 !
 ! EBA             : beam energy per nucleon EB/Amu
@@ -227,7 +227,7 @@ contains
 !
 ! neeff           : effective electron density
 ! reqsv           : requested beam stopping coefficient
-! 
+!
 ! integers:
 ! ---------
 ! isp, ie, in, it : loop variable for target species, beam energy, target density, target temperature
@@ -250,33 +250,33 @@ contains
 ! filename             : complete path of adas archive file
 ! line                 : temporary string for file input
 !
-      
+
     real*8 :: EBA
-    
+
     real*8, ALLOCATABLE :: ebspl(:), nispl(:), tispl(:)
     real*8, ALLOCATABLE :: sven(:,:), svt(:)
     real*8 :: neeff, reqsv
-    
+
     integer :: fZI(N)
     integer :: isp, ie, in, it
     integer :: iFirstRun, iReadData
     integer :: neb, nni, nti
     integer :: tErr
-    
+
     character*60  :: adas_bms_data_slow(nspec)
     character*60  :: adas_bms_data_fast(nspec)
     character*260 :: filename
     character*80  :: line
     character*60  :: adas_data_read ! array with adas
     ! atomic data archive file names
-      
+
     save iFirstRun
-      
-      
+
+
 ! initialise some variables
 !      data iFirstRun/0/
     iERR = 0
-      
+
 ! data array of files with effective beam stopping coefficients
       ! slow beam data (EB/Amu <= 100 keV)
     data adas_bms_data_slow / &
@@ -292,7 +292,7 @@ contains
          &  'data/adf21/bms97#h/bms97#h_o8.dat',  &
          &  'data/adf21/bms97#h/bms97#h_f9.dat',  &
          &  'data/adf21/bms97#h/bms97#h_ne10.dat' /
-    
+
     ! slow beam data (EB/Amu > 100 keV)
     data adas_bms_data_fast / &
          &  'data/adf21/bms_new#h_fast/bms_new#h0_h1_fast.dat', &    !as of conversation with Michael Kraus
@@ -306,7 +306,7 @@ contains
          &  'data/adf21/bms97#h_fast/bms97#h_fast_o8.dat',  &
      &  'data/adf21/bms97#h_fast/bms97#h_fast_f9.dat',  &
      &  'data/adf21/bms97#h_fast/bms97#h_fast_ne10.dat' /
-    
+
 !convert to eV/amu
     eb=eb_kev*1.d+3
     ti=ti_kev*1.d+3
@@ -316,43 +316,43 @@ contains
        iErr = 1
        return
     endif
-    
-      
+
+
     ! check if beam energy is valid
     if (EB .lt. 0.0) then
        iErr = 3
        return
     endif
-    
+
     do isp = 1,N
        ! check if target species is supported
        if (ZI(isp) .lt. 1 .OR. ZI(isp) .gt. 10) then
           iErr = 2
           return
        endif
-       
+
        ! check if target species concentration is valid
        if((CONC(isp).le.0.0_R8).or.(CONC(isp).gt.1.0_R8)) then
           iErr = 3
           return
        endif
-       
+
        if (TI(isp) .lt. 0.0) then
           iErr = 3
           return
        endif
-       
+
        ! check if electron density is valid
        if (NE(isp) .lt. 0.0) then
           iErr = 3
           return
        endif
     enddo
-      
-      
+
+
     EBA    = EB !already [KeV/amu]
-      
-! check if to read data from file and create splines or not      
+
+! check if to read data from file and create splines or not
 ! (wether target or beam species have changed)
 
     if (iFirstRun .eq. 0) then
@@ -361,14 +361,14 @@ contains
     else
        ! if beam species has changed, reread data
        if (beamZ .ne. ZB) iReadData = 0
-       
+
        ! if beam energy is not in current range, reread data
        if (beamEA .le. 125.0E3) then
           if (EBA .gt. 125.0E3) iReadData = 0
        else
           if (EBA .le. 125.0E3) iReadData = 0
        endif
-       
+
        ! if number of target species has changed, reread data
        if (Nspl .ne. N) then
           iReadData = 0
@@ -379,8 +379,8 @@ contains
           enddo
        endif
     endif
-    
-    
+
+
     if (iReadData .eq. 0) then
        ! delete old spline object if existent
        if (iFirstRun .eq. 0) then
@@ -388,14 +388,14 @@ contains
           call adas_closeSplines(iErr)
           if (iErr .ne. 0) return
        endif
-       
-       ! initialise spline object      
+
+       ! initialise spline object
        call adas_initSplines(N, iErr)
        if (iErr .ne. 0) then
 !          write(*,*) "ADAS: Error during initialisation of splines."
           return
        endif
-       
+
        ! save beam and plasma species parameter for the next call
        beamE  = EB
        beamEA = EBA
@@ -403,8 +403,8 @@ contains
        do isp = 1,N
           targetZ(isp) = ZI(isp)
        enddo
-       
-       
+
+
        ! read data from archive (refer to ADAS data/adf21 file format documentation at [2])
        do isp = 1,N
           if (EBA .le. 125.0E3) then
@@ -420,7 +420,7 @@ contains
              call bad_exit
           endif
           filename=trim(env_adasmod)//trim(adas_data_read)
-          
+
           open(unit=tape,file=filename,action='read', iostat=fErr)
           if (fErr .ne. 0) then                       ! check if file could be opened
              iErr = 5
@@ -430,9 +430,9 @@ contains
           read(tape,'(a)') line
           read(tape,1001) neb,nni,tiref(isp)
           read(tape,'(a)') line
-          
+
           ! allocate arrays for en-spline data
-          
+
           if (ALLOCATED(ebspl))DEALLOCATE(ebspl)
           ALLOCATE(ebspl(neb), STAT=tErr)
           if (tErr .gt. 0) then ! array could not be allocated
@@ -440,7 +440,7 @@ contains
 !             write(*,*) "ADAS: could not allocate array 'ebspl(neb)'"
              return
           endif
-          
+
           if (ALLOCATED(nispl))DEALLOCATE(nispl)
           ALLOCATE(nispl(nni), STAT=tErr)
           if (tErr .gt. 0) then ! array could not be allocated
@@ -448,7 +448,7 @@ contains
 !             write(*,*) "ADAS: could not allocate array 'nispl(nni)'"
              return
           endif
-          
+
           if (ALLOCATED(sven))DEALLOCATE(sven)
           ALLOCATE(sven(neb,nni), STAT=tErr)
           if (tErr .gt. 0) then ! array could not be allocated
@@ -456,8 +456,8 @@ contains
 !             write(*,*) "ADAS: could not allocate array 'sven(neb,nni)'"
              return
           endif
-          
-          
+
+
           read(tape,1002) (ebspl(ie),ie=1,neb)
           read(tape,1002) (nispl(in),in=1,nni)
           read(tape,'(a)') line
@@ -467,9 +467,9 @@ contains
           read(tape,'(a)') line
           read(tape,1003) nti,ebref(isp),niref(isp)
           read(tape,'(a)') line
-          
+
           ! allocate arrays for t-spline data
-          
+
           if (ALLOCATED(tispl))DEALLOCATE(tispl)
           ALLOCATE(tispl(nti), STAT=tErr)
           if (tErr .gt. 0) then ! array could not be allocated
@@ -477,7 +477,7 @@ contains
 !             write(*,*) "ADAS: could not allocate array 'tispl(nti)'"
              return
           endif
-          
+
           if (ALLOCATED(svt))DEALLOCATE(svt)
           ALLOCATE(svt(nti), STAT=tErr)
           if (tErr .gt. 0) then ! array could not be allocated
@@ -485,26 +485,26 @@ contains
 !             write(*,*) "ADAS: could not allocate array 'svt(nti)'"
              return
           endif
-          
-          
+
+
           read(tape,1002) (tispl(it),it=1,nti)
           read(tape,'(a)') line
           read(tape,1002) (svt(it),it=1,nti)
-          close(tape) 
-          
-          
+          close(tape)
+
+
           ! set spline data
           call adas_setSplineData(isp,             &
                &                  neb, nni, nti,        &
                &                  ebspl, nispl, tispl,  &
                &                  sven, svt,            &
                &                  iErr                  )
-          
+
           if (iErr .gt. 0) then
 !             write(*,*) "ADAS: Error setting spline data."
              return
           endif
-          
+
           ! output adas data for debugging
           !            if (isp .eq. 1) then
           !               open(unit = outdbg, file = "adas_bms_dbg.dat")
@@ -521,27 +521,27 @@ contains
           !               enddo
           !            close(unit = outdbg)
           !            endif
-          
+
        enddo   ! isp = 1,N
-       
-       
+
+
        iReadData = 1
        iFirstRun = 1
-       
+
 1000   format(i5,8x,d10.3)
 1001   format(2i5,7x,d10.3)
 1002   format(8(1x,d10.3),/,8(1x,d10.3))
 1003   format(i5,7x,d10.3,7x,d10.3)
     endif   ! (iReadData .eq. 0)
-    
-    
-    
+
+
+
     ! read requested beam stopping coefficients
     do isp = 1,N
        ! use effective electron density according to eq. 15 in [1]
        neeff = NE(isp)
        call adas_evalSpline(isp, EBA, neeff, TI(isp), reqsv, iErr)
-       
+
        if (iErr .gt. 0) then
           if (iErr .eq. 4) then
              !            write(*,*) "ADAS Error: requested data out of range"
@@ -553,7 +553,7 @@ contains
           SIGVI(isp) = reqsv * conc(isp)
        endif
     enddo
-    
+
     return
   end subroutine adas_bms_data
 !
@@ -561,7 +561,7 @@ contains
 !
   subroutine adas_bms3d_int_r8(EB, Nevec, ZB, CONC, TI,Ntvec, ZI_r8, NE, Ndvec, &
       &            SIGVI, iERR)
-      
+
     use adas_bms_splines
 
     implicit none
@@ -572,20 +572,20 @@ contains
 !
 !     EB(nvec) : Beam Energy                                     [KeV/amu]
 !     nevec     : energy vector size
-!     ZB       : Beam Particle Nuclear Charge Number             
+!     ZB       : Beam Particle Nuclear Charge Number
 !   CONC(ndvec): target species fraction
 !              : Z_imp * N_imp/SUM(Z_imp*N_imp) (0 < conc(i) <= 1)
 !              : where,
-!              : Z_imp -- Particle Nuclear Charge Number 
+!              : Z_imp -- Particle Nuclear Charge Number
 !              : N_imp -- impurity density
 !     TI    : Target Temperatures                             [KeV/amu]
 !     ntvec     : Temperature vector size
-!     ZI_r8    : Target Nuclear Charge Number                    
+!     ZI_r8    : Target Nuclear Charge Number
 !     NE    : EQUIVALENT of  Electron Density                         [cm**-3]
 !                N_el*SUM(Z_imp^2* N_imp)/SUM(Z_imp * N_imp)/Z_imp
 !     ndvec     : Density  vector size
 !     SIGVI(nvec,ndvec,ntvec) : Beam Stopping Rate Coefficient     [m**3 / s]
-!     iERR     : Error Code (0 = OK,                             
+!     iERR     : Error Code (0 = OK,
 !                            1 = unsupported beam species
 !                            2 = unsupported target species
 !                            3 = input data corrupted (negative beam energy, densities or temperatures)
@@ -603,34 +603,34 @@ contains
     real*8,intent(in)  ::  ZI_r8(1)
     real*8,intent(out)  :: SIGVI(nevec,ndvec,ntvec)
     real*8,intent(in) :: conc(ndvec)
-    
+
     integer :: iERR
     real*8 ::   SIGVI_wrk
     !
     !local
-    integer i,ii,ij,iz 
+    integer i,ii,ij,iz
     integer :: npts_e, npts_d, npts_t ! number of points for table
-    real*8, dimension(:,:,:),allocatable :: sigv_table ! tabulated sig*v  
+    real*8, dimension(:,:,:),allocatable :: sigv_table ! tabulated sig*v
     real*8, dimension(:),allocatable :: e_vec, d_vec, t_vec
     real*8, dimension(12) :: axis_param_excite !axis parameters (E[KeV/amu],Ne[cm-3],T[KeV/amu])
-                                               !for table: min, max values, 
+                                               !for table: min, max values,
                                                !number of points,specification 0 for LOG, 1 for LIN
     real*8 conc_dummy(1)
     INTEGER :: istat ! completion code; 0 = normal
                                 !  istat = 2:  irtype argument invalid
                                 !  istat = 3:  izneut or izchrg invalid
                                 !  istat = 10:  ADAS data is requested but not found
-    integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+    integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                            !number of tables to be used, could be 1 or 2
     character*240 :: filename, filename_param    ! filename
 !
     integer, parameter :: nspec = 10 ! nspec : number of plasma species in adas archive
-    integer, parameter :: npts_e_param = 73, npts_d_param = 49 , npts_t_param = 73 ! number of points for table, 
+    integer, parameter :: npts_e_param = 73, npts_d_param = 49 , npts_t_param = 73 ! number of points for table,
                                                                                    !set by Michael Kraus, 09/14/09
     logical :: il_extrp=.true.
     integer:: npts_e_min
     character (len=4)  :: species_list(nspec)
-	
+
     data species_list / 'h1', 'he2', 'li3', 'be4', 'b5', 'c6', 'n7', 'o8', 'f9', 'ne10' /
 !
 
@@ -649,11 +649,11 @@ contains
     npts_e=npts_e_param
     npts_d=npts_d_param
     npts_t=npts_t_param
-!    
+!
     write(cizneut,'(i5)') ZB
     do iz=1,n_use
        write(cizion,'(i5)') izi(iz)
-       
+
        ! retrieve path to adas310 data
        env_adasmod = ' '
        call sget_env('ADASDIR',env_adasmod)
@@ -671,7 +671,7 @@ contains
           write(6,*)' ?adas_bms3d: NO table'//trim(adas_tables_file)
           call bad_exit
       endif
-       !tables already computed, read data 
+       !tables already computed, read data
        call cdfInqVar(icdf,'sigv_excite',idims,nctype)
        npts_e=idims(1)
        npts_d=idims(2)
@@ -686,7 +686,7 @@ contains
        if(allocated(t_vec)) deallocate(t_vec)
        allocate(t_vec(npts_t))
        !
-       call cdf_read(icdf,'sigv_excite',sigv_table(1:npts_e,1:npts_d,1:npts_t)) 
+       call cdf_read(icdf,'sigv_excite',sigv_table(1:npts_e,1:npts_d,1:npts_t))
        call cdfInqVar(icdf,'energy_vec',idims,nctype)
        call cdf_read(icdf,'energy_vec',e_vec(1: npts_e))
        call cdfInqVar(icdf,'density_vec',idims,nctype)
@@ -701,24 +701,24 @@ contains
           do ii=1,ndvec
              do i=1,nevec
                 sigvi_wrk=0.0_R8
-                
+
                 if((conc(ii).eq.0.0_R8).or.(eb(i).eq.0.0_R8).or.(ne(ii).eq.0.0_R8).or.(ti(ij).eq.0.0_R8)) cycle
-                
-                call adas_evalSpline3(eb(i),ne(ii),ti(ij),sigvi_wrk,il_extrp,ierr) 
+
+                call adas_evalSpline3(eb(i),ne(ii),ti(ij),sigvi_wrk,il_extrp,ierr)
                 sigvi_wrk=sigvi_wrk*conc(ii) !take into accoutnt impurity fraction
-                
+
                 if(n_use.eq.2) then
                    sigvi(i,ii,ij)=sigvi(i,ii,ij)+abs(zi_r8(1)-izi(n_use-iz+1))*sigvi_wrk/2.
                 elseif(n_use.eq.1) then
-                   sigvi(i,ii,ij)=zi_r8(1)/izi(1)*sigvi_wrk  
+                   sigvi(i,ii,ij)=zi_r8(1)/izi(1)*sigvi_wrk
                    !scale to Zimp >10 (for H beam) or to Zimp >8 (for He beam)
                 endif
-                
+
              enddo
           enddo
        enddo
     enddo !iz
-    
+
   end subroutine adas_bms3d_int_r8
 
 !
@@ -726,7 +726,7 @@ contains
 !
   subroutine adas_bms1d_int_r8(EB, Nevec, ZB, CONC, TI, ZI_r8, NE, &
       &            SIGVI,iERR)
-      
+
     use adas_bms_splines
 
     implicit none
@@ -739,20 +739,20 @@ contains
 !
 !     EB(nvec) : Beam Energy                                     [KeV/amu]
 !     nevec     : energy vector size
-!     ZB       : Beam Particle Nuclear Charge Number             
+!     ZB       : Beam Particle Nuclear Charge Number
 !   CONC(ndvec): target species fraction
 !              : Z_imp * N_imp/SUM(Z_imp*N_imp) (0 < conc(i) <= 1)
 !              : where,
-!              : Z_imp -- Particle Nuclear Charge Number 
+!              : Z_imp -- Particle Nuclear Charge Number
 !              : N_imp -- impurity density
 !     TI    : Target Temperatures                             [KeV/amu]
 !     ntvec     : Temperature vector size
-!     ZI_r8    : Target Nuclear Charge Number                    
+!     ZI_r8    : Target Nuclear Charge Number
 !     NE    : EQUIVALENT of  Electron Density                         [cm**-3]
 !                N_el*SUM(Z_imp^2* N_imp)/SUM(Z_imp * N_imp)/Z_imp
 !     ndvec     : Density  vector size
 !     SIGVI(nvec) : Beam Stopping Rate Coefficient     [m**3 / s]
-!     iERR     : Error Code (0 = OK,                             
+!     iERR     : Error Code (0 = OK,
 !                            1 = unsupported beam species
 !                            2 = unsupported target species
 !                            3 = input data corrupted (negative beam energy, densities or temperatures)
@@ -776,28 +776,28 @@ contains
     !local
     integer i,ii,ij,iz
     integer :: npts_e, npts_d, npts_t ! number of points for table
-    real*8, dimension(:,:,:),allocatable :: sigv_table ! tabulated sig*v  
+    real*8, dimension(:,:,:),allocatable :: sigv_table ! tabulated sig*v
     real*8, dimension(:),allocatable :: e_vec, d_vec, t_vec
     real*8, dimension(12) :: axis_param_excite !axis parameters (E[KeV/amu],Ne[cm-3],T[KeV/amu])
-                                               !for table: min, max values, 
+                                               !for table: min, max values,
                                                !number of points,specification 0 for LOG, 1 for LIN
     real*8 conc_dummy(1)
     INTEGER :: istat ! completion code; 0 = normal
                                 !  istat = 2:  irtype argument invalid
                                 !  istat = 3:  izneut or izchrg invalid
                                 !  istat = 10:  ADAS data is requested but not found
-    integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+    integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                            !number of tables to be used, could be 1 or 2
     character*240 :: filename, filename_param    ! filename
 !
     integer, parameter :: nspec = 10 ! nspec : number of plasma species in adas archive
-    integer, parameter :: npts_e_param = 73, npts_d_param = 49 , npts_t_param = 73 ! number of points for table, 
+    integer, parameter :: npts_e_param = 73, npts_d_param = 49 , npts_t_param = 73 ! number of points for table,
                                                                                    !set by Michael Kraus, 09/14/09
     logical :: il_extrp=.true.
     integer:: npts_e_min
     character (len=4)  :: species_list(nspec)
 
-	
+
     data species_list / 'h1', 'he2', 'li3', 'be4', 'b5', 'c6', 'n7', 'o8', 'f9', 'ne10' /
 !
 
@@ -816,11 +816,11 @@ contains
     npts_e=npts_e_param
     npts_d=npts_d_param
     npts_t=npts_t_param
-!    
+!
     write(cizneut,'(i5)') ZB
     do iz=1,n_use
        write(cizion,'(i5)') izi(iz)
-       
+
        call sget_env('ADASDIR',env_adasmod)
        if (env_adasmod.eq.' ') then
           write(*,*)' ?ADAS_MOD:  environment variable ADASDIR not found!'
@@ -836,7 +836,7 @@ contains
           write(6,*)' ?adas_bms1d:  NO table'//trim(adas_tables_file)
           call bad_exit
        endif
-       !tables already computed, read data 
+       !tables already computed, read data
        call cdfInqVar(icdf,'sigv_excite',idims,nctype)
        npts_e=idims(1)
        npts_d=idims(2)
@@ -851,7 +851,7 @@ contains
        if(allocated(t_vec)) deallocate(t_vec)
        allocate(t_vec(npts_t))
        !
-       call cdf_read(icdf,'sigv_excite',sigv_table(1:npts_e,1:npts_d,1:npts_t)) 
+       call cdf_read(icdf,'sigv_excite',sigv_table(1:npts_e,1:npts_d,1:npts_t))
        call cdfInqVar(icdf,'energy_vec',idims,nctype)
        call cdf_read(icdf,'energy_vec',e_vec(1: npts_e))
        call cdfInqVar(icdf,'density_vec',idims,nctype)
@@ -865,26 +865,26 @@ contains
        do i=1,nevec
           sigvi_wrk=0.0_R8
           if((conc(i).eq.0.0_R8).or.(eb(i).eq.0.0_R8).or.(ne(i).eq.0.0_R8).or.(ti(i).eq.0.0_R8)) cycle
-          
-          call adas_evalSpline3(eb(i),ne(i),ti(i),sigvi_wrk,il_extrp,ierr) 
+
+          call adas_evalSpline3(eb(i),ne(i),ti(i),sigvi_wrk,il_extrp,ierr)
           sigvi_wrk=sigvi_wrk*conc(i) !take into accoutnt impurity fraction
-          
+
           if(n_use.eq.2) then
              sigvi(i)=sigvi(i)+abs(zi_r8(1)-izi(n_use-iz+1))*sigvi_wrk/2.
           elseif(n_use.eq.1) then
              sigvi(i)=zi_r8(1)/izi(1)*sigvi_wrk  !scale to Zimp >10 (for H beam) or to Zimp >8 (for He beam)
           endif
-          
+
        enddo
     enddo !iz
-    
+
   end subroutine adas_bms1d_int_r8
 !
 !---------------------------------------------------------------------
 !
   subroutine adas_bms2d_int_r8(EB, Nevec, ZB, CONC, TI,Ntvec, ZI_r8, NE,  &
       &            SIGVI, iERR)
-      
+
     use adas_bms_splines
 
     implicit none
@@ -897,20 +897,20 @@ contains
 !
 !     EB(nvec) : Beam Energy                                     [KeV/amu]
 !     nevec     : energy vector size
-!     ZB       : Beam Particle Nuclear Charge Number             
+!     ZB       : Beam Particle Nuclear Charge Number
 !   CONC(ntvec): target species fraction
 !              : Z_imp * N_imp/SUM(Z_imp*N_imp) (0 < conc(i) <= 1)
 !              : where,
-!              : Z_imp -- Particle Nuclear Charge Number 
+!              : Z_imp -- Particle Nuclear Charge Number
 !              : N_imp -- impurity density
 !     TI    : Target Temperatures                             [KeV/amu]
 !     ntvec     : Temperature vector size
-!     ZI_r8    : Target Nuclear Charge Number                    
+!     ZI_r8    : Target Nuclear Charge Number
 !     NE    : EQUIVALENT of  Electron Density                         [cm**-3]
 !                N_el*SUM(Z_imp^2* N_imp)/SUM(Z_imp * N_imp)/Z_imp
 !     ntvec     : Density  vector size
 !     SIGVI(nvec,ntvec) : Beam Stopping Rate Coefficient     [m**3 / s]
-!     iERR     : Error Code (0 = OK,                             
+!     iERR     : Error Code (0 = OK,
 !                            1 = unsupported beam species
 !                            2 = unsupported target species
 !                            3 = input data corrupted (negative beam energy, densities or temperatures)
@@ -932,29 +932,29 @@ contains
     real*8 ::   SIGVI_wrk
     !
     !local
-    integer i,ii,ij,iz 
+    integer i,ii,ij,iz
     integer :: npts_e, npts_d, npts_t ! number of points for table
-    real*8, dimension(:,:,:),allocatable :: sigv_table ! tabulated sig*v  
+    real*8, dimension(:,:,:),allocatable :: sigv_table ! tabulated sig*v
     real*8, dimension(:),allocatable :: e_vec, d_vec, t_vec
     real*8, dimension(12) :: axis_param_excite !axis parameters (E[KeV/amu],Ne[cm-3],T[KeV/amu])
-                                               !for table: min, max values, 
+                                               !for table: min, max values,
                                                !number of points,specification 0 for LOG, 1 for LIN
     real*8 conc_dummy(1)
     INTEGER :: istat ! completion code; 0 = normal
                                 !  istat = 2:  irtype argument invalid
                                 !  istat = 3:  izneut or izchrg invalid
                                 !  istat = 10:  ADAS data is requested but not found
-    integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+    integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                            !number of tables to be used, could be 1 or 2
     character*240 :: filename, filename_param    ! filename
 !
     integer, parameter :: nspec = 10 ! nspec : number of plasma species in adas archive
-    integer, parameter :: npts_e_param = 73, npts_d_param = 49 , npts_t_param = 73 ! number of points for table, 
+    integer, parameter :: npts_e_param = 73, npts_d_param = 49 , npts_t_param = 73 ! number of points for table,
                                                                                    !set by Michael Kraus, 09/14/09
     logical :: il_extrp=.true.
     integer:: npts_e_min
     character (len=4)  :: species_list(nspec)
-	
+
     data species_list / 'h1', 'he2', 'li3', 'be4', 'b5', 'c6', 'n7', 'o8', 'f9', 'ne10' /
 !
 
@@ -973,11 +973,11 @@ contains
     npts_e=npts_e_param
     npts_d=npts_d_param
     npts_t=npts_t_param
-!    
+!
     write(cizneut,'(i5)') ZB
     do iz=1,n_use
        write(cizion,'(i5)') izi(iz)
-       
+
        env_adasmod = ' '
        call sget_env('ADASDIR',env_adasmod)
        if (env_adasmod.eq.' ') then
@@ -994,7 +994,7 @@ contains
           write(6,*)' ?adas_bms2d: NO table'//trim(adas_tables_file)
           call bad_exit
        endif
-       !tables already computed, read data 
+       !tables already computed, read data
        call cdfInqVar(icdf,'sigv_excite',idims,nctype)
        npts_e=idims(1)
        npts_d=idims(2)
@@ -1009,7 +1009,7 @@ contains
        if(allocated(t_vec)) deallocate(t_vec)
        allocate(t_vec(npts_t))
        !
-       call cdf_read(icdf,'sigv_excite',sigv_table(1:npts_e,1:npts_d,1:npts_t)) 
+       call cdf_read(icdf,'sigv_excite',sigv_table(1:npts_e,1:npts_d,1:npts_t))
        call cdfInqVar(icdf,'energy_vec',idims,nctype)
        call cdf_read(icdf,'energy_vec',e_vec(1: npts_e))
        call cdfInqVar(icdf,'density_vec',idims,nctype)
@@ -1023,23 +1023,23 @@ contains
        do ij=1,ntvec
           do i=1,nevec
              sigvi_wrk=0.0_R8
-             
+
              if((conc(ij).eq.0.0_R8).or.(eb(i).eq.0.0_R8).or.(ne(ij).eq.0.0_R8).or.(ti(ij).eq.0.0_R8)) cycle
-             
-             call adas_evalSpline3(eb(i),ne(ij),ti(ij),sigvi_wrk,il_extrp,ierr) 
+
+             call adas_evalSpline3(eb(i),ne(ij),ti(ij),sigvi_wrk,il_extrp,ierr)
              sigvi_wrk=sigvi_wrk*conc(ij) !take into accoutnt impurity fraction
-             
+
              if(n_use.eq.2) then
                 sigvi(i,ij)=sigvi(i,ij)+abs(zi_r8(1)-izi(n_use-iz+1))*sigvi_wrk/2.
              elseif(n_use.eq.1) then
-                sigvi(i,ij)=zi_r8(1)/izi(1)*sigvi_wrk  
+                sigvi(i,ij)=zi_r8(1)/izi(1)*sigvi_wrk
                 !scale to Zimp >10 (for H beam) or to Zimp >8 (for He beam)
              endif
-             
+
           enddo
        enddo
     enddo !iz
-    
+
   end subroutine adas_bms2d_int_r8
 
 !
@@ -1047,7 +1047,7 @@ contains
 !
   subroutine adas_bms3d_int_int(EB, Nevec, ZB, CONC, TI,Ntvec, ZI, NE, Ndvec, &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     integer,intent(in) :: ZB
     integer,intent(in) :: nevec,ndvec,ntvec
@@ -1055,7 +1055,7 @@ contains
     integer,intent(in)  ::  ZI(1)
     real*8,intent(out)  :: SIGVI(nevec,ndvec,ntvec)
     real*8,intent(in) :: conc(ndvec)
-    
+
     integer :: iERR
     real*8  ::  ZI_r8(1)
     ZI_r8=dble(zi)
@@ -1067,7 +1067,7 @@ contains
 !
   subroutine adas_bms3d_r8_int(EB, Nevec, ZB_r8, CONC, TI,Ntvec, ZI, NE, Ndvec, &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     real*8,intent(in) :: ZB_r8
     integer,intent(in) :: nevec,ndvec,ntvec
@@ -1075,7 +1075,7 @@ contains
     integer ,intent(in)  ::  ZI(1)
     real*8,intent(out)  :: SIGVI(nevec,ndvec,ntvec)
     real*8,intent(in) :: conc(ndvec)
-    
+
     integer :: iERR
     integer :: ZB
     real*8  ::  ZI_r8(1)
@@ -1089,7 +1089,7 @@ contains
 !
   subroutine adas_bms3d_r8_r8(EB, Nevec, ZB_r8, CONC, TI,Ntvec, ZI_r8, NE, Ndvec, &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     real*8,intent(in) :: ZB_r8
     integer,intent(in) :: nevec,ndvec,ntvec
@@ -1097,7 +1097,7 @@ contains
     real*8 ,intent(in)  ::  ZI_r8(1)
     real*8,intent(out)  :: SIGVI(nevec,ndvec,ntvec)
     real*8,intent(in) :: conc(ndvec)
-    
+
     integer :: iERR
     integer :: ZB
     zb=zb_r8
@@ -1111,7 +1111,7 @@ contains
 !
   subroutine adas_bms1d_int_int(EB, Nevec, ZB, CONC, TI, ZI, NE, &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     integer,intent(in) :: ZB
     integer,intent(in) :: nevec
@@ -1119,7 +1119,7 @@ contains
     integer,intent(in)  ::  ZI(1)
     real*8,intent(out)  :: SIGVI(nevec)
     real*8,intent(in) :: conc(nevec)
-    
+
     integer :: iERR
     real*8  ::  ZI_r8(1)
     ZI_r8=dble(zi)
@@ -1131,7 +1131,7 @@ contains
 !
   subroutine adas_bms1d_r8_int(EB, Nevec, ZB_r8, CONC, TI, ZI, NE, &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     real*8,intent(in) :: ZB_r8
     integer,intent(in) :: nevec
@@ -1139,7 +1139,7 @@ contains
     integer ,intent(in)  ::  ZI(1)
     real*8,intent(out)  :: SIGVI(nevec)
     real*8,intent(in) :: conc(nevec)
-    
+
     integer :: iERR
     integer :: ZB
     real*8  ::  ZI_r8(1)
@@ -1153,7 +1153,7 @@ contains
 !
   subroutine adas_bms1d_r8_r8(EB, Nevec, ZB_r8, CONC, TI, ZI_r8, NE,  &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     real*8,intent(in) :: ZB_r8
     integer,intent(in) :: nevec
@@ -1161,7 +1161,7 @@ contains
     real*8 ,intent(in)  ::  ZI_r8(1)
     real*8,intent(out)  :: SIGVI(nevec)
     real*8,intent(in) :: conc(nevec)
-    
+
     integer :: iERR
     integer :: ZB
     zb=zb_r8
@@ -1175,7 +1175,7 @@ contains
 !
   subroutine adas_bms2d_int_int(EB, Nevec, ZB, CONC, TI,Ntvec, ZI, NE,  &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     integer,intent(in) :: ZB
     integer,intent(in) :: nevec,ntvec
@@ -1183,7 +1183,7 @@ contains
     integer,intent(in)  ::  ZI(1)
     real*8,intent(out)  :: SIGVI(nevec,ntvec)
     real*8,intent(in) :: conc(nevec)
-    
+
     integer :: iERR
     real*8  ::  ZI_r8(1)
     ZI_r8=dble(zi)
@@ -1195,7 +1195,7 @@ contains
 !
   subroutine adas_bms2d_r8_int(EB, Nevec, ZB_r8, CONC, TI,Ntvec, ZI, NE,  &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     real*8,intent(in) :: ZB_r8
     integer,intent(in) :: nevec,ntvec
@@ -1203,7 +1203,7 @@ contains
     integer ,intent(in)  ::  ZI(1)
     real*8,intent(out)  :: SIGVI(nevec,ntvec)
     real*8,intent(in) :: conc(nevec)
-    
+
     integer :: iERR
     integer :: ZB
     real*8  ::  ZI_r8(1)
@@ -1217,7 +1217,7 @@ contains
 !
   subroutine adas_bms2d_r8_r8(EB, Nevec, ZB_r8, CONC, TI,Ntvec, ZI_r8, NE,  &
       &            SIGVI, iERR)
-      
+
     real*8,intent(in)  :: EB(nevec)
     real*8,intent(in) :: ZB_r8
     integer,intent(in) :: nevec,ntvec
@@ -1225,7 +1225,7 @@ contains
     real*8 ,intent(in)  ::  ZI_r8(1)
     real*8,intent(out)  :: SIGVI(nevec,ntvec)
     real*8,intent(in) :: conc(nevec)
-    
+
     integer :: iERR
     integer :: ZB
     zb=zb_r8
@@ -1257,9 +1257,9 @@ contains
 !---------------------------------------------------------------------!
 
  subroutine adas_ion(Erel_KeV, N, Z1, Z2, react, SIG, iErr)
-      use EZspline_obj
-      use EZspline
-      
+      use ezspline_obj
+      use ezspline
+
       implicit none
 
 ! Function Parameters
@@ -1275,7 +1275,7 @@ contains
 !                               4 = full   charge exchang        (e.g. He+0 + He+2 => He+2 + He+0)
 !                              )
 !     SIG(N)   : requested cross sections                        [cm**2]
-!     iErr     : error code    (0 = OK,                          
+!     iErr     : error code    (0 = OK,
 !                               1 = energy invalid
 !                               2 = unsupported primary   species
 !                               3 = unsupported secondary species
@@ -1283,14 +1283,14 @@ contains
 !                               5 = reaction data unavailable
 !                               6 = adas file reading error
 !                               7 = spline error
-!                               8 = 
+!                               8 =
 !                              )
 !
       integer,intent(in) :: N
       real*8 ,intent(in) :: Erel_Kev(N)
-      integer,intent(in) :: Z1, Z2, react 
+      integer,intent(in) :: Z1, Z2, react
       integer,intent(out) ::iErr
-      real*8 ,intent(out) ::sig(n)      
+      real*8 ,intent(out) ::sig(n)
 ! Local Parameters
 !
 ! nReact   : number of supported reactions
@@ -1323,24 +1323,24 @@ contains
       integer, parameter :: nZ1  = 2
       integer, parameter :: nZ2  = 10
       integer, parameter :: maxn = 25
-      
+
       integer :: csIndex(nReact, nZ1, nZ2)
       integer :: csi
-      
+
       real*8  :: ferel(maxn), fsigma(maxn)
       real*8  :: logferel(maxn), logfsigma(maxn), logSIG(N)
       integer :: fn
       integer :: i, ie, is,ierr_extrapol
-      
+
       type(EZspline1_r8) :: sig_ezspl
       integer            :: bcs_sig(2)
       integer            :: sErr
-      
+
       integer, parameter :: tape   = 74
       integer, parameter :: outdbg = 75
       integer            :: fErr
       integer            :: nsel
-      
+
       character*40  :: adas_ion_data(2)
       character*240 :: filename
       character*80  :: line
@@ -1354,13 +1354,13 @@ contains
       csIndex(3,2,:)=(/ 1,  5,  0,  8, 11, 12, 15, 16,  0, 19/)   !   react = 3 (CX), Z1 = 2 (He), Z2 = {1, ..., 10}  (He+0 + X+Z2 => He+1  + X+Z2-1 )
       csIndex(4,1,:)=(/ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10/)   !   react = 4 (CX), Z1 = 1 (H),  Z2 = {1, ..., 10}  (H +0 + X+Z2 => H +Z1 + X+Z2-Z1)
       csIndex(4,2,:)=(/ 1, 20,  0, 21,  0, 22,  0, 23,  0,  0/)   !   react = 4 (CX), Z1 = 2 (He), Z2 = {1, ..., 10}  (He+0 + X+Z2 => He+Z1 + X+Z2-Z1)
-      
+
       adas_ion_data(1)='data/adf02/sia#h/sia#h_j99#h.dat'        ! H  data archive
       adas_ion_data(2)='data/adf02/sia#he/sia#he_j91#he.dat'     ! He data archive
-      
+
       iErr = 0
       Erel=Erel_KeV*1e+3_R8 !convert to [eV/amu]
-      
+
 ! check if input data meets requirements and is valid
       ! check if collision energy is positive
       do i=1,N
@@ -1369,25 +1369,25 @@ contains
             return
          endif
       enddo
-      
+
       ! check if primary species is in {H, He}
       if (Z1 .lt. 1 .AND. Z1 .gt. nZ1) then
          iErr = 2
          return
       endif
-      
+
       ! check if secondary species Z in {1, ..., 10}
       if (Z2 .lt. 1 .OR. Z2 .gt. nZ2) then
          iErr = 3
          return
       endif
-      
+
       ! check if reaction type is valid
       if (react .lt. 1 .OR. react .gt. nReact) then
          iErr = 4
          return
       endif
-      
+
       ! check if requested cross section is available
       csi = csIndex(react, Z1, Z2)
       if (csi .eq. 0) then
@@ -1395,7 +1395,7 @@ contains
          return
       endif
 
-      
+
 ! read data from archive (refer to ADAS adf21 file format documentation at [2])
       ! retrieve path to adas310 data
       env_adasmod = ' '
@@ -1419,50 +1419,50 @@ contains
          read(tape,1002) (fsigma(is),is=1,fn)
          if (i .eq. csi) exit
       enddo
-      close(tape) 
-      
+      close(tape)
+
       if (i .gt. nsel) then
          iErr = 6
          return
       endif
-      
+
       if (fn .lt. 3) then
          iErr = 6
          return
       endif
-      
+
 1000  format(i5)
 1001  format(13x,i2)
 1002  format(6(1x,E10.3E2),/,6(1x,E10.3E2))
-      
-      
+
+
 ! output adas data for debugging
-   
+
 !      if (react .eq. 1 .OR. react .eq. 2) filename = 'ii'
 !      if (react .eq. 3 .OR. react .eq. 4) filename = 'cx'
-      
+
 !      filename = "adas_ion_" // trim(filename) // "_dbg.dat"
-      
+
 !      open(unit = outdbg, file = filename)
 !      do i=1,fn
 !         write(outdbg,'(5g20.10,5g20.10)') ferel(i), fsigma(i)
 !      enddo
 !      close(unit = outdbg)
-      
-      
-      
+
+
+
 ! apply log on data
-      
+
       do i=1,fn
          logferel(i)  = log(ferel(i))
          logfsigma(i) = log(fsigma(i))
       enddo
-      
-      
+
+
 ! create EzSpline object and put data into it
-      
+
       bcs_sig = (/0, 0/)     ! not-a-knot boundary conditions
-      
+
       call EZspline_init(sig_ezspl, fn, bcs_sig, sErr)      ! initialise spline object grid and boundary conditions
       call EZspline_error(sErr)                             ! print error message
       if (sErr .ne. 0) then                                 ! interrupt routine in case of error
@@ -1476,8 +1476,8 @@ contains
          iERR = 7
          return
       endif
-      
-      
+
+
 ! evaluate spline object with Erel values
       do i=1,N
          ! check if requested collision energy is within the available domain
@@ -1502,7 +1502,7 @@ contains
                   iErr = 7
                   return
                endif
-                 
+
                SIG(i) = exp(logSIG(i))
             else if (log(Erel(i)) .ge. sig_ezspl%x1max) then
                do ie=1,3
@@ -1510,13 +1510,13 @@ contains
                   f_tables(ie)=logfsigma(fn-ie+1)
                enddo
 
-               call linear_interp (log(erel(i)),x_tables(1:2),f_tables(1:2),logSIG(i),ierr_extrapol)            
+               call linear_interp (log(erel(i)),x_tables(1:2),f_tables(1:2),logSIG(i),ierr_extrapol)
 
                 if(ierr_extrapol.ne.0) then !extrapolation error
                   iErr = 7
                   return
                endif
- 
+
               SIG(i) = exp(logSIG(i))
             else
                iErr = 7
@@ -1525,8 +1525,8 @@ contains
          endif
       enddo
 !mg      call r8_grafxf(erel(42:79),sig(42:79),38,ferel,fsigma,fn,' ',' ',' ',' ',' ')
-      
-      
+
+
       return
     end subroutine adas_ion
 !
@@ -1626,17 +1626,17 @@ subroutine adas_sig_int_r8(evec,n1,izneut,zion,fadas_type,sig_adas,istat)
                                 !  istat = 10:  ADAS data is requested but not found
   real*8, dimension(n1), intent(out) :: sig_adas !sigma [m**2]
   integer, dimension(5) :: react_type= (/2,2,1,1,2/)   !reaction type: 1  ='CX', 2 = 'II'
-  character*2, dimension(5) :: creact_type= (/'ii','ii','cx','cx','ii'/)   
-  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+  character*2, dimension(5) :: creact_type= (/'ii','ii','cx','cx','ii'/)
+  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                          !number of tables to be used, could be 1 or 2
   character*9 :: cfadas_type
   character*240 :: filename, filename_param    ! filename
   real*8, dimension(:),pointer :: e_axis ! axis grid
-  real*8, dimension(:),allocatable :: sig_table, sig_table_wrk ! tabulated sig*v  
+  real*8, dimension(:),allocatable :: sig_table, sig_table_wrk ! tabulated sig*v
   real*8, dimension(n1) :: sig_adas_wrk !work array sigma [m**2]
   integer :: iz, ierr
   istat=0
-  
+
   call check_data_react(react_type(fadas_type),1,izneut,zion,iZI,n_use,istat)
   sig_adas=0._R8
   sig_adas_wrk=0._R8
@@ -1661,19 +1661,19 @@ subroutine adas_sig_int_r8(evec,n1,izneut,zion,fadas_type,sig_adas,istat)
           & trim(adjustl(cizneut))//'_'//trim(adjustl(cizion))//'.cdf'
      ! try to open filename in tables directory
      call cdf_open(icdf,trim(adas_tables_file),'r',fErr)
-     
+
      if (fErr.ne.0) then !no table has been created
         write(6,*)' ?adas_bms3d: NO table'//trim(adas_tables_file)
         call bad_exit
      endif
-     !tables already computed, read data 
+     !tables already computed, read data
      call cdfInqVar(icdf,'sig',idims,nctype)
      npts=idims(1)
      if(allocated(sig_table))deallocate(sig_table)
      allocate(sig_table(npts))
      call cdf_read(icdf, 'sig',sig_table(1:npts))
      call cdfInqVar(icdf,'axis_param_coldTarget',idims,nctype)
-     call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1))) 
+     call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1)))
      call cdf_close(icdf)
      !interpolate 1D table
      xlr=log(axis_param_coldTarget(2)/axis_param_coldTarget(1))
@@ -1788,8 +1788,8 @@ subroutine adas_sigv_int_r8(freact_type,evec,n1,izneut,zion,sigv_adas,istat)
   integer, parameter :: tape   = 74
   character*2, dimension(2)   :: react_type=(/'cx','ii'/)
   real*8, dimension(:),pointer :: e_axis ! axis grid
-  real*8, dimension(:),allocatable :: sigv_table ! tabulated sig*v  
-  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+  real*8, dimension(:),allocatable :: sigv_table ! tabulated sig*v
+  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                          !number of tables to be used, could be 1 or 2
   real*8, dimension(n1) :: sigv_adas_wrk !work array sigma*v [m**3/sec]
   character*240 :: filename, filename_param    ! filename
@@ -1802,8 +1802,8 @@ subroutine adas_sigv_int_r8(freact_type,evec,n1,izneut,zion,sigv_adas,istat)
   if(istat.gt.0) then !some error in input data, do not proceed
      return
   endif
-  
-        
+
+
   write(cizneut,'(i5)') izneut
   do iz=1, n_use
      write(cizion,'(i5)') izi(iz)
@@ -1821,21 +1821,21 @@ subroutine adas_sigv_int_r8(freact_type,evec,n1,izneut,zion,sigv_adas,istat)
           & trim(adjustl(cizneut))//'_'//trim(adjustl(cizion))//'_'//'coldTarget.cdf'
      ! try to open filename in tables directory
      call cdf_open(icdf,trim(adas_tables_file),'r',fErr)
-     
+
      if (fErr.ne.0) then !no table has been created
           write(6,*)' ?adas_sigv: NO table'//trim(adas_tables_file)
           call bad_exit
      endif
-     !tables already computed, read data 
+     !tables already computed, read data
      call cdfInqVar(icdf,'sigv',idims,nctype)
      npts=idims(1)
      if(allocated(sigv_table))deallocate(sigv_table)
      allocate(sigv_table(npts))
      call cdf_read(icdf, 'sigv',sigv_table(1:npts))
      call cdfInqVar(icdf,'axis_param_coldTarget',idims,nctype)
-     call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1))) 
+     call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1)))
      call cdf_close(icdf)
-     
+
      !interpolate 1D table
      xlr=log(axis_param_coldTarget(2)/axis_param_coldTarget(1))
      call FLIN1_Z(evec,sigv_adas_wrk,n1,sigv_table,axis_param_coldTarget(1),axis_param_coldTarget(2),&
@@ -1846,14 +1846,14 @@ subroutine adas_sigv_int_r8(freact_type,evec,n1,izneut,zion,sigv_adas,istat)
         sigv_adas=zion/izi(1)*sigv_adas_wrk !scale to Zimp >10 (for H beam) or to Zimp >8 (for He beam)
      endif
   enddo !iz
-  
+
 end subroutine adas_sigv_int_r8
 !
 !---------------------------------------------------------------------
 !
 subroutine adas_zstop_sigvz_int_int(izneut,izion,evec,n1,sigv_adas,istat)
 !
-!this subroutine calculates sig*v tables for impurity stopping 
+!this subroutine calculates sig*v tables for impurity stopping
 !on fully stripped light impurities (vs. Erel only) using ADAS data
 !as a sum of sig*v for ionization (includes non-neutralazing CX) and neuralazing CX reactions.
 !
@@ -1872,7 +1872,7 @@ end subroutine adas_zstop_sigvz_int_int
 !
 subroutine adas_zstop_sigvz_r8_int(zneut,izion,evec,n1,sigv_adas,istat)
 !
-!this subroutine calculates sig*v tables for for impurity stopping 
+!this subroutine calculates sig*v tables for for impurity stopping
 !on fully stripped light impurities (vs. Erel only) using ADAS data
 !as a sum of sig*v for ionization (includes non-neutralazing CX) and neuralazing CX reactions.
 !
@@ -1893,7 +1893,7 @@ end subroutine adas_zstop_sigvz_r8_int
 !
 subroutine adas_zstop_sigvz_r8_r8(zneut,zion,evec,n1,sigv_adas,istat)
 !
-!this subroutine calculates sig*v tables for for impurity stopping 
+!this subroutine calculates sig*v tables for for impurity stopping
 !on fully stripped light impurities (vs. Erel only) using ADAS data
 !as a sum of sig*v for ionization (includes non-neutralazing CX) and neuralazing CX reactions.
 !
@@ -1912,7 +1912,7 @@ end subroutine adas_zstop_sigvz_r8_r8
 !
 subroutine adas_zstop_sigvz_int_r8(izneut,zion,evec,n1,sigv_adas,istat)
 !
-!this subroutine calculates sig*v tables for for impurity stopping 
+!this subroutine calculates sig*v tables for for impurity stopping
 !on fully stripped light impurities (vs. Erel only) using ADAS data
 !as a sum of sig*v for ionization (includes non-neutralazing CX) and neuralazing CX reactions.
 !
@@ -1925,12 +1925,12 @@ subroutine adas_zstop_sigvz_int_r8(izneut,zion,evec,n1,sigv_adas,istat)
 !
   integer :: freact_type  ! reaction type
   real*8, dimension(:),pointer :: e_axis ! axis grid
-  real*8, dimension(:),allocatable :: sigv_table ! tabulated sig*v  
-  real*8, dimension(:),allocatable :: sigv_table_wrk ! wrk. tabulated sig*v  
+  real*8, dimension(:),allocatable :: sigv_table ! tabulated sig*v
+  real*8, dimension(:),allocatable :: sigv_table_wrk ! wrk. tabulated sig*v
   integer, intent(out) :: istat
   INTEGER ::  iz
                                 !  istat = 10:  ADAS data is requested but not found
-  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                          !number of tables to be used, could be 1 or 2
   real*8, dimension(n1) :: sigv_adas_wrk !sigma*v [m**3/sec]
   character*240 :: filename, filename_param    ! filename
@@ -1963,16 +1963,16 @@ subroutine adas_zstop_sigvz_int_r8(izneut,zion,evec,n1,sigv_adas,istat)
         write(6,*)' %?das_zstop_sigvz: NO table'//trim(adas_tables_file)
         call bad_exit
      endif
-     !tables already computed, read data 
+     !tables already computed, read data
      call cdfInqVar(icdf,'sigv',idims,nctype)
      npts=idims(1)
      if(allocated(sigv_table))deallocate(sigv_table)
      allocate(sigv_table(npts))
      call cdf_read(icdf, 'sigv',sigv_table(1:npts))
      call cdfInqVar(icdf,'axis_param_coldTarget',idims,nctype)
-     call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1))) 
+     call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1)))
      call cdf_close(icdf)
-     
+
      !interpolate 1D table
      xlr=log(axis_param_coldTarget(2)/axis_param_coldTarget(1))
      call FLIN1_Z(evec,sigv_adas_wrk,n1,sigv_table,axis_param_coldTarget(1),axis_param_coldTarget(2),&
@@ -1983,7 +1983,7 @@ subroutine adas_zstop_sigvz_int_r8(izneut,zion,evec,n1,sigv_adas,istat)
         sigv_adas=zion/izi(1)*sigv_adas_wrk !scale to Zimp >10 (for H beam) or to Zimp >8 (for He beam)
      endif
   enddo !iz
-  
+
 end subroutine adas_zstop_sigvz_int_r8
 !
 !-----------------------------------------------------------------------------------------
@@ -2003,7 +2003,7 @@ subroutine adas_btsigv_int_int(freact_type,beamchrg,evec,tevec,n1,izneut_in,izio
   integer, intent(in) :: n1  !vector's size
   real*8, dimension(n1), intent(out) :: sigv_adas !sigma*v [m**3/sec]
   integer, intent(in) :: beamchrg ! beam type: =neutral or =ion
-  real*8 :: zion_in  
+  real*8 :: zion_in
   zion_in=dble(izion_in)
   call adas_btsigv_int_r8(freact_type,beamchrg,evec,tevec,n1,izneut_in,zion_in,sigv_adas,istat)
 end subroutine adas_btsigv_int_int
@@ -2085,13 +2085,13 @@ subroutine adas_btsigv_int_r8(freact_type,beamchrg,evec,tevec,n1,izneut_in,zion_
                                ! key = 5  TRANSP BEAM BEAM GYRO INTEGRALS  See: preact/comptabl_z.for
   character*2, dimension(2)   :: react_type=(/'cx','ii'/)
   integer :: npts_e, npts_t ! number of points for table
-  real*8, dimension(:,:),allocatable :: sigv_table     ! tabulated sig*v  
+  real*8, dimension(:,:),allocatable :: sigv_table     ! tabulated sig*v
   integer i, ier, iz
   real*8, dimension(:),pointer :: e_axis,t_axis ! axis grid
   real*8, dimension(:),allocatable :: wrk ! work array
   real*8 :: xlr_t ! If XLR>0, then the X grid is equally spaced on a logarithmic scale:
                   ! LINEAR IF XLR .LE. 0.0
-  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use - 
+  integer :: iZI(2),n_use !iZi - integer Zimp used to calculate sigv, n_use -
                          !number of tables to be used, could be 1 or 2
   real*8, dimension(n1) :: sigv_adas_wrk !sigma*v [m**3/sec]
   character*240 :: filename, filename_param    ! filename
@@ -2102,21 +2102,21 @@ subroutine adas_btsigv_int_r8(freact_type,beamchrg,evec,tevec,n1,izneut_in,zion_
   sigv_adas_wrk=0._R8
   if(beamchrg.eq.NEUTRAL) then
      !  ---------> Neutral Beam, charged particle target
-     
+
      izneut = izneut_in
      zion = zion_in
-     
+
   else if(beamchrg.eq.ION) then
      izneut = zion_in
      zion = dble(izneut_in)
-     
+
   else
-     
+
      istat = 1
      return
-     
+
   endif
- 
+
   call check_data_react(freact_type,beamchrg,izneut,zion,iZI,n_use,istat)
   if(istat.gt.0) then !some error in input data, do not proceed
      return
@@ -2139,13 +2139,13 @@ subroutine adas_btsigv_int_r8(freact_type,beamchrg,evec,tevec,n1,izneut_in,zion_
      !
      ! try to open filename in tables directory
      call cdf_open(icdf,trim(adas_tables_file),'r',fErr)
-     !   
+     !
      if (fErr.ne.0) then !no table has been created
         write(6,*)' %adas_btsigv:  NO table'//trim(adas_tables_file)
         call bad_exit
      endif
-     
-     !tables already computed, read data 
+
+     !tables already computed, read data
      call cdfInqVar(icdf,'btsigv',idims,nctype)
      npts_e=idims(1)
      npts_t=idims(2)
@@ -2153,7 +2153,7 @@ subroutine adas_btsigv_int_r8(freact_type,beamchrg,evec,tevec,n1,izneut_in,zion_
      allocate(sigv_table(npts_e,npts_t))
      call cdf_read(icdf, 'btsigv',sigv_table(1:npts_e,1:npts_t))
      call cdfInqVar(icdf,'axis_param_warmTarget',idims,nctype)
-     call cdf_read(icdf,'axis_param_warmTarget',axis_param_warmTarget(1:idims(1))) 
+     call cdf_read(icdf,'axis_param_warmTarget',axis_param_warmTarget(1:idims(1)))
      call cdf_close(icdf)
      !interpolate 2D table
      xlr=log(axis_param_warmTarget(2)/axis_param_warmTarget(1))
@@ -2167,7 +2167,7 @@ subroutine adas_btsigv_int_r8(freact_type,beamchrg,evec,tevec,n1,izneut_in,zion_
         sigv_adas=zion/izi(1)*sigv_adas_wrk !scale to Zimp >10 (for H beam) or to Zimp >8 (for He beam)
      endif
   enddo !iz
-  
+
 end subroutine adas_btsigv_int_r8
 !
 !-----------------------------------------------------------------------------------------
@@ -2195,9 +2195,9 @@ subroutine adas_sigvte_ioniz_int(izneut,tevec,n1,sigv_adas,istat)
 !local
   character*2 :: react_type='ei'
   real*8, dimension(:),pointer :: t_axis ! axis grid
-  integer :: ier 
+  integer :: ier
   integer, intent(out) :: istat
-  real*8, dimension(:),allocatable :: sigv_table ! tabulated sig*v  
+  real*8, dimension(:),allocatable :: sigv_table ! tabulated sig*v
   character*240 :: filename, filename_param    ! filename
 !
 !check input data
@@ -2222,26 +2222,26 @@ subroutine adas_sigvte_ioniz_int(izneut,tevec,n1,sigv_adas,istat)
        & trim(adjustl(cizneut))//'_'//'coldTarget.cdf'
   ! try to open filename in tables directory
   call cdf_open(icdf,trim(adas_tables_file),'r',fErr)
-  
+
   if (fErr.ne.0) then !no table has been created
      write(6,*)' ?adas_sigvte_ioniz: NO table'//trim(adas_tables_file)
      call bad_exit
   endif
-  !tables already computed, read data 
+  !tables already computed, read data
   call cdfInqVar(icdf,'sigv',idims,nctype)
   npts=idims(1)
   if(allocated(sigv_table))deallocate(sigv_table)
   allocate(sigv_table(npts))
   call cdf_read(icdf, 'sigv',sigv_table(1:npts))
   call cdfInqVar(icdf,'axis_param_coldTarget',idims,nctype)
-  call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1))) 
+  call cdf_read(icdf,'axis_param_coldTarget',axis_param_coldTarget(1:idims(1)))
   call cdf_close(icdf)
-  
+
   !interpolate 1D table
   xlr=log(axis_param_coldTarget(2)/axis_param_coldTarget(1))
   call FLIN1_Z(tevec,sigv_adas,n1,sigv_table,axis_param_coldTarget(1),axis_param_coldTarget(2),&
        &xlr,npts,iwarn_adas)
-     
+
 end subroutine adas_sigvte_ioniz_int
 !---------------------------------------------------------------------!
 ! adas_ei.f90:                                                        !
@@ -2254,9 +2254,9 @@ end subroutine adas_sigvte_ioniz_int
 !                                                                     !!                                                                     !
 !---------------------------------------------------------------------!
 subroutine adas_ei_h(Te, N, SIGV, iErr)
-      use EZspline_obj
-      use EZspline
-      
+      use ezspline_obj
+      use ezspline
+
       implicit none
 
 ! Function Parameters
@@ -2264,18 +2264,18 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
 !     Te(N)    : electron temperature                            [KeV]
 !     N        : number of temperature values
 !     SIGV(N)  : requested rate coefficients                     [m**3/s]
-!     iErr     : error code    (0 = OK,                          
+!     iErr     : error code    (0 = OK,
 !                               1 = temperature invalid
 !                               2 = adas file reading error
 !                               3 = spline error
-!                               4 = 
+!                               4 =
 !                              )
 !
       integer :: N
       real*8  :: Te(N), SIGV(N)
       integer :: iErr
-      
-      
+
+
 ! Local Parameters
 !
 ! maxn         : max number of entries per data table
@@ -2303,7 +2303,7 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
 ! line         : temporary string for file input
 !
       integer, parameter :: maxn    = 25
-      
+
       real*8  :: fte1(maxn),  fsigv1(maxn)
       real*8  :: fte2(maxn),  fsigv2(maxn)
       real*8  :: fte(2*maxn), fsigv(2*maxn)
@@ -2311,23 +2311,23 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
       real*8  :: logSIGV(N)
       integer :: fn1, fn2, fn, fn1stop
       integer :: i, it, is
-      
+
       type(EZspline1_r8) :: sigv_ezspl
       integer            :: bcs_sigv(2)
       integer            :: sErr
-      
+
       integer, parameter :: tape   = 74
       integer, parameter :: outdbg = 75
       integer            :: fErr
       integer            :: nsel
-      
+
       character*40,  parameter :: adas_ei_data = 'data/adf07/szd93#h/szd93#h_h.dat'
       character*240 :: filename
       character*80  :: line
-      
+
       iErr = 0
       Te=Te*1.e+3_R8 !convert to [eV]
-      
+
 ! check if input data meets requirements and is valid
       ! check if collision energy is positive
       do i=1,N
@@ -2336,8 +2336,8 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
             return
          endif
       enddo
-      
-      
+
+
 ! read data from archive (refer to ADAS adf21 file format documentation at [2])
       env_adasmod = ' '
       call sget_env('ADASDIR',env_adasmod)
@@ -2354,36 +2354,36 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
          iErr = 2
          return
       endif
-      
+
       ! read number of tables in file
       read(tape,1000) nsel
       if (nsel .lt. 3) then
          iErr = 2
          return
       endif
-      
+
      ! read first table (low temperature)
       read(tape,1001) fn1
       read(tape,1002) (fte1(it),it=1,fn1)
       read(tape,1002) (fsigv1(is),is=1,fn1)
-      
+
       ! skip second table (very low temperature)
       do i=1,9
          read(tape,'(a)') line
       enddo
-      
+
       ! read third table (high temperature)
       read(tape,1001) fn2
       read(tape,1002) (fte2(it),it=1,fn2)
       read(tape,1002) (fsigv2(is),is=1,fn2)
-      
-      close(tape) 
-      
+
+      close(tape)
+
 1000  format(i5)
 1001  format(15x,i2)
 1002  format(6(1x,E10.3E2),/,6(1x,E10.3E2))
-      
-      
+
+
       ! merge tables
       do i=1,fn1
          if (fte1(i) .ge. fte2(1)) then
@@ -2394,51 +2394,51 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
          endif
       enddo
       fn1stop = i-1
-      
+
       do i=1,fn2
          fte  (fn1stop+i) = fte2(i)
          fsigv(fn1stop+i) = fsigv2(i)
       enddo
-      
+
       fn = fn1stop + fn2
-      
-      
+
+
       if (fn .lt. 3) then
          iErr = 2
          return
       endif
-      
+
 ! output adas data for debugging
-   
+
 !      filename = "adas_ei_dbg.dat"
 !      open(unit = outdbg, file = filename)
 !      do i=1,fn
 !         write(outdbg,'(5g20.10,5g20.10)') fte(i), fsigv(i)
 !      enddo
 !      close(unit = outdbg)
-      
-      
+
+
 ! calculate log of spline data
      do i=1,fn
          logfte(i)   = dlog(fte(i))
          logfsigv(i) = dlog(fsigv(i))
       enddo
-      
+
 
 ! output log data for debugging
-   
+
 !      filename = "adas_ei_dbglog.dat"
 !      open(unit = outdbg, file = filename)
 !      do i=1,fn
 !         write(outdbg,'(5g20.10,5g20.10)') logfte(i), logfsigv(i)
 !      enddo
 !      close(unit = outdbg)
-      
-      
+
+
 ! create EzSpline object and put data into it
-      
+
       bcs_sigv = (/0, 0/)     ! not-a-knot boundary conditions
-      
+
       call EZspline_init(sigv_ezspl, fn, bcs_sigv, sErr)    ! initialise spline object grid and boundary conditios
       call EZspline_error(sErr)                             ! print error message
       if (sErr .ne. 0) then                                 ! interrupt routine in case of error
@@ -2452,8 +2452,8 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
          iERR = 3
          return
       endif
-      
-      
+
+
 ! evaluate spline object with Erel values
       do i=1,N
          ! check if requested collision energy is within the available domain
@@ -2488,7 +2488,7 @@ subroutine adas_ei_h(Te, N, SIGV, iErr)
       enddo
 
       SIGV=SIGV*1.e-6_R8 !convert from cm**3/sec to m**3/sec
-      
+
       return
 end subroutine adas_ei_h
 !---------------------------------------------------------------------!
@@ -2502,9 +2502,9 @@ end subroutine adas_ei_h
 !                                                                     !!                                                                     !
 !---------------------------------------------------------------------!
 subroutine adas_ei_he(Te, N, SIGV, iErr)
-      use EZspline_obj
-      use EZspline
-      
+      use ezspline_obj
+      use ezspline
+
       implicit none
 
 ! Function Parameters
@@ -2512,18 +2512,18 @@ subroutine adas_ei_he(Te, N, SIGV, iErr)
 !     Te(N)    : electron temperature                            [KeV]
 !     N        : number of temperature values
 !     SIGV(N)  : requested rate coefficients                     [m**3/s]
-!     iErr     : error code    (0 = OK,                          
+!     iErr     : error code    (0 = OK,
 !                               1 = temperature invalid
 !                               2 = adas file reading error
 !                               3 = spline error
-!                               4 = 
+!                               4 =
 !                              )
 !
       integer :: N
       real*8  :: Te(N), SIGV(N)
       integer :: iErr
-      
-      
+
+
 ! Local Parameters
 !
 ! maxn         : max number of entries per data table
@@ -2551,29 +2551,29 @@ subroutine adas_ei_he(Te, N, SIGV, iErr)
 ! line         : temporary string for file input
 !
       integer, parameter :: maxn    = 25
-      
+
       real*8  :: fte(maxn), fsigv(maxn)
       real*8  :: logfte(maxn), logfsigv(maxn)
       real*8  :: logSIGV(N)
       integer ::  fn
       integer :: i, it, is
-      
+
       type(EZspline1_r8) :: sigv_ezspl
       integer            :: bcs_sigv(2)
       integer            :: sErr
-      
+
       integer, parameter :: tape   = 74
       integer, parameter :: outdbg = 75
       integer            :: fErr
       integer            :: nsel
-      
+
       character*40,  parameter :: adas_ei_data = 'data/adf07/szd93#he/szd93#he_he.dat'
       character*240 :: filename
       character*80  :: line
-      
+
       iErr = 0
       Te=Te*1.e+3_R8 !convert to [eV]
-      
+
 ! check if input data meets requirements and is valid
       ! check if collision energy is positive
       do i=1,N
@@ -2582,8 +2582,8 @@ subroutine adas_ei_he(Te, N, SIGV, iErr)
             return
          endif
       enddo
-      
-      
+
+
 ! read data from archive (refer to ADAS adf21 file format documentation at [2])
       env_adasmod = ' '
       call sget_env('ADASDIR',env_adasmod)
@@ -2600,48 +2600,48 @@ subroutine adas_ei_he(Te, N, SIGV, iErr)
          iErr = 2
          return
       endif
-      
+
       ! read number of tables in file
       read(tape,1000) nsel
       if (nsel .lt. 3) then
          iErr = 2
          return
       endif
-      
+
      ! read first table (low temperature)
       read(tape,1001) fn
       read(tape,1002) (fte(it),it=1,fn)
       read(tape,1002) (fsigv(is),is=1,fn)
-      
-      close(tape) 
-      
+
+      close(tape)
+
 1000  format(i5)
 1001  format(15x,i2)
 1002  format(6(1x,E10.3E2),/,6(1x,E10.3E2))
-      
-      
-      
+
+
+
 ! calculate log of spline data
      do i=1,fn
          logfte(i)   = dlog(fte(i))
          logfsigv(i) = dlog(fsigv(i))
       enddo
-      
+
 
 ! output log data for debugging
-   
+
 !      filename = "adas_ei_dbglog.dat"
 !      open(unit = outdbg, file = filename)
 !      do i=1,fn
 !         write(outdbg,'(5g20.10,5g20.10)') logfte(i), logfsigv(i)
 !      enddo
 !      close(unit = outdbg)
-      
-      
+
+
 ! create EzSpline object and put data into it
-      
+
       bcs_sigv = (/0, 0/)     ! not-a-knot boundary conditions
-      
+
       call EZspline_init(sigv_ezspl, fn, bcs_sigv, sErr)    ! initialise spline object grid and boundary conditios
       call EZspline_error(sErr)                             ! print error message
       if (sErr .ne. 0) then                                 ! interrupt routine in case of error
@@ -2655,8 +2655,8 @@ subroutine adas_ei_he(Te, N, SIGV, iErr)
          iERR = 3
          return
       endif
-      
-      
+
+
 ! evaluate spline object with Erel values
       do i=1,N
          ! check if requested collision energy is within the available domain
@@ -2691,7 +2691,7 @@ subroutine adas_ei_he(Te, N, SIGV, iErr)
       enddo
 
       SIGV=SIGV*1.e-6_R8 !convert from cm**3/sec to m**3/sec
-      
+
       return
 end subroutine adas_ei_he
 
@@ -2731,7 +2731,7 @@ subroutine check_data_react(freact_type,beamchrg,izneut,zion,izion_use,n_use,ist
   integer, intent(in) :: freact_type    !reaction type: 1  ='CX', 2 = 'II', 3 = 'SV' for excited states
   integer, intent(in) :: izneut  !atomic charge of primary   particle {1, 2}
   real*8, intent(in) :: zion   !atomic charge of secondary particle {1, ..., 10}
-  integer, intent(in) :: beamchrg !beam type neutral  = 1 or ion =2 
+  integer, intent(in) :: beamchrg !beam type neutral  = 1 or ion =2
  INTEGER, intent(out) :: istat ! completion code; 0 = normal
                                 !  istat = 2:  irtype argument invalid
                                 !  istat = 3:  izneut or izchrg invalid
@@ -2739,15 +2739,15 @@ subroutine check_data_react(freact_type,beamchrg,izneut,zion,izion_use,n_use,ist
   integer, intent(out) :: n_use !number sigv need to be calculated to get sigv for a given zion
 !
   integer, parameter :: NEUTRAL=1, ION=2
-  integer, dimension(2,10) :: izchrg 
+  integer, dimension(2,10) :: izchrg
   integer izion, iz0,iz1
   real*8 remaind
 !
-  !available reaction for H CX,II see adas_ion 
+  !available reaction for H CX,II see adas_ion
   !available reaction for He CX,II see adas_ion
   ! atomic charge of secondary particle {1, ..., 10}
   izchrg(1,:)=(/1,2,3,4,5,6,7,8,9,10/)
-  izchrg(2,:)=(/1,2,0,4,0,6,0,8,0,0/)  
+  izchrg(2,:)=(/1,2,0,4,0,6,0,8,0,0/)
   istat=0
   izion=int(zion)
   remaind=mod(zion,1._R8)
@@ -2785,7 +2785,7 @@ subroutine check_data_react(freact_type,beamchrg,izneut,zion,izion_use,n_use,ist
         n_use=1
      elseif((izion.lt.10).and.(remaind.gt.0.0_R8)) then
         izion_use(1)=izion
-        izion_use(2)=izion+1        
+        izion_use(2)=izion+1
         n_use=2
      endif
   elseif(izneut.eq.2) then
@@ -2809,17 +2809,17 @@ subroutine check_data_react(freact_type,beamchrg,izneut,zion,izion_use,n_use,ist
            iz1=izion+1
            do
               if(izchrg(2,iz1).eq.0) then
-                 iz1= min(8,iz1+1)   
+                 iz1= min(8,iz1+1)
               else
-                 izion_use(2)=iz1 
+                 izion_use(2)=iz1
                  exit
               endif
            enddo
         endif
      endif
   endif
-  
+
 end subroutine check_data_react
 
-!DEC$ ENDIF  
+!DEC$ ENDIF
 end module adas_mod_simpl

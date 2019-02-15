@@ -16,6 +16,7 @@ def read_vmec(file):
     except KeyError:
         print("Please set environment variable STELLOPT_PATH")
         sys.exit(1)
+#    libstell = ct.cdll.LoadLibrary("/Volume/NawName/Workshop/STELLOPT/bin/libstell.a")
     # Read File
     read_wout = getattr(libstell,s1+'read_wout_mod_'+s2+'_readw_and_open'+s3)
     read_wout.argtypes=[ct.c_char_p, ct.POINTER(ct.c_int), ct.POINTER(ct.c_int), ct.c_long]
@@ -146,7 +147,7 @@ def cfunct(theta,zeta,fmnc,xm,xn):
         fmnsinmt=(fmn*sinmt).T
         f[k,:,:]=np.matmul(fmncosmt, cosnz)-np.matmul(fmnsinmt, sinnz)
     return f
-    
+
 def sfunct(theta,zeta,fmnc,xm,xn):
     import numpy as np
     f=0
@@ -244,7 +245,7 @@ def calc_jll(vmec_data, theta, zeta ):
     # CALC_JLL(vmec_data,theta,zeta) Calculates the parallel current density.
     # This funciton takes a VMEC data structure (as read by read_vmec) and
     # theta/zeta arrays as input and outputs the parallel current density.
-    
+
     # Example usage (Matlab)
     #      theta=0:2*pi/359:2*pi;
     #      zeta=0:2*pi/63:2*pi;
@@ -256,18 +257,17 @@ def calc_jll(vmec_data, theta, zeta ):
     #      zeta=np.linspace(0, 2*np.pi, 64)
     #      vmec_data=read_vmec('wout.nc')
     #      jll=calc_jll(vmec_data, theta, zeta)
-    
-    
+
+
     # Maintained by: Samuel Lazerson (lazerson@pppl.gov)
     # Version:       1.00
-    
     b =cfunct(theta,zeta,vmec_data['bmnc'],    vmec_data['xm_nyq'],vmec_data['xn_nyq'])
     g =cfunct(theta,zeta,vmec_data['gmnc'],    vmec_data['xm_nyq'],vmec_data['xn_nyq'])
     bu=cfunct(theta,zeta,vmec_data['bsubumnc'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
     bv=cfunct(theta,zeta,vmec_data['bsubvmnc'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
     ju=cfunct(theta,zeta,vmec_data['currumnc'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
     jv=cfunct(theta,zeta,vmec_data['currvmnc'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
-    
+
     if (vmec_data['iasym']):
         b =b +sfunct(theta,zeta,vmec_data['bmns'],    vmec_data['xm_nyq'],vmec_data['xn_nyq'])
         g =g +sfunct(theta,zeta,vmec_data['gmns'],    vmec_data['xm_nyq'],vmec_data['xn_nyq'])
@@ -275,8 +275,7 @@ def calc_jll(vmec_data, theta, zeta ):
         bv=bv+sfunct(theta,zeta,vmec_data['bsubvmns'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
         ju=ju+sfunct(theta,zeta,vmec_data['currumns'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
         jv=jv+sfunct(theta,zeta,vmec_data['currvmns'],vmec_data['xm_nyq'],vmec_data['xn_nyq'])
-    
-    
+
     jll = (bu*ju+bv*jv)/(g*b)
     return jll
 
@@ -571,11 +570,3 @@ def piota(xx):
     xx_temp = ct.c_double(xx)
     val = piota_func(ct.byref(xx_temp))
     return val;
-
-
-
-
-
-
-
-
