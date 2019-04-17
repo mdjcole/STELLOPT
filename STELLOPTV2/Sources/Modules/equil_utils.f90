@@ -897,6 +897,7 @@
                profile_norm = profile_norm + x(ik)/(ik+1)
             END DO
             IF (profile_norm == 0) profile_norm = 1 ! avoid zero integral
+            IF (COUNT(ABS(x) > 0) == 1) profile_norm = 0 ! Don't normalize for one coefficient
          CASE ('spline','akima_spline','akima_spline_ip')
             DO ik = LBOUND(x,DIM=1), UBOUND(x,DIM=1)
                profile_norm = profile_norm + x(ik)
