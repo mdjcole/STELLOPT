@@ -786,7 +786,7 @@ class MyApp(QMainWindow):
 					'XICS','XICS_BRIGHT','XICS_W3','XICS_V','SXR','VPHI',\
 					'IOTA','BALLOON','BOOTSTRAP','DKES','HELICITY','HELICITY_FULL',\
 					'KINK','ORBIT','JDOTB','J_STAR','NEO','TXPORT','ECEREFLECT',\
-					]
+					'S11','S12','S21','S22']
 		self.ui.ComboBoxOPTplot_type.clear()
 		self.ui.ComboBoxOPTplot_type.addItem('Chi-Squared')
 		# Handle Chisquared plots
@@ -800,7 +800,8 @@ class MyApp(QMainWindow):
 					'TXPORT','B_PROBES','FLUXLOOPS','SEGROG',\
 					'NELINE','TELINE','TILINE',\
 					'XICS','XICS_BRIGHT','XICS_W3','XICS_V',\
-					'ECEREFLECT','SXR','IOTA','PRESS']:
+					'ECEREFLECT','SXR','IOTA','PRESS',\
+					'S11','S12','S21','S22']:
 			for item in self.stel_data:
 				if (name+'_target' == item):
 					self.ui.ComboBoxOPTplot_type.addItem(name+'_evolution')
@@ -916,6 +917,26 @@ class MyApp(QMainWindow):
 			self.ax2.set_xlabel('Radial Grid')
 			self.ax2.set_ylabel('Epsilon Effective')
 			self.ax2.set_title('Neoclassical Helical Ripple (NEO)')
+		elif (plot_name == 'S11_evolution'):
+			self.ax2.plot(self.stel_data['S11_s'].T,self.stel_data['S11_equil'].T,'o',fillstyle='none')
+			self.ax2.set_xlabel('Radial Grid')
+			self.ax2.set_ylabel('S11')
+			self.ax2.set_title('Susceptance Coefficient (S11)')
+		elif (plot_name == 'S12_evolution'):
+			self.ax2.plot(self.stel_data['S12_s'].T,self.stel_data['S12_equil'].T,'o',fillstyle='none')
+			self.ax2.set_xlabel('Radial Grid')
+			self.ax2.set_ylabel('S12')
+			self.ax2.set_title('Susceptance Coefficient (S12)')
+		elif (plot_name == 'S21_evolution'):
+			self.ax2.plot(self.stel_data['S21_s'].T,self.stel_data['S21_equil'].T,'o',fillstyle='none')
+			self.ax2.set_xlabel('Radial Grid')
+			self.ax2.set_ylabel('S21')
+			self.ax2.set_title('Susceptance Coefficient (S21)')
+		elif (plot_name == 'S22_evolution'):
+			self.ax2.plot(self.stel_data['S22_s'].T,self.stel_data['S22_equil'].T,'o',fillstyle='none')
+			self.ax2.set_xlabel('Radial Grid')
+			self.ax2.set_ylabel('S22')
+			self.ax2.set_title('Susceptance Coefficient (S22)')
 		elif (plot_name == 'HELICITY_evolution'):
 			self.ax2.plot(self.stel_data['HELICITY_equil'].T,'o',fillstyle='none')
 			self.ax2.set_ylabel('Helicity')
