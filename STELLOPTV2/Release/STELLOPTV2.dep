@@ -231,6 +231,14 @@ chisq_iota.o : \
       equil_vals.o 
 
 chisq_vaciota.o : \
+      $(LIB_DIR)/Release/stel_tools.o \
+      stellopt_runtime.o \
+      stellopt_targets.o \
+      equil_utils.o \
+      equil_vals.o 
+
+chisq_s11.o : \
+      $(LIB_DIR)/Release/stel_tools.o \
       stellopt_runtime.o \
       stellopt_targets.o \
       equil_utils.o \
