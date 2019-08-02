@@ -401,7 +401,11 @@
                          regcoil_rcws_zbound_c_min, regcoil_rcws_zbound_s_min, &
                          regcoil_rcws_rbound_c_max, regcoil_rcws_rbound_s_max, &
                          regcoil_rcws_zbound_c_max, regcoil_rcws_zbound_s_max, &
-                         target_curvature_P2, sigma_curvature_P2
+                         target_curvature_P2, sigma_curvature_P2,&
+                         target_s11, sigma_s11, s_s11,&
+                         target_s12, sigma_s12, s_s12,&
+                         target_s21, sigma_s21, s_s21,&
+                         target_s22, sigma_s22, s_s22
       
 !-----------------------------------------------------------------------
 !     Subroutines
@@ -815,6 +819,18 @@
       z_vaciota(:)       = 0.0
       phi_vaciota(:)     = 0.0
       s_vaciota(:)       = -1.0
+      target_s11(:)   = 0.0
+      sigma_s11(:)    = bigno
+      s_s11(:)        = -1.0
+      target_s12(:)   = 0.0
+      sigma_s12(:)    = bigno
+      s_s12(:)        = -1.0
+      target_s21(:)   = 0.0
+      sigma_s21(:)    = bigno
+      s_s21(:)        = -1.0
+      target_s22(:)   = 0.0
+      sigma_s22(:)    = bigno
+      s_s22(:)        = -1.0
       target_mse(:)   = 0.0
       sigma_mse(:)    = bigno
       r_mse(:)        = 0.0
@@ -2506,6 +2522,58 @@
                   'S_VACIOTA(',ik,')',s_vaciota(ik),&
                   'TARGET_VACIOTA(',ik,')',target_vaciota(ik),& 
                   'SIGMA_VACIOTA(',ik,')',sigma_vaciota(ik)
+            END IF
+         END DO
+      END IF
+      IF (ANY(sigma_s11 < bigno)) THEN
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         WRITE(iunit,'(A)') '!          S11 Susceptance Coefficient OPTIMIZATION'
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         DO ik = 1, UBOUND(sigma_s11,DIM=1)
+            IF (sigma_s11(ik) < bigno .and. s_11(ik) >= 0) THEN
+               WRITE(iunit,"(3(2X,A,I3.3,A,1X,'=',1X,E22.14))") &
+                  'TARGET_S11(',ik,')',target_s11(ik),& 
+                  'SIGMA_S11(',ik,')',sigma_s11(ik),&
+                  'S_S11(',ik,')',s_s11(ik)
+            END IF
+         END DO
+      END IF
+      IF (ANY(sigma_s12 < bigno)) THEN
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         WRITE(iunit,'(A)') '!          S12 Susceptance Coefficient OPTIMIZATION'
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         DO ik = 1, UBOUND(sigma_s12,DIM=1)
+            IF (sigma_s12(ik) < bigno .and. s_12(ik) >= 0) THEN
+               WRITE(iunit,"(3(2X,A,I3.3,A,1X,'=',1X,E22.14))") &
+                  'TARGET_S12(',ik,')',target_s12(ik),& 
+                  'SIGMA_S12(',ik,')',sigma_s12(ik),&
+                  'S_S12(',ik,')',s_s12(ik)
+            END IF
+         END DO
+      END IF
+      IF (ANY(sigma_s21 < bigno)) THEN
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         WRITE(iunit,'(A)') '!          S21 Susceptance Coefficient OPTIMIZATION'
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         DO ik = 1, UBOUND(sigma_s21,DIM=1)
+            IF (sigma_s21(ik) < bigno .and. s_21(ik) >= 0) THEN
+               WRITE(iunit,"(3(2X,A,I3.3,A,1X,'=',1X,E22.14))") &
+                  'TARGET_S21(',ik,')',target_s21(ik),& 
+                  'SIGMA_S21(',ik,')',sigma_s21(ik),&
+                  'S_S21(',ik,')',s_s21(ik)
+            END IF
+         END DO
+      END IF
+      IF (ANY(sigma_s22 < bigno)) THEN
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         WRITE(iunit,'(A)') '!          S22 Susceptance Coefficient OPTIMIZATION'
+         WRITE(iunit,'(A)') '!----------------------------------------------------------------------'
+         DO ik = 1, UBOUND(sigma_s22,DIM=1)
+            IF (sigma_s22(ik) < bigno .and. s_22(ik) >= 0) THEN
+               WRITE(iunit,"(3(2X,A,I3.3,A,1X,'=',1X,E22.14))") &
+                  'TARGET_S22(',ik,')',target_s22(ik),& 
+                  'SIGMA_S22(',ik,')',sigma_s22(ik),&
+                  'S_S22(',ik,')',s_s22(ik)
             END IF
          END DO
       END IF
