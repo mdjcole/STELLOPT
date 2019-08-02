@@ -165,6 +165,9 @@
       ! Vacuum ROTATIONAL TRANSFORM
       IF (ANY(sigma_vaciota < bigno)) &
          CALL chisq_vaciota(target_vaciota, sigma_vaciota, ncnt,iflag)
+      ! Susceptance Coefficient S11
+      IF (ANY(sigma_s11 < bigno)) &
+         CALL chisq_s11(target_s11, sigma_s11, ncnt,iflag)
       ! Parallel Current <J.B>
       IF (ANY(sigma_jdotb < bigno)) &
          CALL chisq_jdotb(target_jdotb, sigma_jdotb, ncnt,iflag)

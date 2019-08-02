@@ -14,8 +14,6 @@
       USE stellopt_runtime
       USE stellopt_targets
       USE equil_utils
-      USE EZspline_obj
-      USE EZspline
       
 !-----------------------------------------------------------------------
 !     Input/Output Variables
@@ -49,7 +47,7 @@
             IF (sigma(ik) >= bigno) CYCLE
             IF (s_s11(ik) <= 1.0 .and. s_s11(ik) >= 0.0) THEN
                ier = 0
-               CALL get_equil_sus(s_vaciota(ik),s11,s12,s21,s22,ier)
+               CALL get_equil_sus(s_s11(ik),s11,s12,s21,s22,ier)
             ELSE
                s11 = 0.0
             END IF
