@@ -168,6 +168,15 @@
       ! Susceptance Coefficient S11
       IF (ANY(sigma_s11 < bigno)) &
          CALL chisq_s11(target_s11, sigma_s11, ncnt,iflag)
+      ! Susceptance Coefficient S12
+      IF (ANY(sigma_s12 < bigno)) &
+         CALL chisq_s12(target_s12, sigma_s12, ncnt,iflag)
+      ! Susceptance Coefficient S21
+      IF (ANY(sigma_s21 < bigno)) &
+         CALL chisq_s21(target_s21, sigma_s21, ncnt,iflag)
+      ! Susceptance Coefficient S22
+      IF (ANY(sigma_s22 < bigno)) &
+         CALL chisq_s22(target_s22, sigma_s22, ncnt,iflag)
       ! Parallel Current <J.B>
       IF (ANY(sigma_jdotb < bigno)) &
          CALL chisq_jdotb(target_jdotb, sigma_jdotb, ncnt,iflag)
