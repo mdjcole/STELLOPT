@@ -1,5 +1,8 @@
 ObjectFiles = \
 chisq_s11.o \
+chisq_s12.o \
+chisq_s21.o \
+chisq_s22.o \
 stellopt_init_mpi.o \
 chisq_x.o \
 chisq_y.o \

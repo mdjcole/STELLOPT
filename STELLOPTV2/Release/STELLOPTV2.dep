@@ -244,6 +244,30 @@ chisq_s11.o : \
       equil_utils.o \
       equil_vals.o 
 
+
+chisq_s12.o : \
+      $(LIB_DIR)/Release/stel_tools.o \
+      stellopt_runtime.o \
+      stellopt_targets.o \
+      equil_utils.o \
+      equil_vals.o 
+
+
+chisq_s21.o : \
+      $(LIB_DIR)/Release/stel_tools.o \
+      stellopt_runtime.o \
+      stellopt_targets.o \
+      equil_utils.o \
+      equil_vals.o 
+
+
+chisq_s22.o : \
+      $(LIB_DIR)/Release/stel_tools.o \
+      stellopt_runtime.o \
+      stellopt_targets.o \
+      equil_utils.o \
+      equil_vals.o 
+
 chisq_jstar.o : \
       stellopt_runtime.o \
       stellopt_targets.o \
