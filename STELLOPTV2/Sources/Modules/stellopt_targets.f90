@@ -172,6 +172,11 @@
       INTEGER                            :: nra_ece, nphi_ece
       REAL(rprec), DIMENSION(nsys,3)     :: antennaposition_ece, targetposition_ece,rbeam_ece,rfocus_ece
       CHARACTER(256)                     :: vessel_ece,mirror_ece,targettype_ece,antennatype_ece
+
+      REAL(rprec), DIMENSION(nsd)        ::  target_s11, sigma_s11, s_s11
+      REAL(rprec), DIMENSION(nsd)        ::  target_s12, sigma_s12, s_s12
+      REAL(rprec), DIMENSION(nsd)        ::  target_s21, sigma_s21, s_s21
+      REAL(rprec), DIMENSION(nsd)        ::  target_s22, sigma_s22, s_s22
       
       INTEGER     ::  numws
       REAL(rprec) ::  target_coil_bnorm, sigma_coil_bnorm
@@ -227,6 +232,10 @@
       INTEGER, PARAMETER :: jtarget_iota       = 300  
       INTEGER, PARAMETER :: jtarget_iprime     = 301
       INTEGER, PARAMETER :: jtarget_vaciota    = 302  
+      INTEGER, PARAMETER :: jtarget_s11        = 303  
+      INTEGER, PARAMETER :: jtarget_s12        = 304  
+      INTEGER, PARAMETER :: jtarget_s21        = 305  
+      INTEGER, PARAMETER :: jtarget_s22        = 306  
       INTEGER, PARAMETER :: jtarget_mse        = 401
       INTEGER, PARAMETER :: jtarget_faraday    = 402
       INTEGER, PARAMETER :: jtarget_sxr        = 403
@@ -344,6 +353,14 @@
             WRITE(iunit, out_format) 'Rotational Transform'
          CASE(jtarget_vaciota)
             WRITE(iunit, out_format) 'Vacuum Rotational Transform'
+         CASE(jtarget_s11)
+            WRITE(iunit, out_format) 'S11 Susceptance Coefficient'
+         CASE(jtarget_s12)
+            WRITE(iunit, out_format) 'S12 Susceptance Coefficient'
+         CASE(jtarget_s21)
+            WRITE(iunit, out_format) 'S21 Susceptance Coefficient'
+         CASE(jtarget_s22)
+            WRITE(iunit, out_format) 'S22 Susceptance Coefficient'
          CASE(jtarget_iprime)
             WRITE(iunit, out_format) 'Current Profile (I'')'
          CASE(jtarget_mse)
