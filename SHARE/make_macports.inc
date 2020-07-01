@@ -94,14 +94,14 @@
 #            GENE Options
 #######################################################################
   LGENE = F
-  GENE_INC = -I$(GENE_PATH)
-  GENE_DIR = $(GENE_PATH)
+  GENE_DIR = $(GENE_PATH)/bin/obj_macports
+  FUTILS_DIR = $(GENE_PATH)/external/macports/futils-gene-mod/src
   LIB_GENE = libgene.a
+  LIB_FUTILS = libfutils.a
+  GENE_INC = -I$(GENE_DIR) \
+             -I$(FUTILS_DIR)
   GENE_LIB = $(GENE_DIR)/$(LIB_GENE) \
-             -L/u/slazerso/src/GENE17_2016/external/pppl_cluster/futils/src -lfutils \
-             -L$(FFTWHOME)/lib -lfftw3 \
-             -L$(SLEPC_DIR)/$(PETSC_ARCH)/lib -lslepc \
-             -L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc -lX11
+             $(FUTILS_DIR)/$(LIB_FUTILS)
 
 #######################################################################
 #            COILOPT++ Options
@@ -149,8 +149,7 @@
   SFINCS_DIR = $(SFINCS_PATH)
   SFINCS_INC = -I$(SFINCS_DIR)
   LIB_SFINCS = libsfincs.a
-  SFINCS_LIB = $(SFINCS_DIR)/$(LIB_SFINCS) \
-             -L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc -lX11
+  SFINCS_LIB = $(SFINCS_DIR)/$(LIB_SFINCS)
 
 #######################################################################
 #            LIBSTELL Shared Options
