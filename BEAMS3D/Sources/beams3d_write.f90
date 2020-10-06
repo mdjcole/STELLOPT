@@ -301,16 +301,15 @@
                CALL write_scalar_hdf5(fid,'zmax_dist',ier,DBLVAR=zmax_dist,&
                                    ATT='Z Dist. Max Axis Value [m]',ATT_NAME='description')
                IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'zmax_dist',ier)
-               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ns_prof3',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof4',ier,INTVAR=ndist4,&
+               CALL write_scalar_hdf5(fid,'ndist4',ier,INTVAR=ndist4,&
                                    ATT='VLL Dist. Grid Points[-vmax,vmax]',ATT_NAME='description')
                IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist4',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof5',ier,INTVAR=ndist5,&
+               CALL write_scalar_hdf5(fid,'ndist5',ier,INTVAR=ndist5,&
                                    ATT='Vperp Dist. Grid Points [0, vmax]',ATT_NAME='description')
                IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist5',ier)
                IF (ASSOCIATED(ndot_prof)) THEN
                   CALL write_var_hdf5(fid,'ndot_prof',nbeams,ndistns,ier,DBLVAR=ndot_prof,&
-                                      ATT='Fast Ion Source [m^-3/s]',ATT_NAME='description')
+                                      ATT='Themalized Ion Source [m^-3/s]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndot_prof',ier)
                END IF
                IF (ASSOCIATED(epower_prof)) THEN
@@ -332,6 +331,16 @@
                   CALL write_var_hdf5(fid,'dense_prof',nbeams,ndistns,ier,DBLVAR=dense_prof,&
                                       ATT='Fast Ion Density [m^-3]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'dense_prof',ier)
+               END IF
+               IF (ASSOCIATED(momll_prof)) THEN
+                  CALL write_var_hdf5(fid,'momll_prof',nbeams,ndistns,ier,DBLVAR=momll_prof,&
+                                      ATT='Fast Ion Parallel Momentum Density [kg*m^-2*s^-1]',ATT_NAME='description')
+                  IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'momll_prof',ier)
+               END IF
+               IF (ASSOCIATED(pperp_prof)) THEN
+                  CALL write_var_hdf5(fid,'pperp_prof',nbeams,ndistns,ier,DBLVAR=pperp_prof,&
+                                      ATT='Fast Ion Perpendicular Pressure [Pa]',ATT_NAME='description')
+                  IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'pperp_prof',ier)
                END IF
                IF (ASSOCIATED(dist5d_prof)) THEN
                   CALL write_var_hdf5(fid,'dist_prof',nbeams,ndist1,ndist2,ndist3,ndist4,ndist5,ier,DBLVAR=dist5d_prof,&

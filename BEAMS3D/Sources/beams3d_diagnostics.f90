@@ -190,7 +190,8 @@
       IF (lvmec .and. .not.lvac .and. .not.ldepo .and. myworkid == master) THEN
          ! ALLOCATE the profile arrays
          ALLOCATE(dense_prof(nbeams,ndistns), j_prof(nbeams,ndistns), &
-            epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns))
+            epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns), &
+            momll_prof(nbeams,ndistns), pperp_prof(nbeams,ndistns))
 
          ! Create the helper axis arrays
          ALLOCATE(vllaxis(ndist4),vperpaxis(ndist5),rdistaxis(ndist1))
@@ -245,7 +246,10 @@
          END DO
 
          ! Now calculate the Current Profile [A*m^-2]
+         ! Now calculate the Parallel momentum Profile [kg*m^-2*s^-1]
+         ! Now calculate the Perpendicular Pressure Profile [Pa]
          j_prof = 0
+         momll_prof = 0
          DO m = 1, nbeams
             DO l = 1, ndistns ! Edges
                s1 = REAL(l-1)/REAL(ndistns)
@@ -255,7 +259,14 @@
                   WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
                   j_prof(m,l) = j_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vllaxis(j)
                END DO
+               DO j = 1, ndist5
+                  help3d = SUM(dist5d_prof(m,:,:,:,:,j),DIM=4)
+                  WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+                  pperp_prof(m,l) = pperp_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vperpaxis(j)*vperpaxis(j)
+               END DO
             END DO
+            pperp_prof(m,:) = pperp_prof(m,:) * mass_beams(m) !p_perp
+            momll_prof(m,:) = j_prof(m,:) * mass_beams(m) ! mvll
             j_prof(m,:) = j_prof(m,:) * charge_beams(m)
          END DO
 

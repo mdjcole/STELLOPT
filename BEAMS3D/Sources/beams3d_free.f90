@@ -15,7 +15,8 @@
                                shine_through, &
                                B_lines, end_state, shine_port, Gfactor, &
                                ndot_prof, epower_prof, ipower_prof, j_prof,&
-                               dense_prof, dist5d_prof, &
+                               dense_prof, dist5d_prof, momll_prof, &
+                               pperp_prof, &
                                win_ndot, win_epower, win_ipower, win_jprof, &
                                win_dense, win_dist5d
       USE mpi_sharmem
@@ -111,6 +112,8 @@
          IF (ASSOCIATED(ipower_prof))    DEALLOCATE(ipower_prof)
          IF (ASSOCIATED(j_prof))    DEALLOCATE(j_prof)
          IF (ASSOCIATED(dense_prof))    DEALLOCATE(dense_prof)
+         IF (ASSOCIATED(momll_prof))    DEALLOCATE(momll_prof)
+         IF (ASSOCIATED(pperp_prof))    DEALLOCATE(pperp_prof)
          IF (ASSOCIATED(dist5d_prof)) CALL mpidealloc(dist5d_prof,win_dist5d)
       ELSE
          IF (ASSOCIATED(req_axis)) DEALLOCATE(req_axis)
