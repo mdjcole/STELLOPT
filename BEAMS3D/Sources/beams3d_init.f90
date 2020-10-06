@@ -18,11 +18,12 @@
       USE beams3d_lines, ONLY: nparticles, epower_prof, ipower_prof, &
                                ndot_prof, j_prof, dense_prof, &
                                partvmax, partpmax, &
-                               end_state, ns_prof1, ns_prof2, ns_prof3, &
-                               ns_prof4, ns_prof5, dist5d_prof, win_dist5d, &
+                               end_state, ndist1, ndist2, ndist3, &
+                               ndist4, ndist5, dist5d_prof, win_dist5d, &
                                win_epower, win_ipower, win_ndot, win_jprof, &
-                               win_dense, nsh_prof4, h2_prof, h3_prof, &
-                               h4_prof, h5_prof
+                               win_dense, nhdist4, h1dist, h2dist, &
+                               h3dist, h4dist, h5dist, &
+                               rmin_dist, rmax_dist, zmin_dist, zmax_dist
       USE wall_mod
       USE mpi_params
       USE adas_mod_parallel, ONLY: adas_load_tables, adas_tables_avail
@@ -42,6 +43,8 @@
       INTEGER :: i,j,k,ier, iunit, nextcur_in, nshar
       INTEGER :: bcs1(2), bcs2(2), bcs3(2), bcs1_s(2)
       REAL(rprec) :: br, bphi, bz, ti_temp, vtemp
+
+      REAL(rprec), PARAMETER :: cspeed = 299792458.0
 !-----------------------------------------------------------------------
 !     External Functions
 !          A00ADF               NAG Detection
@@ -509,6 +512,7 @@
       ELSEIF (lfusion) THEN
          CALL beams3d_init_fusion
       ELSE
+         ! In the future us a method which divides up the problem by charge and mass
         ALLOCATE(  R_start(nparticles), phi_start(nparticles), Z_start(nparticles), &
            v_neut(3,nparticles), mass(nparticles), charge(nparticles), &
            mu_start(nparticles), Zatom(nparticles), t_end(nparticles), vll_start(nparticles), &
@@ -534,11 +538,14 @@
       ALLOCATE(end_state(nparticles))
       end_state=0
 
-      ! Setup 
-      ALLOCATE(epower_prof(nbeams,ns_prof1), ipower_prof(nbeams,ns_prof1), &
-               ndot_prof(nbeams,ns_prof1), j_prof(nbeams,ns_prof1), &
-               dense_prof(nbeams,ns_prof1))
-      ipower_prof=0; epower_prof=0; ndot_prof=0; j_prof = 0
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !!              Initialize Distribution Function
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      ALLOCATE(ndot_prof(nbeams,ndistns))
+!      ALLOCATE(epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns), &
+!               ndot_prof(nbeams,ndistns), j_prof(nbeams,ndistns), &
+!               dense_prof(nbeams,ndistns))
+!      ipower_prof=0; epower_prof=0; ndot_prof=0; j_prof = 0
 
       ! ALLOCATE the 6D array of 5D distribution
       !CALL mpialloc(epower_prof, nbeams, ns_prof1, myid_sharmem, 0, MPI_COMM_SHARMEM, win_epower)
@@ -546,19 +553,35 @@
       !CALL mpialloc(  ndot_prof, nbeams, ns_prof1, myid_sharmem, 0, MPI_COMM_SHARMEM, win_ndot  )
       !CALL mpialloc(     j_prof, nbeams, ns_prof1, myid_sharmem, 0, MPI_COMM_SHARMEM, win_jprof )
       !CALL mpialloc( dense_prof, nbeams, ns_prof1, myid_sharmem, 0, MPI_COMM_SHARMEM, win_dense )
-      CALL mpialloc(dist5d_prof, nbeams, ns_prof1, ns_prof2, ns_prof3, ns_prof4, ns_prof5, myid_sharmem, 0, MPI_COMM_SHARMEM, win_dist5d)
+      CALL mpialloc(dist5d_prof, nbeams, ndist1, ndist2, ndist3, ndist4, ndist5, myid_sharmem, 0, MPI_COMM_SHARMEM, win_dist5d)
       IF (myid_sharmem == master) THEN
          dist5d_prof = 0; !ipower_prof=0; epower_prof=0; ndot_prof=0; j_prof = 0
       END IF
-      h2_prof = ns_prof2*invpi2
-      h3_prof = ns_prof3*invpi2
+      rmin_dist = max(rmin,rmin_dist)
+      rmax_dist = min(rmax,rmax_dist)
+      zmin_dist = max(zmin,zmin_dist)
+      zmax_dist = min(zmax,zmax_dist)
+      h1dist = ndist1/(rmax_dist-rmin_dist)
+      h2dist = ndist2*invpi2
+      h3dist = ndist3/(zmax_dist-zmin_dist)
 
       ! Determine maximum particle velocity
       partvmax=MAX(MAXVAL(ABS(vll_start))*6.0/5.0,partvmax)
       !partpmax=MAX(MAXVAL(ABS(partvmax*mass)),partpmax)
-      nsh_prof4 = ns_prof4/2
-      h4_prof = 0.5*ns_prof4/partvmax
-      h5_prof = ns_prof5/partvmax
+      nhdist4 = ndist4/2
+      h4dist = 0.5*ndist4/partvmax
+      h5dist = ndist5/partvmax
+
+      ! Print Grid info to screen
+      IF (lverb) THEN
+         WRITE(6,'(A)')'----- 5D Distribution -----'
+         WRITE(6,'(A,F9.5,A,F9.5,A,I4)') '   R     = [',rmin_dist,',',rmax_dist,']; [m]  NR:   ',ndist1
+         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   PHI   = [',0.0,',',pi2,']; [deg]  NPHI: ',ndist2
+         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   Z     = [',zmin_dist,',',zmax_dist,']; [m]  NZ:   ',ndist3
+         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   VLL   = [',-partvmax/cspeed,',',partvmax/cspeed,']; [c]  NVLL:   ',ndist4
+         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   VPERP = [',0.0,',',partvmax/cspeed,']; [c]  NVPERP:   ',ndist5
+         CALL FLUSH(6)
+      END IF
 
       ! Do a reality check
       IF (ANY(ABS(vll_start)>3E8) .and. lverb) THEN

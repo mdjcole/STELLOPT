@@ -25,7 +25,7 @@
                                  U_ARR, POT_ARR, POT_spl_s, nne, nte, nti, npot, &
                                  ZEFF_spl_s, nzeff, ZEFF_ARR, req_axis, zeq_axis, &
                                  phiedge_eq, reff_eq
-      USE beams3d_lines, ONLY: GFactor, ns_prof1
+      USE beams3d_lines, ONLY: GFactor, ndist1
       USE wall_mod, ONLY: wall_load_mn, wall_info,vertex,face
       USE mpi_params
       USE mpi_inc
@@ -373,9 +373,9 @@
       IF (luse_vc) CALL free_virtual_casing(MPI_COMM_BEAMS)
       IF (myworkid == master) THEN
          ! Only master has Gfactor
-         ALLOCATE(Gfactor(ns_prof1))
-         DO s = 1, ns_prof1
-            sflx = REAL(s-1 + 0.5)/ns_prof1 ! Half grid rho
+         ALLOCATE(Gfactor(ndistns))
+         DO s = 1, ndistns
+            sflx = REAL(s-1 + 0.5)/ndistns ! Half grid rho
             sflx = sflx*sflx
             CALL EZspline_interp(ZEFF_spl_s,sflx,uflx,ier)
             ! sflx=s uflx=Zeff

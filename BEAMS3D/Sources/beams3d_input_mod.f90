@@ -12,8 +12,9 @@
 !-----------------------------------------------------------------------
       USE stel_kinds, ONLY: rprec
       USE beams3d_runtime
-      USE beams3d_lines, ONLY: nparticles, ns_prof1, ns_prof2, ns_prof3, &
-                               ns_prof4, ns_prof5, partvmax
+      USE beams3d_lines, ONLY: nparticles, ndist1, ndist2, ndist3, &
+                               ndist4, ndist5, partvmax, rmin_dist, &
+                               rmax_dist, zmin_dist, zmax_dist
       USE beams3d_grid, ONLY: nr, nphi, nz, rmin, rmax, zmin, zmax, &
                               phimin, phimax, vc_adapt_tol, nte, nne, nti,&
                               nzeff, npot, plasma_mass, plasma_Zavg, &
@@ -28,7 +29,7 @@
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       ! These are helpers to give the ns1_prof variables user friendly names
-      INTEGER :: nrho_dist, ntheta_dist, nzeta_dist, nvpara_dist, nvperp_dist
+      INTEGER :: nr_dist, nphi_dist, nz_dist, nvpara_dist, nvperp_dist
 
 !-----------------------------------------------------------------------
 !     Input Namelists
@@ -75,9 +76,10 @@
                                ldebug, ne_scale, te_scale, ti_scale, &
                                zeff_scale, plasma_mass, plasma_Zavg, &
                                plasma_Zmean, therm_factor, &
-                               fusion_scale, nrho_dist, ntheta_dist, & 
-                               nzeta_dist, nvpara_dist, nvperp_dist, &
-                               partvmax
+                               fusion_scale, nr_dist, nphi_dist, & 
+                               nz_dist, nvpara_dist, nvperp_dist, &
+                               partvmax, rmin_dist, rmax_dist, &
+                               zmin_dist, zmax_dist
       
 !-----------------------------------------------------------------------
 !     Subroutines
@@ -152,12 +154,17 @@
       therm_factor = 1.5 ! Factor at which to thermalize particles
 
       ! Distribution Function Defaults
-      nrho_dist = 64
-      ntheta_dist=4
-      nzeta_dist=4
+      ndistns = 128
+      nr_dist = 32
+      nphi_dist=16
+      nz_dist=32
       nvpara_dist=32
       nvperp_dist=16
       partvmax = 0 ! Allows user to set value
+      rmin_dist = 0
+      rmax_dist = 1E10
+      zmin_dist = -1E10
+      zmax_dist = 1E10
 
 
       ! Read namelist
@@ -178,11 +185,11 @@
          CLOSE(iunit)
 
          ! Update dist function sizes
-         ns_prof1=nrho_dist
-         ns_prof2=ntheta_dist
-         ns_prof3=nzeta_dist
-         ns_prof4=nvpara_dist
-         ns_prof5=nvperp_dist
+         ndist1=nr_dist
+         ndist2=nphi_dist
+         ndist3=nz_dist
+         ndist4=nvpara_dist
+         ndist5=nvperp_dist
 
          NE_AUX_F = NE_AUX_F*ne_scale
          TE_AUX_F = TE_AUX_F*te_scale
@@ -288,12 +295,16 @@
       WRITE(iunit_out,outflt) 'PLASMA_ZMEAN',plasma_zmean
       WRITE(iunit_out,outflt) 'THERM_FACTOR',therm_factor
       WRITE(iunit_out,'(A)') '!---------- Distribution Parameters ------------'
-      WRITE(iunit_out,outint) 'NRHO_DIST',ns_prof1
-      WRITE(iunit_out,outint) 'NTHETA_DIST',ns_prof2
-      WRITE(iunit_out,outint) 'NZETA_DIST',ns_prof3
-      WRITE(iunit_out,outint) 'NVPARA_DIST',ns_prof4
-      WRITE(iunit_out,outint) 'NVPERP_DIST',ns_prof5
+      WRITE(iunit_out,outint) 'NR_DIST',ndist1
+      WRITE(iunit_out,outint) 'NPHI_DIST',ndist2
+      WRITE(iunit_out,outint) 'NZ_DIST',ndist3
+      WRITE(iunit_out,outint) 'NVPARA_DIST',ndist4
+      WRITE(iunit_out,outint) 'NVPERP_DIST',ndist5
       WRITE(iunit_out,outflt) 'PARTVMAX',partvmax
+      WRITE(iunit_out,outflt) 'RMIN_DIST',rmin_dist
+      WRITE(iunit_out,outflt) 'RMAX_DIST',rmax_dist
+      WRITE(iunit_out,outflt) 'ZMIN_DIST',zmin_dist
+      WRITE(iunit_out,outflt) 'ZMAX_DIST',zmax_dist
       IF (lbeam) THEN
          WRITE(iunit_out,"(A)") '!---------- Profiles ------------'
          WRITE(iunit_out,outflt) 'NE_SCALE',NE_SCALE
@@ -352,12 +363,16 @@
       CALL MPI_BCAST(nz,1,MPI_INTEGER, local_master, comm,istat)
 
 
-      CALL MPI_BCAST(ns_prof1,1,MPI_INTEGER, local_master, comm,istat)
-      CALL MPI_BCAST(ns_prof2,1,MPI_INTEGER, local_master, comm,istat)
-      CALL MPI_BCAST(ns_prof3,1,MPI_INTEGER, local_master, comm,istat)
-      CALL MPI_BCAST(ns_prof4,1,MPI_INTEGER, local_master, comm,istat)
-      CALL MPI_BCAST(ns_prof5,1,MPI_INTEGER, local_master, comm,istat)
+      CALL MPI_BCAST(ndist1,1,MPI_INTEGER, local_master, comm,istat)
+      CALL MPI_BCAST(ndist2,1,MPI_INTEGER, local_master, comm,istat)
+      CALL MPI_BCAST(ndist3,1,MPI_INTEGER, local_master, comm,istat)
+      CALL MPI_BCAST(ndist4,1,MPI_INTEGER, local_master, comm,istat)
+      CALL MPI_BCAST(ndist5,1,MPI_INTEGER, local_master, comm,istat)
       CALL MPI_BCAST(partvmax,1,MPI_REAL8, local_master, comm,istat)
+      CALL MPI_BCAST(rmin_dist,1,MPI_REAL8, local_master, comm,istat)
+      CALL MPI_BCAST(rmax_dist,1,MPI_REAL8, local_master, comm,istat)
+      CALL MPI_BCAST(zmin_dist,1,MPI_REAL8, local_master, comm,istat)
+      CALL MPI_BCAST(zmax_dist,1,MPI_REAL8, local_master, comm,istat)
 
       CALL MPI_BCAST(nbeams,1,MPI_INTEGER, local_master, comm,istat)
       CALL MPI_BCAST(nparticles_start,1,MPI_INTEGER, local_master, comm,istat)

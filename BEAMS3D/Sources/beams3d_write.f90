@@ -107,7 +107,7 @@
                CALL write_var_hdf5(fid,'POT_ARR',nr,nphi,nz,ier,DBLVAR=POT_ARR,ATT='Electrostatic Potential [V]',ATT_NAME='description')
                IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'POT_ARR',ier)
                IF (ALLOCATED(GFactor)) THEN
-                  CALL write_var_hdf5(fid,'GFactor',ns_prof1,ier,DBLVAR=GFactor,ATT='(1-l31)/Zeff',ATT_NAME='description')
+                  CALL write_var_hdf5(fid,'GFactor',ndistns,ier,DBLVAR=GFactor,ATT='(1-l31)/Zeff',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'GFactor',ier)
                END IF
                IF (ASSOCIATED(TE)) THEN
@@ -277,49 +277,65 @@
                CALL write_scalar_hdf5(fid,'partvmax',ier,DBLVAR=partvmax,&
                                       ATT='Maximum velocity of dist func [m/s]',ATT_NAME='description')
                IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'partvmax',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof1',ier,INTVAR=ns_prof1,&
-                                   ATT='Rho Dist. Grid Points [0,1]',ATT_NAME='description')
-               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ns_prof1',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof2',ier,INTVAR=ns_prof2,&
-                                   ATT='U Dist. Grid Points [0,2pi]',ATT_NAME='description')
-               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ns_prof2',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof3',ier,INTVAR=ns_prof3,&
-                                   ATT='V Dist. Grid Points [0,2pi]',ATT_NAME='description')
+               CALL write_scalar_hdf5(fid,'nrho',ier,INTVAR=ndistns,&
+                                   ATT='Number of r/a gridpoints',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndistns',ier)
+               CALL write_scalar_hdf5(fid,'ndist1',ier,INTVAR=ndist1,&
+                                   ATT='R Dist. Grid Points [rmin_dist,rmax_dist]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist1',ier)
+               CALL write_scalar_hdf5(fid,'rmin_dist',ier,DBLVAR=rmin_dist,&
+                                   ATT='R Dist. Min Axis Value [m]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'rmin_dist',ier)
+               CALL write_scalar_hdf5(fid,'rmax_dist',ier,DBLVAR=rmax_dist,&
+                                   ATT='R Dist. Max Axis Value [m]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'rmax_dist',ier)
+               CALL write_scalar_hdf5(fid,'ndist2',ier,INTVAR=ndist2,&
+                                   ATT='Phi Dist. Grid Points [0,2pi]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist2',ier)
+               CALL write_scalar_hdf5(fid,'ndist3',ier,INTVAR=ndist3,&
+                                   ATT='Z Dist. Grid Points [zmin_dist,zmax_dist]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist3',ier)
+               CALL write_scalar_hdf5(fid,'zmin_dist',ier,DBLVAR=zmin_dist,&
+                                   ATT='Z Dist. Min Axis Value [m]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'zmin_dist',ier)
+               CALL write_scalar_hdf5(fid,'zmax_dist',ier,DBLVAR=zmax_dist,&
+                                   ATT='Z Dist. Max Axis Value [m]',ATT_NAME='description')
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'zmax_dist',ier)
                IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ns_prof3',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof4',ier,INTVAR=ns_prof4,&
+               CALL write_scalar_hdf5(fid,'ns_prof4',ier,INTVAR=ndist4,&
                                    ATT='VLL Dist. Grid Points[-vmax,vmax]',ATT_NAME='description')
-               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ns_prof4',ier)
-               CALL write_scalar_hdf5(fid,'ns_prof5',ier,INTVAR=ns_prof5,&
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist4',ier)
+               CALL write_scalar_hdf5(fid,'ns_prof5',ier,INTVAR=ndist5,&
                                    ATT='Vperp Dist. Grid Points [0, vmax]',ATT_NAME='description')
-               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ns_prof5',ier)
+               IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndist5',ier)
                IF (ASSOCIATED(ndot_prof)) THEN
-                  CALL write_var_hdf5(fid,'ndot_prof',nbeams,ns_prof1,ier,DBLVAR=ndot_prof,&
+                  CALL write_var_hdf5(fid,'ndot_prof',nbeams,ndistns,ier,DBLVAR=ndot_prof,&
                                       ATT='Fast Ion Source [m^-3/s]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ndot_prof',ier)
                END IF
                IF (ASSOCIATED(epower_prof)) THEN
-                  CALL write_var_hdf5(fid,'epower_prof',nbeams,ns_prof1,ier,DBLVAR=epower_prof,&
+                  CALL write_var_hdf5(fid,'epower_prof',nbeams,ndistns,ier,DBLVAR=epower_prof,&
                                       ATT='Electron Power Deposition [W*m^-3]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'epower_prof',ier)
                END IF
                IF (ASSOCIATED(ipower_prof)) THEN
-                  CALL write_var_hdf5(fid,'ipower_prof',nbeams,ns_prof1,ier,DBLVAR=ipower_prof,&
+                  CALL write_var_hdf5(fid,'ipower_prof',nbeams,ndistns,ier,DBLVAR=ipower_prof,&
                                       ATT='Ion Power Deposition [W*m^-3]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'ipower_prof',ier)
                END IF
                IF (ASSOCIATED(j_prof)) THEN
-                  CALL write_var_hdf5(fid,'j_prof',nbeams,ns_prof1,ier,DBLVAR=j_prof,&
+                  CALL write_var_hdf5(fid,'j_prof',nbeams,ndistns,ier,DBLVAR=j_prof,&
                                       ATT='Total Beam Current Density [A*m^-2]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'j_prof',ier)
                END IF
                IF (ASSOCIATED(dense_prof)) THEN
-                  CALL write_var_hdf5(fid,'dense_prof',nbeams,ns_prof1,ier,DBLVAR=dense_prof,&
+                  CALL write_var_hdf5(fid,'dense_prof',nbeams,ndistns,ier,DBLVAR=dense_prof,&
                                       ATT='Fast Ion Density [m^-3]',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'dense_prof',ier)
                END IF
                IF (ASSOCIATED(dist5d_prof)) THEN
-                  CALL write_var_hdf5(fid,'dist_prof',nbeams,ns_prof1,ns_prof2,ns_prof3,ns_prof4,ns_prof5,ier,DBLVAR=dist5d_prof,&
-                                      ATT='Distribution Function [part/(m^6/s^3)] (nbeam,nrho,npol,ntor,nvll,nvperp)',ATT_NAME='description')
+                  CALL write_var_hdf5(fid,'dist_prof',nbeams,ndist1,ndist2,ndist3,ndist4,ndist5,ier,DBLVAR=dist5d_prof,&
+                                      ATT='Distribution Function [part/(m^6/s^3)] (nbeam,nr,nphi,nz,nvll,nvperp)',ATT_NAME='description')
                   IF (ier /= 0) CALL handle_err(HDF5_WRITE_ERR,'dist_prof',ier)
                END IF
                IF (lbeam) THEN

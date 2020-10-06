@@ -20,9 +20,7 @@ MODULE beams3d_physics_mod
                                mymass, myv_neut, B_temp, rand_prob, &
                                cum_prob, tau, &
                                epower_prof, ipower_prof, &
-                               end_state, fact_crit, fact_pa, fact_vsound, &
-                               ns_prof1, ns_prof2, ns_prof3, ns_prof4, &
-                               ns_prof5
+                               end_state, fact_crit, fact_pa, fact_vsound
       USE beams3d_grid, ONLY: BR_spl, BZ_spl, delta_t, BPHI_spl, MODB_spl, MODB4D, &
                               phimax, S4D, TE4D, NE4D, TI4D, ZEFF4D, &
                               nr, nphi, nz, rmax, rmin, zmax, zmin, &
@@ -114,68 +112,67 @@ MODULE beams3d_physics_mod
          IF ((r_temp >= rmin-eps1) .and. (r_temp <= rmax+eps1) .and. &
              (phi_temp >= phimin-eps2) .and. (phi_temp <= phimax+eps2) .and. &
              (z_temp >= zmin-eps3) .and. (z_temp <= zmax+eps3)) THEN
-!         IF (ier == 0) THEN
-            ! Get the gridpoint info (this is possible since all grids are the same)
-            i = MIN(MAX(COUNT(raxis < r_temp),1),nr-1)
-            j = MIN(MAX(COUNT(phiaxis < phi_temp),1),nphi-1)
-            k = MIN(MAX(COUNT(zaxis < z_temp),1),nz-1)
-            xparam = (r_temp - raxis(i)) * hri(i)
-            yparam = (phi_temp - phiaxis(j)) * hpi(j)
-            zparam = (z_temp - zaxis(k)) * hzi(k)
-            !CALL R8HERM3xyz(r_temp,phi_temp,z_temp,&
-            !                MODB_spl%x1(1),MODB_spl%n1,&
-            !                MODB_spl%x2(1),MODB_spl%n2,&
-            !                MODB_spl%x3(1),MODB_spl%n3,&
-            !                MODB_spl%ilin1,MODB_spl%ilin2,MODB_spl%ilin3,&
-            !                i,j,k,xparam,yparam,zparam,&
-            !                hx,hxi,hy,hyi,hz,hzi,ier)
-            ! Evaluate the Splines
-            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
-                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
-                            MODB4D(1,1,1,1),nr,nphi,nz)
-            modb = fval(1)
-            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
-                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
-                            TE4D(1,1,1,1),nr,nphi,nz)
-            te_temp = max(fval(1),zero)
-            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
-                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
-                            NE4D(1,1,1,1),nr,nphi,nz)
-            ne_temp = max(fval(1),zero)
-            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
-                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
-                            TI4D(1,1,1,1),nr,nphi,nz)
-            ti_temp = max(fval(1),zero)
-            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
-                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
-                            S4D(1,1,1,1),nr,nphi,nz)
-            s_temp = fval(1)
+!            ! Get the gridpoint info (this is possible since all grids are the same)
+!            i = MIN(MAX(COUNT(raxis < r_temp),1),nr-1)
+!            j = MIN(MAX(COUNT(phiaxis < phi_temp),1),nphi-1)
+!            k = MIN(MAX(COUNT(zaxis < z_temp),1),nz-1)
+!            xparam = (r_temp - raxis(i)) * hri(i)
+!            yparam = (phi_temp - phiaxis(j)) * hpi(j)
+!            zparam = (z_temp - zaxis(k)) * hzi(k)
+!            ! Evaluate the Splines
+!            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+!                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+!                            MODB4D(1,1,1,1),nr,nphi,nz)
+!            modb = fval(1)
+!            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+!                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+!                            TE4D(1,1,1,1),nr,nphi,nz)
+!            te_temp = max(fval(1),zero)
+!            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+!                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+!                            NE4D(1,1,1,1),nr,nphi,nz)
+!            ne_temp = max(fval(1),zero)
+!            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+!                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+!                            TI4D(1,1,1,1),nr,nphi,nz)
+!            ti_temp = max(fval(1),zero)
+!            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+!                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+!                            S4D(1,1,1,1),nr,nphi,nz)
+!            s_temp = fval(1)
+!
+!            ! Helpers
+!            te_cube = te_temp * te_temp * te_temp
+!            inv_mymass = 1/mymass
+!
+!            !-----------------------------------------------------------
+!            !  Calculate Coulomb Logarithm (NRL pg. 35)
+!            !     te in eV and ne in cm^-3
+!            !-----------------------------------------------------------
+!            IF ((te_temp > 0).and.(ne_temp > 0)) THEN
+!               IF (te_temp < 10*myZ*myZ) THEN
+!                  coulomb_log = 23 - log( myZ*sqrt(ne_temp*1E-6/(te_cube) )   )
+!               ELSE
+!                  coulomb_log = 24 - log( sqrt(ne_temp*1E-6)/(te_temp) )
+!               END IF
+!               IF (coulomb_log .le. 1) coulomb_log = 1
+!               ! Callen Ch2 pg41 eq2.135 (fact*Vtherm; Vtherm = SQRT(2*E/mass) so E in J not eV)
+!               !v_crit = fact_crit*SQRT(2*te_temp*inv_mymass*e_charge)
+!               v_crit = fact_crit*SQRT(te_temp)
+!               !v_crit = (( 0.75*sqrt_pi*electron_mass*inv_mymass )**0.33333333333 )*sqrt(te_temp)*5.93096892024D5
+!               vcrit_cube = v_crit*v_crit*v_crit
+!               tau_spit = 3.777183D41*mymass*SQRT(te_cube)/(ne_temp*myZ*myZ*coulomb_log)  ! note ne should be in m^-3 here
+!               tau_spit_inv = (1.0D0)/tau_spit
+!               vc3_tauinv = vcrit_cube*tau_spit_inv
+!            END IF
 
-            ! Helpers
-            te_cube = te_temp * te_temp * te_temp
+            !-----------------------------------------------------------
+            !  Call the collisional function
+            !-----------------------------------------------------------
+            CALL beams3d_COLLISIONS(q,modb,ti_temp,tau_spit_inv,v_crit)
             inv_mymass = 1/mymass
-
-            !-----------------------------------------------------------
-            !  Calculate Coulomb Logarithm (NRL pg. 35)
-            !     te in eV and ne in cm^-3
-            !-----------------------------------------------------------
-            IF ((te_temp > 0).and.(ne_temp > 0)) THEN
-               IF (te_temp < 10*myZ*myZ) THEN
-                  coulomb_log = 23 - log( myZ*sqrt(ne_temp*1E-6/(te_cube) )   )
-               ELSE
-                  coulomb_log = 24 - log( sqrt(ne_temp*1E-6)/(te_temp) )
-               END IF
-               IF (coulomb_log .le. 1) coulomb_log = 1
-               ! Callen Ch2 pg41 eq2.135 (fact*Vtherm; Vtherm = SQRT(2*E/mass) so E in J not eV)
-               !v_crit = fact_crit*SQRT(2*te_temp*inv_mymass*e_charge)
-               v_crit = fact_crit*SQRT(te_temp)
-               !v_crit = (( 0.75*sqrt_pi*electron_mass*inv_mymass )**0.33333333333 )*sqrt(te_temp)*5.93096892024D5
-               vcrit_cube = v_crit*v_crit*v_crit
-               tau_spit = 3.777183D41*mymass*SQRT(te_cube)/(ne_temp*myZ*myZ*coulomb_log)  ! note ne should be in m^-3 here
-               tau_spit_inv = (1.0D0)/tau_spit
-               vc3_tauinv = vcrit_cube*tau_spit_inv
-            END IF
-
+            vcrit_cube = v_crit*v_crit*v_crit
+            vc3_tauinv = vcrit_cube*tau_spit_inv
 
             !-----------------------------------------------------------
             !  Viscouse Velocity Reduction
@@ -215,9 +212,9 @@ MODULE beams3d_physics_mod
                q(4) = vll
                RETURN
             END IF
-            l = MAX(MIN(CEILING(SQRT(s_temp)*ns_prof1),ns_prof1),1)
-            epower_prof(mybeam,l) = epower_prof(mybeam,l) + mymass*dve*dt*speed*weight(myline)
-            ipower_prof(mybeam,l) = ipower_prof(mybeam,l) + mymass*dvi*dt*speed*weight(myline)
+            !l = MAX(MIN(CEILING(SQRT(s_temp)*ndist1),ndist1),1)
+            !epower_prof(mybeam,l) = epower_prof(mybeam,l) + mymass*dve*dt*speed*weight(myline)
+            !ipower_prof(mybeam,l) = ipower_prof(mybeam,l) + mymass*dvi*dt*speed*weight(myline)
             vll = vfrac*vll
             moment = vfrac*vfrac*moment
             speed = newspeed
@@ -1291,5 +1288,111 @@ MODULE beams3d_physics_mod
          RETURN
 
       END SUBROUTINE beams3d_SFLX
+
+      !-----------------------------------------------------------------
+      !     Function:      beams3d_COLLISIONS
+      !     Authors:       S. Lazerson (samuel.lazerson@ipp.mpg.de)
+      !     Date:          10/05/2020
+      !     Description:   Returns the ion and electron collisional
+      !                    coefficients.
+      !-----------------------------------------------------------------
+      SUBROUTINE beams3d_COLLISIONS(q,modb,ti,tau_spit_inv,v_crit)
+         !--------------------------------------------------------------
+         !     Input Parameters
+         !          q            (q(1),q(2),q(3)) = (R,phi,Z)
+         !          modb         |B| [T]
+         !          ti           Ion Temperature [eV]
+         !          tau_spit_inv Inverse Spitzer Collsional coef [1/s]
+         !          v_crite      Critical Velocity [m/s]
+         !--------------------------------------------------------------
+         IMPLICIT NONE
+         DOUBLE PRECISION, INTENT(inout) :: q(3)
+         DOUBLE PRECISION, INTENT(out) :: modb
+         DOUBLE PRECISION, INTENT(out) :: ti
+         DOUBLE PRECISION, INTENT(out) :: tau_spit_inv
+         DOUBLE PRECISION, INTENT(out) :: v_crit
+
+         !--------------------------------------------------------------
+         !     Local Variables
+         !        r_temp     Helpers (r,phi,z, te)
+         !        i,j,k      Spline Grid indicies
+         !        xparam     Spline subgrid factor [0,1] (yparam,zparam)
+         !        ict        Spline output control
+         !        fval       Spline output array
+         !--------------------------------------------------------------
+         DOUBLE PRECISION :: r_temp, z_temp, phi_temp, te_temp, &
+                             ne_temp, coulomb_log, te_cube
+         ! For splines
+         INTEGER :: i,j,k
+         REAL*8 :: xparam, yparam, zparam
+         INTEGER, parameter :: ict(8)=(/1,0,0,0,0,0,0,0/)
+         REAL*8 :: fval(1)
+
+         !--------------------------------------------------------------
+         !     Begin Subroutine
+         !--------------------------------------------------------------
+
+         ! Setup position in a vll arrays
+         r_temp   = q(1)
+         phi_temp = MODULO(q(2), phimax)
+         IF (phi_temp < 0) phi_temp = phi_temp + phimax
+         z_temp   = q(3)
+
+         ! Initialize values
+         modb = one; ti = zero; tau_spit_inv = zero; v_crit = zero
+
+         ! Check that we're inside the domain then proceed
+         IF ((r_temp >= rmin-eps1) .and. (r_temp <= rmax+eps1) .and. &
+             (phi_temp >= phimin-eps2) .and. (phi_temp <= phimax+eps2) .and. &
+             (z_temp >= zmin-eps3) .and. (z_temp <= zmax+eps3)) THEN
+            i = MIN(MAX(COUNT(raxis < r_temp),1),nr-1)
+            j = MIN(MAX(COUNT(phiaxis < phi_temp),1),nphi-1)
+            k = MIN(MAX(COUNT(zaxis < z_temp),1),nz-1)
+            xparam = (r_temp - raxis(i)) * hri(i)
+            yparam = (phi_temp - phiaxis(j)) * hpi(j)
+            zparam = (z_temp - zaxis(k)) * hzi(k)
+            ! Evaluate the Splines
+            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+                            MODB4D(1,1,1,1),nr,nphi,nz)
+            modb = fval(1)
+            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+                            TI4D(1,1,1,1),nr,nphi,nz)
+            ti = max(fval(1),zero)
+            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+                            TE4D(1,1,1,1),nr,nphi,nz)
+            te_temp = max(fval(1),zero)
+            CALL R8HERM3FCN(ict,1,1,fval,i,j,k,xparam,yparam,zparam,&
+                            hr(i),hri(i),hp(j),hpi(j),hz(k),hzi(k),&
+                            NE4D(1,1,1,1),nr,nphi,nz)
+            ne_temp = max(fval(1),zero)
+
+            ! Helpers
+            te_cube = te_temp * te_temp * te_temp
+
+            !-----------------------------------------------------------
+            !  Calculate Coulomb Logarithm (NRL pg. 35)
+            !     te in eV and ne in cm^-3
+            !-----------------------------------------------------------
+            IF ((te_temp > 0).and.(ne_temp > 0)) THEN
+               IF (te_temp < 10*myZ*myZ) THEN
+                  coulomb_log = 23 - log( myZ*sqrt(ne_temp*1E-6/(te_cube) )   )
+               ELSE
+                  coulomb_log = 24 - log( sqrt(ne_temp*1E-6)/(te_temp) )
+               END IF
+               IF (coulomb_log .le. 1) coulomb_log = 1
+               ! Callen Ch2 pg41 eq2.135 (fact*Vtherm; Vtherm = SQRT(2*E/mass) so E in J not eV)
+               v_crit = fact_crit*SQRT(te_temp)
+               tau_spit_inv = one/(3.777183D41*mymass*SQRT(te_cube)/(ne_temp*myZ*myZ*coulomb_log))  ! note ne should be in m^-3 here
+            END IF
+         ELSE
+            RETURN
+         END IF
+
+         RETURN
+
+      END SUBROUTINE beams3d_COLLISIONS
 
 END MODULE beams3d_physics_mod

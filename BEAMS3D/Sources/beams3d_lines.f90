@@ -2,7 +2,7 @@
 !     Module:        beams3d_lines
 !     Authors:       S. Lazerson (lazerson@pppl.gov)
 !     Date:          02/21/2012
-!     Description:   This module contains the FIELDLINES field line
+!     Description:   This module contains the BEAMS3D field line
 !                    variables.
 !-----------------------------------------------------------------------
       MODULE beams3d_lines
@@ -22,14 +22,15 @@
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       LOGICAL  ::  ltherm
-      INTEGER  ::  ns_prof1, ns_prof2, ns_prof3, ns_prof4, ns_prof5, nsh_prof4
+      INTEGER  ::  ndist1, ndist2, ndist3, ndist4, ndist5, nhdist4,ndistns
       INTEGER  :: nparticles, nsteps, myline, mybeam, mytdex, myend, mystart_save,myend_save
       INTEGER  :: win_epower, win_ipower, win_ndot, win_dense, win_jprof, win_dist5d
       REAL(rprec) :: xlast,ylast,zlast ! for storing position
       REAL(rprec) :: moment, mycharge, myZ, mymass, myv_neut(3), &
                      B_temp(4), rand_prob, cum_prob, tau, next_t, &
                      dt_out, partvmax, fact_crit, fact_pa, fact_vsound, &
-                     partpmax, h2_prof, h3_prof, h4_prof, h5_prof
+                     partpmax, h1dist, h2dist, h3dist, h4dist, h5dist, &
+                     rmin_dist, rmax_dist, zmin_dist, zmax_dist
       LOGICAL, ALLOCATABLE     :: neut_lines(:,:)
       INTEGER, ALLOCATABLE     :: end_state(:)
       REAL(rprec), ALLOCATABLE :: shine_through(:), shine_port(:), GFactor(:)

@@ -32,6 +32,9 @@
 !                    - DIST5D implemented
 !     v2.80 09/24/20 - DIST5D Normalized to phase space volume
 !                    - J and dense now calculated in diagnostics
+!                    - Added Fusion birth routines
+!     v3.00 10/05/20 - Switched to R/PHI/Z/VLL/VPERP Dist Function
+!                    - Qk calculated from dist function.
 !-----------------------------------------------------------------------
 MODULE beams3d_runtime
     !-----------------------------------------------------------------------
@@ -137,7 +140,7 @@ MODULE beams3d_runtime
     CHARACTER(256) :: id_string, mgrid_string, coil_string, &
     vessel_string, int_type, restart_string, bbnbi_string
 
-    REAL(rprec), PARAMETER :: BEAMS3D_VERSION = 2.80
+    REAL(rprec), PARAMETER :: BEAMS3D_VERSION = 3.00
     !-----------------------------------------------------------------------
     !     Subroutines
     !          handle_err  Controls Program Termination
