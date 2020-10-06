@@ -19,6 +19,7 @@
                                  mass_beams, lverb, p_beams, MPI_BARRIER_ERR,&
                                  MPI_BCAST_ERR,nprocs_beams,handle_err, ldepo,&
                                  MPI_REDU_ERR, pi2, weight
+      USE beams3d_physics_mod, ONLY: beams3d_SFLX, beams3d_COLLISIONS
       USE safe_open_mod, ONLY: safe_open
       USE EZspline
       USE mpi_params ! MPI
@@ -31,13 +32,19 @@
 !          ns           Number of flux divisions for current calculation
 !-----------------------------------------------------------------------
       IMPLICIT NONE
-      INTEGER :: ier, iunit, istat, i, j, k, nhalf, sbeam, ebeam, ninj2
-      REAL(rprec) :: maxdist,mindist,v1,v2,dist,ddist,s1,s2, vp_temp, dvll, dvperp, ninj
+      INTEGER :: iunit, istat, i, j, k, l, m, n, sbeam, ebeam, ninj2
+      REAL(rprec) :: v1,v2, ddist, dvll, dvperp, ninj
       LOGICAL, ALLOCATABLE     :: partmask(:), partmask2(:,:), partmask2t(:,:)
       INTEGER, ALLOCATABLE  :: int_mask(:), int_mask2(:,:)
       INTEGER, ALLOCATABLE  :: dist_func(:,:,:)
-      REAL, ALLOCATABLE     :: real_mask(:),vllaxis(:),vperpaxis(:), nlost(:), rdistaxis(:)
-      REAL, ALLOCATABLE     :: help3d(:,:,:)
+      REAL, ALLOCATABLE     :: real_mask(:), nlost(:)
+      ! For 5D dist function
+      REAL(rprec) :: s1, s2, modb, ti, vp_temp
+      REAL, ALLOCATABLE, DIMENSION(:)     :: rdistaxis,vllaxis,vperpaxis
+      REAL, ALLOCATABLE, DIMENSION(:,:)   :: vdist2d
+      REAL, ALLOCATABLE, DIMENSION(:,:,:) :: rho3d,help3d,efact3d,ifact3d
+      DOUBLE PRECISION, DIMENSION(3)      :: q
+
       INTEGER, PARAMETER :: ndist = 100
 #if defined(MPI_OPT)
       INTEGER :: mystart, mypace
@@ -77,8 +84,6 @@
       CALL MPI_BARRIER(MPI_COMM_BEAMS, ierr_mpi)
       IF (ierr_mpi /= 0) CALL handle_err(MPI_BARRIER_ERR, 'beams3d_follow', ierr_mpi)
 #endif
-      maxdist = partvmax
-      mindist = -partvmax
 
       ! Setup masking arrays
       FORALL(i=0:npoinc) int_mask2(i,mystart:myend) = beam(mystart:myend)              ! Index of beams
@@ -98,13 +103,12 @@
       ! Calculate distribution function
       ALLOCATE(dist_func(1:nbeams,1:ndist,0:npoinc))
       dist_func = 0
-      dist = maxdist-mindist
-      ddist = dist/ndist
+      ddist = 2*partvmax/ndist
       sbeam = MINVAL(beam(mystart:myend), DIM=1)
       ebeam = MAXVAL(beam(mystart:myend), DIM=1)
       DO k = 1, ndist
-         v1 = mindist+(k-1)*ddist
-         v2 = mindist+(k)*ddist
+         v1 = -partvmax+(k-1)*ddist
+         v2 = -partvmax+(k)*ddist
          partmask2(:,mystart:myend) = ((vll_lines(:,mystart:myend).ge.v1).and.(vll_lines(:,mystart:myend).lt.v2))
          DO i = sbeam, ebeam
             dist_func(i,k,0:npoinc) = COUNT(partmask2(:,mystart:myend).and.(int_mask2(:,mystart:myend)==i),DIM=2)
@@ -165,7 +169,7 @@
             END IF
             ! Write Distribution Function
             WRITE(iunit,'(A)') ' Parallel Velocity Distribution'
-            WRITE(iunit,'(A,100(1X,E22.12))') 'VLL',(mindist+(j+0.5)*ddist,j=0,ndist-1)
+            WRITE(iunit,'(A,100(1X,E22.12))') 'VLL',(-partvmax+(j+0.5)*ddist,j=0,ndist-1)
             WRITE(iunit,'(A)') '==========================================='
             DO j = 0, npoinc
                WRITE(iunit,'(100(1X,I12))') dist_func(i,1:ndist,j)
@@ -184,49 +188,107 @@
 
       ! These diagnostics need Vp to be defined
       IF (lvmec .and. .not.lvac .and. .not.ldepo .and. myworkid == master) THEN
-         ! Allocate the parallel and perpendicular velcoity axis
-         nhalf = ndist4/2
+         ! ALLOCATE the profile arrays
+         ALLOCATE(dense_prof(nbeams,ndistns), j_prof(nbeams,ndistns), &
+            epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns))
+
+         ! Create the helper axis arrays
          ALLOCATE(vllaxis(ndist4),vperpaxis(ndist5),rdistaxis(ndist1))
-         FORALL(k = 1:ndist4) vllaxis(k) = partvmax*REAL(k-nhalf-0.5)/REAL(nhalf)
-         FORALL(k = 1:ndist5) vperpaxis(k) = partvmax*REAL(k-0.5)/REAL(ndist5)
          FORALL(k = 1:ndist1) rdistaxis(k) = rmin_dist+REAL(k-0.5)/h1dist
+         FORALL(k = 1:ndist4) vllaxis(k) = -partvmax+REAL(k-0.5)/h4dist
+         FORALL(k = 1:ndist5) vperpaxis(k) = REAL(k-0.5)/h5dist
+
+         ! Create the helper rho, ifact, and efact array
+         ALLOCATE(rho3d(ndist1,ndist2,ndist3), &
+            efact3d(ndist1,ndist2,ndist3), ifact3d(ndist1,ndist2,ndist3))
+         DO l = 1, ndist1*ndist2*ndist3
+            i = MOD(l-1,ndist1)+1
+            j = MOD(l-1,ndist1*ndist2)
+            j = FLOOR(REAL(j) / REAL(ndist1))+1
+            k = CEILING(REAL(l) / REAL(ndist1*ndist2))
+            q(1) = rdistaxis(i)
+            q(2) = REAL(j-0.5)/h2dist
+            q(3) = zmin_dist+REAL(k-0.5)/h3dist
+            CALL beams3d_SFLX(q,s1)
+            rho3d(i,j,k) = SQRT(s1)
+            CALL beams3d_COLLISIONS(q,modb,ti,s1,s2)
+            efact3d(i,j,k) = s1
+            ifact3d(i,j,k) = s2*s2*s2*s1 ! vcrit_cube*tau_spit_inv
+         END DO
+
+         ! Create Velocity helper array
+         ALLOCATE(vdist2d(ndist4,ndist5))
+         DO l = 1, ndist4*ndist5
+            i = MOD(l-1,ndist4)+1
+            j = MOD(l-1,ndist4*ndist5)
+            j = FLOOR(REAL(j) / REAL(ndist4))+1
+            vdist2d = sqrt(vllaxis(i)*vllaxis(i)+vperpaxis(j)*vperpaxis(j))
+         END DO
+
          ! First normalize the 5D phase space density by dVolume
-         ! Grid in rho, units in [/m^3]
-         ! Note ns is number of cells not cell boundaries
-         ! Just a note here dV/drho = 2*rho*dV/dist
-         ! And we need dV so we multiply by drho=1./ns
-         DO k = 1, ndist1
-            !s1 = REAL(k-0.5)/REAL(ndist1) ! Rho
-            !s2 = s1*s1
-            !CALL EZspline_interp(Vp_spl_s,s2,vp_temp,ier)
-            vp_temp = rdistaxis(k)/(h1dist*h2dist*h3dist) ! R*dr*dphi*dz
-            dist5d_prof(:,k,:,:,:,:) = dist5d_prof(:,k,:,:,:,:)/vp_temp
-            epower_prof(:,k) = epower_prof(:,k)/vp_temp
-            ipower_prof(:,k) = ipower_prof(:,k)/vp_temp
-            ndot_prof(:,k)   =   ndot_prof(:,k)/vp_temp
+         DO i = 1, ndist1
+            vp_temp = (h1dist*h2dist*h3dist)/rdistaxis(i) ! 1./R*dr*dphi*dz
+            dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
+!            ndot_prof(:,i)   =   ndot_prof(:,i)/vp_temp
          END DO
-         dense_prof = SUM(SUM(SUM(SUM(dist5d_prof,DIM=6),DIM=5),DIM=4),DIM=3) ! [m^-3]
-         ! Now calculate J_fast
-         ALLOCATE(help3d(nbeams,ndist1,ndist4))
-         help3d = SUM(SUM(SUM(dist5d_prof,DIM=6),DIM=4),DIM=3)
+
+         ! Now calculate the rho density profile [part*m^-3]
+         ALLOCATE(help3d(ndist1,ndist2, ndist3))
+         DO l = 1, ndistns ! Edges
+            s1 = REAL(l-1)/REAL(ndistns)
+            s2 = REAL(l)/REAL(ndistns)
+            DO m = 1, nbeams
+               help3d = SUM(SUM(dist5d_prof(m,:,:,:,:,:),DIM=5),DIM=4)
+               WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+               dense_prof(m,l) = SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)
+            END DO
+         END DO
+
+         ! Now calculate the Current Profile [A*m^-2]
          j_prof = 0
-         DO k = 1, ndist4
-            j_prof = j_prof + help3d(:,:,k)*vllaxis(k)
+         DO m = 1, nbeams
+            DO l = 1, ndistns ! Edges
+               s1 = REAL(l-1)/REAL(ndistns)
+               s2 = REAL(l)/REAL(ndistns)
+               DO j = 1, ndist4
+                  help3d = SUM(dist5d_prof(m,:,:,:,j,:),DIM=4)
+                  WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+                  j_prof(m,l) = j_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vllaxis(j)
+               END DO
+            END DO
+            j_prof(m,:) = j_prof(m,:) * charge_beams(m)
          END DO
-         DEALLOCATE(help3d)
-         DO k = 1, ndist1
-            j_prof(1:nbeams,k) = j_prof(1:nbeams,k)*charge_beams(1:nbeams) ! [A*m^-2]
+
+
+         ! Now calculate the Heating Profile [W*m^-3]
+         epower_prof = 0
+         ipower_prof = 0
+         DO m = 1, nbeams
+            DO l = 1, ndistns ! Edges
+               s1 = REAL(l-1)/REAL(ndistns)
+               s2 = REAL(l)/REAL(ndistns)
+               DO j = 1, ndist4
+                  DO i = 1, ndist5
+                     help3d = dist5d_prof(m,:,:,:,j,i)
+                     WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+                     epower_prof(m,l) = epower_prof(m,l) + SUM(SUM(SUM(help3d*efact3d,DIM=3),DIM=2),DIM=1)*vdist2d(j,i)*mass_beams(m)*vdist2d(j,i)
+                     ipower_prof(m,l) = ipower_prof(m,l) + SUM(SUM(SUM(help3d*ifact3d,DIM=3),DIM=2),DIM=1)*mass_beams(m)/vdist2d(j,i)
+                  END DO
+               END DO
+            END DO
          END DO
+
          ! Normalize to velocity space volume element
          dvll = partvmax*2/ndist4 ! dVll
          dvperp = pi2*partvmax/ndist5 ! dVperp
          DO k = 1, ndist5 ! VPERP
-            !s2 = REAL(k-0.5)/REAL(ns_prof5) ! Vperp_frac
             vp_temp = vperpaxis(k)*dvll*dvperp
             dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)/vp_temp
          END DO
+
          ! DEALLOCATIONS
-         DEALLOCATE(vperpaxis,vllaxis)
+         DEALLOCATE(rdistaxis, vperpaxis, vllaxis)
+         DEALLOCATE(rho3d, efact3d, ifact3d, vdist2d, help3d)
 
       END IF
 
