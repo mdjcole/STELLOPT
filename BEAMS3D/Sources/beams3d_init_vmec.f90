@@ -25,7 +25,7 @@
                                  U_ARR, POT_ARR, POT_spl_s, nne, nte, nti, npot, &
                                  ZEFF_spl_s, nzeff, ZEFF_ARR, req_axis, zeq_axis, &
                                  phiedge_eq, reff_eq
-      USE beams3d_lines, ONLY: GFactor, ndist1
+      USE beams3d_lines, ONLY: GFactor, ndistns
       USE wall_mod, ONLY: wall_load_mn, wall_info,vertex,face
       USE mpi_params
       USE mpi_inc

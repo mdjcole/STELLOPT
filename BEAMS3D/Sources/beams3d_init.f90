@@ -23,7 +23,8 @@
                                win_epower, win_ipower, win_ndot, win_jprof, &
                                win_dense, nhdist4, h1dist, h2dist, &
                                h3dist, h4dist, h5dist, &
-                               rmin_dist, rmax_dist, zmin_dist, zmax_dist
+                               rmin_dist, rmax_dist, zmin_dist, &
+                               zmax_dist, ndistns
       USE wall_mod
       USE mpi_params
       USE adas_mod_parallel, ONLY: adas_load_tables, adas_tables_avail

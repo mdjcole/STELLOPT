@@ -14,7 +14,7 @@
       USE beams3d_runtime
       USE beams3d_lines, ONLY: nparticles, ndist1, ndist2, ndist3, &
                                ndist4, ndist5, partvmax, rmin_dist, &
-                               rmax_dist, zmin_dist, zmax_dist
+                               rmax_dist, zmin_dist, zmax_dist, ndistns
       USE beams3d_grid, ONLY: nr, nphi, nz, rmin, rmax, zmin, zmax, &
                               phimin, phimax, vc_adapt_tol, nte, nne, nti,&
                               nzeff, npot, plasma_mass, plasma_Zavg, &

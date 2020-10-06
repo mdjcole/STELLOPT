@@ -23,7 +23,7 @@ SUBROUTINE out_beams3d_nag(t, q)
                              mymass, mycharge, mybeam, end_state, &
                              dist5d_prof, win_dist5d, nhdist4, &
                              h1dist, h2dist, h3dist, h4dist, h5dist, &
-                             rmin_dist, zmin_dist
+                             rmin_dist, zmin_dist, ndistns
     USE beams3d_grid
     USE beams3d_physics_mod, ONLY: beams3d_physics
     USE wall_mod, ONLY: collide, get_wall_ik, get_wall_area
