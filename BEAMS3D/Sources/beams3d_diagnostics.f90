@@ -208,10 +208,8 @@
 
       ! These diagnostics need Vp to be defined
       IF (lvmec .and. .not.lvac .and. .not.ldepo .and. lhelp) THEN
+
          ! ALLOCATE the profile arrays
-         !ALLOCATE(dense_prof(nbeams,ndistns), j_prof(nbeams,ndistns), &
-         !   epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns), &
-         !   momll_prof(nbeams,ndistns), pperp_prof(nbeams,ndistns))
          CALL mpialloc(dense_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_dense)
          CALL mpialloc(j_prof,      nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_jprof)
          CALL mpialloc(epower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_ipower)
@@ -226,12 +224,11 @@
          FORALL(k = 1:ndist5) vperpaxis(k) = REAL(k-0.5)/h5dist
 
          ! Create the helper rho, ifact, and efact array
-         !ALLOCATE(rho3d(ndist1,ndist2,ndist3), &
-         !   efact3d(ndist1,ndist2,ndist3), ifact3d(ndist1,ndist2,ndist3))
          CALL mpialloc(rho3d,    ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_rho3d)
          CALL mpialloc(efact3d,  ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_efact)
          CALL mpialloc(ifact3d,  ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_ifact)
 
+         ! Calculte the helpers
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1*ndist2*ndist3, mystart, myend)
          DO l = mystart, myend
             i = MOD(l-1,ndist1)+1
@@ -249,8 +246,9 @@
          END DO
 
          ! Create Velocity helper array
-         !ALLOCATE(vdist2d(ndist4,ndist5))
          CALL mpialloc(vdist2d,  ndist4, ndist5, myid_sharmem, 0, MPI_COMM_LOCAL, win_vdist2d)
+
+         ! Create the velocity helpers
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist4*ndist5, mystart, myend)
          DO l = mystart, myend
             i = MOD(l-1,ndist4)+1

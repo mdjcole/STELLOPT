@@ -569,8 +569,8 @@
       ! Determine maximum particle velocity
       partvmax=MAX(MAXVAL(ABS(vll_start))*6.0/5.0,partvmax)
       partpmax=MAXVAL(mass)*partvmax
-      nhdist4 = ndist4/2
       h4dist = 0.5*ndist4/partvmax
+      nhdist4 = ndist4/2
       h5dist = ndist5/partvmax
 
       ! Print Grid info to screen
@@ -581,6 +581,7 @@
          WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   Z     = [',zmin_dist,',',zmax_dist,']; [m]  NZ:   ',ndist3
          WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   VLL   = [',-partvmax/cspeed,',',partvmax/cspeed,']; [c]  NVLL:   ',ndist4
          WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   VPERP = [',0.0,',',partvmax/cspeed,']; [c]  NVPERP:   ',ndist5
+         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   RHO   = [',0.0,',',1.0,']; [norm]  NRHO: ',ndistns
          CALL FLUSH(6)
       END IF
 

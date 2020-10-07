@@ -335,7 +335,7 @@
       CALL MPI_BARRIER(MPI_COMM_LOCAL,ierr_mpi)
       CALL MPI_COMM_FREE(MPI_COMM_LOCAL,ierr_mpi)
       CALL MPI_BARRIER(MPI_COMM_BEAMS,ierr_mpi)
-      IF (ierr_mpi /=0) CALL handle_err(MPI_BARRIER_ERR,'beams3d_init_vmec',ierr_mpi)
+      IF (ierr_mpi /=0) CALL handle_err(MPI_BARRIER_ERR,'beams3d_init_fusion',ierr_mpi)
 #endif
 
       RETURN
