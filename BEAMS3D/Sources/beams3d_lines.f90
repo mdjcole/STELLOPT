@@ -24,7 +24,8 @@
       LOGICAL  ::  ltherm
       INTEGER  ::  ndist1, ndist2, ndist3, ndist4, ndist5, nhdist4,ndistns
       INTEGER  :: nparticles, nsteps, myline, mybeam, mytdex, myend, mystart_save,myend_save
-      INTEGER  :: win_epower, win_ipower, win_ndot, win_dense, win_jprof, win_dist5d
+      INTEGER  :: win_epower, win_ipower, win_ndot, win_dense, &
+                  win_jprof, win_dist5d, win_momll, win_pperp
       REAL(rprec) :: xlast,ylast,zlast ! for storing position
       REAL(rprec) :: moment, mycharge, myZ, mymass, myv_neut(3), &
                      B_temp(4), rand_prob, cum_prob, tau, next_t, &

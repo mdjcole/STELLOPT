@@ -23,6 +23,7 @@
       USE safe_open_mod, ONLY: safe_open
       USE EZspline
       USE mpi_params ! MPI
+      USE mpi_sharmem
       USE mpi_inc
 !-----------------------------------------------------------------------
 !     Local Variables
@@ -33,22 +34,25 @@
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       INTEGER :: iunit, istat, i, j, k, l, m, n, sbeam, ebeam, ninj2
-      REAL(rprec) :: v1,v2, ddist, dvll, dvperp, ninj
+      REAL(rprec) :: v1,v2, ddist, ninj
       LOGICAL, ALLOCATABLE     :: partmask(:), partmask2(:,:), partmask2t(:,:)
       INTEGER, ALLOCATABLE  :: int_mask(:), int_mask2(:,:)
       INTEGER, ALLOCATABLE  :: dist_func(:,:,:)
       REAL, ALLOCATABLE     :: real_mask(:), nlost(:)
       ! For 5D dist function
+      LOGICAL :: lhelp
+      INTEGER :: win_rho3d, win_efact, win_ifact, win_vdist2d
       REAL(rprec) :: s1, s2, modb, ti, vp_temp
       REAL, ALLOCATABLE, DIMENSION(:)     :: rdistaxis,vllaxis,vperpaxis
-      REAL, ALLOCATABLE, DIMENSION(:,:)   :: vdist2d
-      REAL, ALLOCATABLE, DIMENSION(:,:,:) :: rho3d,help3d,efact3d,ifact3d
+      REAL, DIMENSION(:,:), POINTER       :: vdist2d
+      REAL, DIMENSION(:,:,:), POINTER     :: rho3d, efact3d, ifact3d
+      REAL, ALLOCATABLE, DIMENSION(:,:,:) :: help3d
       DOUBLE PRECISION, DIMENSION(3)      :: q
 
       INTEGER, PARAMETER :: ndist = 100
 #if defined(MPI_OPT)
-      INTEGER :: mystart, mypace
-      REAL(rprec), ALLOCATABLE :: buffer_mast(:,:), buffer_slav(:,:)
+      INTEGER :: numprocs_local, mylocalid, mylocalmaster, mystart
+      INTEGER :: MPI_COMM_LOCAL
 #endif
 !-----------------------------------------------------------------------
 !     Begin Subroutine
@@ -186,12 +190,34 @@
       DEALLOCATE(partmask2,partmask2t)
       DEALLOCATE(partmask,real_mask)
 
+      ! Divide up Work
+      mylocalid = myworkid
+      numprocs_local = 1
+#if defined(MPI_OPT)
+      CALL MPI_COMM_DUP( MPI_COMM_SHARMEM, MPI_COMM_LOCAL, ierr_mpi)
+      CALL MPI_COMM_RANK( MPI_COMM_LOCAL, mylocalid, ierr_mpi )              ! MPI
+      CALL MPI_COMM_SIZE( MPI_COMM_LOCAL, numprocs_local, ierr_mpi )          ! MPI
+#endif
+      mylocalmaster = master
+
+      lhelp = .false.
+      IF (myworkid == master) lhelp = .true.
+#if defined(MPI_OPT)
+      CALL MPI_BCAST(lhelp, 1, MPI_LOGICAL, mylocalmaster, MPI_COMM_LOCAL, ierr_mpi)
+#endif
+
       ! These diagnostics need Vp to be defined
-      IF (lvmec .and. .not.lvac .and. .not.ldepo .and. myworkid == master) THEN
+      IF (lvmec .and. .not.lvac .and. .not.ldepo .and. lhelp) THEN
          ! ALLOCATE the profile arrays
-         ALLOCATE(dense_prof(nbeams,ndistns), j_prof(nbeams,ndistns), &
-            epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns), &
-            momll_prof(nbeams,ndistns), pperp_prof(nbeams,ndistns))
+         !ALLOCATE(dense_prof(nbeams,ndistns), j_prof(nbeams,ndistns), &
+         !   epower_prof(nbeams,ndistns), ipower_prof(nbeams,ndistns), &
+         !   momll_prof(nbeams,ndistns), pperp_prof(nbeams,ndistns))
+         CALL mpialloc(dense_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_dense)
+         CALL mpialloc(j_prof,      nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_jprof)
+         CALL mpialloc(epower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_ipower)
+         CALL mpialloc(ipower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_epower)
+         CALL mpialloc(momll_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_momll)
+         CALL mpialloc(pperp_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_pperp)
 
          ! Create the helper axis arrays
          ALLOCATE(vllaxis(ndist4),vperpaxis(ndist5),rdistaxis(ndist1))
@@ -200,9 +226,14 @@
          FORALL(k = 1:ndist5) vperpaxis(k) = REAL(k-0.5)/h5dist
 
          ! Create the helper rho, ifact, and efact array
-         ALLOCATE(rho3d(ndist1,ndist2,ndist3), &
-            efact3d(ndist1,ndist2,ndist3), ifact3d(ndist1,ndist2,ndist3))
-         DO l = 1, ndist1*ndist2*ndist3
+         !ALLOCATE(rho3d(ndist1,ndist2,ndist3), &
+         !   efact3d(ndist1,ndist2,ndist3), ifact3d(ndist1,ndist2,ndist3))
+         CALL mpialloc(rho3d,    ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_rho3d)
+         CALL mpialloc(efact3d,  ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_efact)
+         CALL mpialloc(ifact3d,  ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_ifact)
+
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1*ndist2*ndist3, mystart, myend)
+         DO l = mystart, myend
             i = MOD(l-1,ndist1)+1
             j = MOD(l-1,ndist1*ndist2)
             j = FLOOR(REAL(j) / REAL(ndist1))+1
@@ -218,8 +249,10 @@
          END DO
 
          ! Create Velocity helper array
-         ALLOCATE(vdist2d(ndist4,ndist5))
-         DO l = 1, ndist4*ndist5
+         !ALLOCATE(vdist2d(ndist4,ndist5))
+         CALL mpialloc(vdist2d,  ndist4, ndist5, myid_sharmem, 0, MPI_COMM_LOCAL, win_vdist2d)
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist4*ndist5, mystart, myend)
+         DO l = mystart, myend
             i = MOD(l-1,ndist4)+1
             j = MOD(l-1,ndist4*ndist5)
             j = FLOOR(REAL(j) / REAL(ndist4))+1
@@ -227,20 +260,21 @@
          END DO
 
          ! First normalize the 5D phase space density by dVolume
-         DO i = 1, ndist1
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
+         DO i = mystart, myend
             vp_temp = (h1dist*h2dist*h3dist)/rdistaxis(i) ! 1./R*dr*dphi*dz
             dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
-!            ndot_prof(:,i)   =   ndot_prof(:,i)/vp_temp
          END DO
 
          ! Now calculate the rho density profile [part*m^-3]
          ALLOCATE(help3d(ndist1,ndist2, ndist3))
-         DO l = 1, ndistns ! Edges
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
+         DO l = mystart, myend ! Edges
             s1 = REAL(l-1)/REAL(ndistns)
             s2 = REAL(l)/REAL(ndistns)
             DO m = 1, nbeams
                help3d = SUM(SUM(dist5d_prof(m,:,:,:,:,:),DIM=5),DIM=4)
-               WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+               WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
                dense_prof(m,l) = SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)
             END DO
          END DO
@@ -251,23 +285,23 @@
          j_prof = 0
          momll_prof = 0
          DO m = 1, nbeams
-            DO l = 1, ndistns ! Edges
+            DO l = mystart, myend ! Edges
                s1 = REAL(l-1)/REAL(ndistns)
                s2 = REAL(l)/REAL(ndistns)
                DO j = 1, ndist4
                   help3d = SUM(dist5d_prof(m,:,:,:,j,:),DIM=4)
-                  WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+                  WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
                   j_prof(m,l) = j_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vllaxis(j)
                END DO
                DO j = 1, ndist5
                   help3d = SUM(dist5d_prof(m,:,:,:,:,j),DIM=4)
-                  WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+                  WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
                   pperp_prof(m,l) = pperp_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vperpaxis(j)*vperpaxis(j)
                END DO
             END DO
-            pperp_prof(m,:) = pperp_prof(m,:) * mass_beams(m) !p_perp
-            momll_prof(m,:) = j_prof(m,:) * mass_beams(m) ! mvll
-            j_prof(m,:) = j_prof(m,:) * charge_beams(m)
+            pperp_prof(m,mystart:myend) = pperp_prof(m,mystart:myend) * mass_beams(m) !p_perp
+            momll_prof(m,mystart:myend) = j_prof(m,mystart:myend) * mass_beams(m) ! mvll
+            j_prof(m,mystart:myend) = j_prof(m,mystart:myend) * charge_beams(m)
          END DO
 
 
@@ -275,13 +309,13 @@
          epower_prof = 0
          ipower_prof = 0
          DO m = 1, nbeams
-            DO l = 1, ndistns ! Edges
+            DO l = mystart, myend ! Edges
                s1 = REAL(l-1)/REAL(ndistns)
                s2 = REAL(l)/REAL(ndistns)
                DO j = 1, ndist4
                   DO i = 1, ndist5
                      help3d = dist5d_prof(m,:,:,:,j,i)
-                     WHERE ((rho3d<=s1) .and. (rho3d>s2)) help3d = 0
+                     WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
                      epower_prof(m,l) = epower_prof(m,l) + SUM(SUM(SUM(help3d*efact3d,DIM=3),DIM=2),DIM=1)*vdist2d(j,i)*mass_beams(m)*vdist2d(j,i)
                      ipower_prof(m,l) = ipower_prof(m,l) + SUM(SUM(SUM(help3d*ifact3d,DIM=3),DIM=2),DIM=1)*mass_beams(m)/vdist2d(j,i)
                   END DO
@@ -290,18 +324,28 @@
          END DO
 
          ! Normalize to velocity space volume element
-         dvll = partvmax*2/ndist4 ! dVll
-         dvperp = pi2*partvmax/ndist5 ! dVperp
-         DO k = 1, ndist5 ! VPERP
-            vp_temp = vperpaxis(k)*dvll*dvperp
-            dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)/vp_temp
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist5, mystart, myend)
+         DO k = mystart, myend ! VPERP
+            vp_temp = h4dist*h5dist/(vperpaxis(k)*pi2)
+            dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)*vp_temp
          END DO
 
          ! DEALLOCATIONS
+         CALL mpidealloc(rho3d,win_rho3d)
+         CALL mpidealloc(efact3d,win_efact)
+         CALL mpidealloc(ifact3d,win_ifact)
+         CALL mpidealloc(vdist2d,win_vdist2d)
          DEALLOCATE(rdistaxis, vperpaxis, vllaxis)
-         DEALLOCATE(rho3d, efact3d, ifact3d, vdist2d, help3d)
+         DEALLOCATE(help3d)
 
       END IF
+
+#if defined(MPI_OPT)
+      CALL MPI_BARRIER(MPI_COMM_LOCAL,ierr_mpi)
+      CALL MPI_COMM_FREE(MPI_COMM_LOCAL,ierr_mpi)
+      CALL MPI_BARRIER(MPI_COMM_BEAMS,ierr_mpi)
+      IF (ierr_mpi /=0) CALL handle_err(MPI_BARRIER_ERR,'beams3d_diagnostics',ierr_mpi)
+#endif
 
       CALL beams3d_write('DIAG')
 

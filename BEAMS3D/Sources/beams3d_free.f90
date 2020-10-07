@@ -11,14 +11,15 @@
       USE beams3d_runtime
       USE beams3d_grid
       USE beams3d_lines, ONLY: R_lines, PHI_lines, Z_lines, vll_lines, &
-                               neut_lines, moment_lines, S_lines, U_lines, &
-                               shine_through, &
-                               B_lines, end_state, shine_port, Gfactor, &
-                               ndot_prof, epower_prof, ipower_prof, j_prof,&
-                               dense_prof, dist5d_prof, momll_prof, &
-                               pperp_prof, &
-                               win_ndot, win_epower, win_ipower, win_jprof, &
-                               win_dense, win_dist5d
+                               neut_lines, moment_lines, S_lines, &
+                               U_lines, shine_through, &
+                               B_lines, end_state, shine_port, &
+                               Gfactor, ndot_prof, epower_prof, &
+                               ipower_prof, j_prof, dense_prof, &
+                               dist5d_prof, momll_prof, pperp_prof, &
+                               win_ndot, win_epower, win_ipower,&
+                               win_jprof, win_dense, win_momll, &
+                               win_pperp, win_dist5d
       USE mpi_sharmem
 !-----------------------------------------------------------------------
 !     Local Variables
@@ -103,18 +104,20 @@
          IF (ASSOCIATED(wall_load))   CALL mpidealloc(wall_load,win_wall_load)
          IF (ASSOCIATED(wall_shine))  CALL mpidealloc(wall_shine,win_wall_shine)
          !IF (ASSOCIATED(ndot_prof))    CALL mpidealloc(ndot_prof,win_ndot)
-         !IF (ASSOCIATED(epower_prof))  CALL mpidealloc(epower_prof,win_epower)
-         !IF (ASSOCIATED(ipower_prof))  CALL mpidealloc(ipower_prof,win_ipower)
-         !IF (ASSOCIATED(j_prof))       CALL mpidealloc(j_prof,win_jprof)
-         !IF (ASSOCIATED(dense_prof))   CALL mpidealloc(dense_prof,win_dense)
-         IF (ASSOCIATED(ndot_prof))    DEALLOCATE(ndot_prof)
-         IF (ASSOCIATED(epower_prof))    DEALLOCATE(epower_prof)
-         IF (ASSOCIATED(ipower_prof))    DEALLOCATE(ipower_prof)
-         IF (ASSOCIATED(j_prof))    DEALLOCATE(j_prof)
-         IF (ASSOCIATED(dense_prof))    DEALLOCATE(dense_prof)
-         IF (ASSOCIATED(momll_prof))    DEALLOCATE(momll_prof)
-         IF (ASSOCIATED(pperp_prof))    DEALLOCATE(pperp_prof)
+         IF (ASSOCIATED(epower_prof))  CALL mpidealloc(epower_prof,win_epower)
+         IF (ASSOCIATED(ipower_prof))  CALL mpidealloc(ipower_prof,win_ipower)
+         IF (ASSOCIATED(j_prof))       CALL mpidealloc(j_prof,win_jprof)
+         IF (ASSOCIATED(dense_prof))   CALL mpidealloc(dense_prof,win_dense)
+         IF (ASSOCIATED(momll_prof))   CALL mpidealloc(momll_prof,win_momll)
+         IF (ASSOCIATED(pperp_prof))   CALL mpidealloc(pperp_prof,win_pperp)
          IF (ASSOCIATED(dist5d_prof)) CALL mpidealloc(dist5d_prof,win_dist5d)
+         IF (ASSOCIATED(ndot_prof))    DEALLOCATE(ndot_prof)
+         !IF (ASSOCIATED(epower_prof))    DEALLOCATE(epower_prof)
+         !IF (ASSOCIATED(ipower_prof))    DEALLOCATE(ipower_prof)
+         !IF (ASSOCIATED(j_prof))    DEALLOCATE(j_prof)
+         !IF (ASSOCIATED(dense_prof))    DEALLOCATE(dense_prof)
+         !IF (ASSOCIATED(momll_prof))    DEALLOCATE(momll_prof)
+         !IF (ASSOCIATED(pperp_prof))    DEALLOCATE(pperp_prof)
       ELSE
          IF (ASSOCIATED(req_axis)) DEALLOCATE(req_axis)
          IF (ASSOCIATED(zeq_axis)) DEALLOCATE(zeq_axis)

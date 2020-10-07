@@ -154,7 +154,7 @@
       therm_factor = 1.5 ! Factor at which to thermalize particles
 
       ! Distribution Function Defaults
-      ndistns = 128
+      ndistns = 32
       nr_dist = 32
       nphi_dist=16
       nz_dist=32
