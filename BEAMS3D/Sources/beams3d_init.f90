@@ -568,7 +568,7 @@
 
       ! Determine maximum particle velocity
       partvmax=MAX(MAXVAL(ABS(vll_start))*6.0/5.0,partvmax)
-      !partpmax=MAX(MAXVAL(ABS(partvmax*mass)),partpmax)
+      partpmax=MAXVAL(mass)*partvmax
       nhdist4 = ndist4/2
       h4dist = 0.5*ndist4/partvmax
       h5dist = ndist5/partvmax
@@ -577,7 +577,7 @@
       IF (lverb) THEN
          WRITE(6,'(A)')'----- 5D Distribution -----'
          WRITE(6,'(A,F9.5,A,F9.5,A,I4)') '   R     = [',rmin_dist,',',rmax_dist,']; [m]  NR:   ',ndist1
-         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   PHI   = [',0.0,',',pi2,']; [deg]  NPHI: ',ndist2
+         WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   PHI   = [',0.0,',',pi2,']; [rad]  NPHI: ',ndist2
          WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   Z     = [',zmin_dist,',',zmax_dist,']; [m]  NZ:   ',ndist3
          WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   VLL   = [',-partvmax/cspeed,',',partvmax/cspeed,']; [c]  NVLL:   ',ndist4
          WRITE(6,'(A,F8.5,A,F8.5,A,I4)') '   VPERP = [',0.0,',',partvmax/cspeed,']; [c]  NVPERP:   ',ndist5

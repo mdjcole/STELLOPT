@@ -136,6 +136,7 @@
          WRITE(6,'(A,F7.3,A)')        '   AMINOR  = ',reff_eq,' [m]'
          WRITE(6,'(A,F7.3,A)')        '   PHIEDGE = ',phiedge_eq,' [Wb]'
          WRITE(6,'(A,F7.3,A)')        '   VOLUME  = ',Volume,' [m^3]'
+         IF(lcreate_wall) WRITE(6,'(A)')        '   WALL FROM VMEC LCFS!'
       END IF
 
       ! Load the Vp Spline if using the beams

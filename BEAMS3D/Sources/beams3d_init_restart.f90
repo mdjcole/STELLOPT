@@ -157,6 +157,7 @@
                     v_neut(3,k), mass(k), charge(k), &
                     mu_start(k), Zatom(k), t_end(k), vll_start(k), &
                     beam(k), weight(k) )
+         v_neut = 0
 
          ! Now fill the arrays downselecting for non-shinethrough particles
          k = 1
@@ -168,18 +169,17 @@
             phi_start(k) = PHI_lines(npoinc_extract,i)
             vll_start(k) = vll_lines(npoinc_extract,i)
             mu_start(k)  = moment_lines(npoinc_extract,i)*B_lines(npoinc_extract,i)
-            v_neut(3,k)   = 0.0
             mass(k)      = mass2(i)
             charge(k)   = charge2(i)
             Zatom(k)    = Zatom2(i)
             beam(k)     = beam2(i)
             weight(k)   = weight2(i)
-            t_end(k)    = MAXVAL(t_end_in)
             q = (/R_start(k), phi_start(k), Z_start(k)/)
             CALL beams3d_MODB(q,B_help)
             mu_start(k) = mu_start(k)/B_help
             k = k + 1
          END DO
+         t_end(1:nparticles) = MAXVAL(t_end_in)
          DEALLOCATE(R_lines, Z_lines, PHI_lines, vll_lines, moment_lines, neut_lines, end_state, S_lines, B_lines)
          DEALLOCATE(mass2, charge2, Zatom2, beam2, weight2, t_end2, start_dex)
 
