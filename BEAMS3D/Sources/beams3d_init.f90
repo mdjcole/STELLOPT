@@ -21,7 +21,7 @@
                                end_state, ndist1, ndist2, ndist3, &
                                ndist4, ndist5, dist5d_prof, win_dist5d, &
                                win_epower, win_ipower, win_ndot, win_jprof, &
-                               win_dense, nhdist4, h1dist, h2dist, &
+                               win_dense, h1dist, h2dist, &
                                h3dist, h4dist, h5dist, &
                                rmin_dist, rmax_dist, zmin_dist, &
                                zmax_dist, ndistns
@@ -570,7 +570,6 @@
       partvmax=MAX(MAXVAL(ABS(vll_start))*6.0/5.0,partvmax)
       partpmax=MAXVAL(mass)*partvmax
       h4dist = 0.5*ndist4/partvmax
-      nhdist4 = ndist4/2
       h5dist = ndist5/partvmax
 
       ! Print Grid info to screen

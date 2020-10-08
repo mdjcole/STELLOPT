@@ -170,7 +170,7 @@ MODULE beams3d_physics_mod
             !  Call the collisional function
             !-----------------------------------------------------------
             CALL beams3d_COLLISIONS(q,modb,ti_temp,tau_spit_inv,v_crit)
-            inv_mymass = 1/mymass
+            inv_mymass = one/mymass
             vcrit_cube = v_crit*v_crit*v_crit
             vc3_tauinv = vcrit_cube*tau_spit_inv
 

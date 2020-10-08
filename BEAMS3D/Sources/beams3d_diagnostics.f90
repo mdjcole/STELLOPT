@@ -249,7 +249,7 @@
                CALL EZspline_interp(Vp_spl_s, s2, vp_temp, ier)
                dVol(k) = vp_temp*2*s1/REAL(ndistns)
             END DO
-            dVol = dVol*drho
+!            dVol = dVol
          END IF
 
          ! Calculte the helpers
@@ -269,6 +269,10 @@
             efact4d(:,i,j,k) = s1
             ifact4d(:,i,j,k) = s2*s2*s2*s1 ! vcrit_cube*tau_spit_inv
          END DO
+
+         !IF (myworkid == master) THEN
+         !   WRITE(327,*) rho4d(1,:,1,:)
+         !END IF
 
          ! Create the velocity helpers
          IF (myworkid==master) PRINT *,'CALC: vdist2d'
@@ -354,18 +358,18 @@
 
          IF (myworkid==master) PRINT *,'CALC: dist5d_norm'
          ! First normalize the 5D phase space density by dVolume
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
-         DO i = mystart, myend
-            vp_temp = 1.0/(rdistaxis(i)*dr*dphi*dz) ! 1./R*dr*dphi*dz
-            dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
-         END DO
+         !CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
+         !DO i = mystart, myend
+         !   vp_temp = 1.0/(rdistaxis(i)*dr*dphi*dz) ! 1./R*dr*dphi*dz
+         !   dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
+         !END DO
 
          ! Normalize to velocity space volume element
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist5, mystart, myend)
-         DO k = mystart, myend ! VPERP
-            vp_temp = 1.0/(vperpaxis(k)*pi2*dvll*dvperp)
-            dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)*vp_temp
-         END DO
+         !CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist5, mystart, myend)
+         !DO k = mystart, myend ! VPERP
+         !   vp_temp = 1.0/(vperpaxis(k)*pi2*dvll*dvperp)
+         !   dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)*vp_temp
+         !END DO
 
          IF (myworkid==master) PRINT *,'CALC: DONE'
          ! DEALLOCATIONS

@@ -21,7 +21,7 @@ SUBROUTINE out_beams3d_nag(t, q)
                              j_prof, ndot_prof, partvmax, &
                              ndist1, ndist2, ndist3, ndist4, ndist5, &
                              mymass, mycharge, mybeam, end_state, &
-                             dist5d_prof, win_dist5d, nhdist4, &
+                             dist5d_prof, win_dist5d, &
                              h1dist, h2dist, h3dist, h4dist, h5dist, &
                              rmin_dist, zmin_dist, ndistns
     USE beams3d_grid
@@ -100,7 +100,7 @@ SUBROUTINE out_beams3d_nag(t, q)
        d1 = MAX(MIN(CEILING( (q(1)-rmin_dist)*h1dist), ndist1), 1)
        d2 = MAX(MIN(CEILING( (x0            )*h2dist), ndist2), 1)
        d3 = MAX(MIN(CEILING( (q(3)-zmin_dist)*h3dist), ndist3), 1)
-       d4 = MAX(MIN(CEILING( (q(4)-partvmax )*h4dist), ndist4), 1)
+       d4 = MAX(MIN(CEILING( (q(4)+partvmax )*h4dist), ndist4), 1)
        d5 = MAX(MIN(CEILING( (vperp         )*h5dist), ndist5), 1)
        xw = weight(myline)*dt
        !CALL MPI_WIN_LOCK(MPI_LOCK_EXCLUSIVE,myworkid,0,win_dist5d,ier)

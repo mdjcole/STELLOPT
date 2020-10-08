@@ -22,7 +22,7 @@
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       LOGICAL  ::  ltherm
-      INTEGER  ::  ndist1, ndist2, ndist3, ndist4, ndist5, nhdist4,ndistns
+      INTEGER  ::  ndist1, ndist2, ndist3, ndist4, ndist5, ndistns
       INTEGER  :: nparticles, nsteps, myline, mybeam, mytdex, myend, mystart_save,myend_save
       INTEGER  :: win_epower, win_ipower, win_ndot, win_dense, &
                   win_jprof, win_dist5d, win_momll, win_pperp
