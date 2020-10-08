@@ -168,6 +168,7 @@ SUBROUTINE out_beams3d_nag(t, q)
     END IF
     IF (lhitonly) mytdex = 0
     IF (ABS((t+dt)) .gt. ABS(mytdex*dt_out)) mytdex = mytdex + 1
+    IF (mytdex > npoinc) t = t_end(myline) ! This will end the run
     t = t + dt
 
     RETURN
