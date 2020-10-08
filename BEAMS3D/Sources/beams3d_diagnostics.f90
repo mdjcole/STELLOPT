@@ -33,7 +33,7 @@
 !          ns           Number of flux divisions for current calculation
 !-----------------------------------------------------------------------
       IMPLICIT NONE
-      INTEGER :: iunit, istat, i, j, k, l, m, n, sbeam, ebeam, ninj2
+      INTEGER :: iunit, istat, i, j, k, l, m, n, sbeam, ebeam, ninj2, ier
       REAL(rprec) :: v1,v2, ddist, ninj
       LOGICAL, ALLOCATABLE     :: partmask(:), partmask2(:,:), partmask2t(:,:)
       INTEGER, ALLOCATABLE  :: int_mask(:), int_mask2(:,:)
@@ -41,12 +41,15 @@
       REAL, ALLOCATABLE     :: real_mask(:), nlost(:)
       ! For 5D dist function
       LOGICAL :: lhelp
-      INTEGER :: win_rho3d, win_efact, win_ifact, win_vdist2d
-      REAL(rprec) :: s1, s2, modb, ti, vp_temp
+      INTEGER :: win_rho3d, win_efact, win_ifact, win_vdist2d, win_dVol, win_rho4d
+      REAL(rprec) :: s1, s2, modb, ti, vp_temp, dr, dphi, dz, dvll, dvperp, drho
       REAL, ALLOCATABLE, DIMENSION(:)     :: rdistaxis,vllaxis,vperpaxis
+      REAL, DIMENSION(:), POINTER         :: dVol
       REAL, DIMENSION(:,:), POINTER       :: vdist2d
       REAL, DIMENSION(:,:,:), POINTER     :: rho3d, efact3d, ifact3d
+      REAL, DIMENSION(:,:,:,:), POINTER   :: rho4d, efact4d, ifact4d
       REAL, ALLOCATABLE, DIMENSION(:,:,:) :: help3d
+      REAL, ALLOCATABLE, DIMENSION(:,:,:,:) :: help4d
       DOUBLE PRECISION, DIMENSION(3)      :: q
 
       INTEGER, PARAMETER :: ndist = 100
@@ -209,26 +212,48 @@
       ! These diagnostics need Vp to be defined
       IF (lvmec .and. .not.lvac .and. .not.ldepo .and. lhelp) THEN
 
+         ! Some helpers to avoid divisions
+         dr     = 1.0/h1dist
+         dphi   = 1.0/h2dist
+         dz     = 1.0/h3dist
+         dvll   = 1.0/h4dist
+         dvperp = 1.0/h5dist
+         drho   = 1.0/REAL(ndistns)
+
          ! ALLOCATE the profile arrays
+         CALL mpialloc(dVol, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_dVol)
          CALL mpialloc(dense_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_dense)
          CALL mpialloc(j_prof,      nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_jprof)
          CALL mpialloc(epower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_ipower)
          CALL mpialloc(ipower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_epower)
          CALL mpialloc(momll_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_momll)
          CALL mpialloc(pperp_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_pperp)
+         CALL mpialloc(vdist2d,  ndist4, ndist5, myid_sharmem, 0, MPI_COMM_LOCAL, win_vdist2d)
+         CALL mpialloc(efact4d,  nbeams, ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_efact)
+         CALL mpialloc(ifact4d,  nbeams, ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_ifact)
+         CALL mpialloc(rho4d,    nbeams, ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_rho4d)
 
          ! Create the helper axis arrays
          ALLOCATE(vllaxis(ndist4),vperpaxis(ndist5),rdistaxis(ndist1))
-         FORALL(k = 1:ndist1) rdistaxis(k) = rmin_dist+REAL(k-0.5)/h1dist
-         FORALL(k = 1:ndist4) vllaxis(k) = -partvmax+REAL(k-0.5)/h4dist
-         FORALL(k = 1:ndist5) vperpaxis(k) = REAL(k-0.5)/h5dist
+         ALLOCATE(help4d(nbeams, ndist1,ndist2, ndist3))
+         FORALL(k = 1:ndist1) rdistaxis(k) = rmin_dist+REAL(k-0.5)*dr
+         FORALL(k = 1:ndist4) vllaxis(k) = -partvmax+REAL(k-0.5)*dvll
+         FORALL(k = 1:ndist5) vperpaxis(k) = REAL(k-0.5)*dvperp
 
-         ! Create the helper rho, ifact, and efact array
-         CALL mpialloc(rho3d,    ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_rho3d)
-         CALL mpialloc(efact3d,  ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_efact)
-         CALL mpialloc(ifact3d,  ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_ifact)
+         ! Master needs to calculate dVol from spline
+         IF (myworkid==master) PRINT *,'CALC: dVol'
+         IF (myworkid == master) THEN
+            DO k = 1, ndistns
+               s1 = REAL(k-0.5)*drho ! Rho
+               s2 = s1*s1
+               CALL EZspline_interp(Vp_spl_s, s2, vp_temp, ier)
+               dVol(k) = vp_temp*2*s1/REAL(ndistns)
+            END DO
+            dVol = dVol*drho
+         END IF
 
          ! Calculte the helpers
+         IF (myworkid==master) PRINT *,'CALC: S and DVel'
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1*ndist2*ndist3, mystart, myend)
          DO l = mystart, myend
             i = MOD(l-1,ndist1)+1
@@ -236,105 +261,121 @@
             j = FLOOR(REAL(j) / REAL(ndist1))+1
             k = CEILING(REAL(l) / REAL(ndist1*ndist2))
             q(1) = rdistaxis(i)
-            q(2) = REAL(j-0.5)/h2dist
-            q(3) = zmin_dist+REAL(k-0.5)/h3dist
+            q(2) = REAL(j-0.5)*dphi
+            q(3) = zmin_dist+REAL(k-0.5)*dz
             CALL beams3d_SFLX(q,s1)
-            rho3d(i,j,k) = SQRT(s1)
+            rho4d(:,i,j,k) = SQRT(s1)
             CALL beams3d_COLLISIONS(q,modb,ti,s1,s2)
-            efact3d(i,j,k) = s1
-            ifact3d(i,j,k) = s2*s2*s2*s1 ! vcrit_cube*tau_spit_inv
+            efact4d(:,i,j,k) = s1
+            ifact4d(:,i,j,k) = s2*s2*s2*s1 ! vcrit_cube*tau_spit_inv
          END DO
 
-         ! Create Velocity helper array
-         CALL mpialloc(vdist2d,  ndist4, ndist5, myid_sharmem, 0, MPI_COMM_LOCAL, win_vdist2d)
-
          ! Create the velocity helpers
+         IF (myworkid==master) PRINT *,'CALC: vdist2d'
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist4*ndist5, mystart, myend)
          DO l = mystart, myend
             i = MOD(l-1,ndist4)+1
             j = MOD(l-1,ndist4*ndist5)
             j = FLOOR(REAL(j) / REAL(ndist4))+1
-            vdist2d = sqrt(vllaxis(i)*vllaxis(i)+vperpaxis(j)*vperpaxis(j))
-         END DO
-
-         ! First normalize the 5D phase space density by dVolume
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
-         DO i = mystart, myend
-            vp_temp = (h1dist*h2dist*h3dist)/rdistaxis(i) ! 1./R*dr*dphi*dz
-            dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
+            vdist2d(i,j) = sqrt(vllaxis(i)*vllaxis(i)+vperpaxis(j)*vperpaxis(j))
          END DO
 
          ! Now calculate the rho density profile [part*m^-3]
-         ALLOCATE(help3d(ndist1,ndist2, ndist3))
+         IF (myworkid==master) PRINT *,'CALC: dense_prof'
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
          DO l = mystart, myend ! Edges
-            s1 = REAL(l-1)/REAL(ndistns)
-            s2 = REAL(l)/REAL(ndistns)
-            DO m = 1, nbeams
-               help3d = SUM(SUM(dist5d_prof(m,:,:,:,:,:),DIM=5),DIM=4)
-               WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
-               dense_prof(m,l) = SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)
-            END DO
+            s1 = REAL(l-1)*drho
+            s2 = REAL(l)*drho
+            help4d = SUM(SUM(dist5d_prof(:,:,:,:,:,:),DIM=6),DIM=5)
+            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
+            dense_prof(:,l) = SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)/dVol(l)
          END DO
 
          ! Now calculate the Current Profile [A*m^-2]
          ! Now calculate the Parallel momentum Profile [kg*m^-2*s^-1]
-         ! Now calculate the Perpendicular Pressure Profile [Pa]
          j_prof = 0
          momll_prof = 0
-         DO m = 1, nbeams
-            DO l = mystart, myend ! Edges
-               s1 = REAL(l-1)/REAL(ndistns)
-               s2 = REAL(l)/REAL(ndistns)
-               DO j = 1, ndist4
-                  help3d = SUM(dist5d_prof(m,:,:,:,j,:),DIM=4)
-                  WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
-                  j_prof(m,l) = j_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vllaxis(j)
-               END DO
-               DO j = 1, ndist5
-                  help3d = SUM(dist5d_prof(m,:,:,:,:,j),DIM=4)
-                  WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
-                  pperp_prof(m,l) = pperp_prof(m,l) + SUM(SUM(SUM(help3d,DIM=3),DIM=2),DIM=1)*vperpaxis(j)*vperpaxis(j)
-               END DO
-            END DO
-            pperp_prof(m,mystart:myend) = pperp_prof(m,mystart:myend) * mass_beams(m) !p_perp
-            momll_prof(m,mystart:myend) = j_prof(m,mystart:myend) * mass_beams(m) ! mvll
-            j_prof(m,mystart:myend) = j_prof(m,mystart:myend) * charge_beams(m)
+         pperp_prof = 0
+         IF (myworkid==master) PRINT *,'CALC: j, momll'
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns*ndist4, mystart, myend)
+         DO l = mystart, myend ! Edges
+            i = MOD(l-1,ndistns)+1
+            j = MOD(l-1,ndistns*ndist4)
+            j = FLOOR(REAL(j) / REAL(ndistns))+1
+            s1 = REAL(i-1)*drho
+            s2 = REAL(i)*drho
+            help4d = SUM(dist5d_prof(:,:,:,:,j,:),DIM=5)
+            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
+            j_prof(:,i) = j_prof(:,i) + SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)*vllaxis(j)
          END DO
+         !IF (myworkid == master) momll_prof = j_prof
 
+         ! Now calculate the Perpendicular Pressure Profile [Pa]
+         IF (myworkid==master) PRINT *,'CALC: pperp'
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns*ndist5, mystart, myend)
+         DO l = mystart, myend ! Edges
+            i = MOD(l-1,ndistns)+1
+            j = MOD(l-1,ndistns*ndist5)
+            j = FLOOR(REAL(j) / REAL(ndistns))+1
+            s1 = REAL(i-1)*drho
+            s2 = REAL(i)*drho
+            help4d = SUM(dist5d_prof(:,:,:,:,:,j),DIM=5)
+            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
+            pperp_prof(:,i) = pperp_prof(:,i) + SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)*vperpaxis(j)*vperpaxis(j)
+         END DO
 
          ! Now calculate the Heating Profile [W*m^-3]
          epower_prof = 0
          ipower_prof = 0
+         IF (myworkid==master) PRINT *,'CALC: e_power, i_power'
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns*ndist4*ndist5, mystart, myend)
+         DO l = mystart, myend
+            i = MOD(l-1,ndistns)+1
+            j = MOD(l-1,ndistns*ndist4)
+            j = FLOOR(REAL(j) / REAL(ndistns))+1
+            k = CEILING(REAL(l) / REAL(ndistns*ndist4))
+            s1 = REAL(i-1)*drho
+            s2 = REAL(i)*drho
+            help4d = dist5d_prof(:,:,:,:,j,k)
+            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
+            epower_prof(:,i) = epower_prof(:,i) + SUM(SUM(SUM(help4d*efact4d,DIM=4),DIM=3),DIM=2)*vdist2d(j,k)*vdist2d(j,k)
+            ipower_prof(:,i) = ipower_prof(:,i) + SUM(SUM(SUM(help4d*ifact4d,DIM=4),DIM=3),DIM=2)/vdist2d(j,k)
+         END DO
+
+         ! Now finish the values
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
          DO m = 1, nbeams
-            DO l = mystart, myend ! Edges
-               s1 = REAL(l-1)/REAL(ndistns)
-               s2 = REAL(l)/REAL(ndistns)
-               DO j = 1, ndist4
-                  DO i = 1, ndist5
-                     help3d = dist5d_prof(m,:,:,:,j,i)
-                     WHERE ((rho3d<=s1) .or. (rho3d>s2)) help3d = 0
-                     epower_prof(m,l) = epower_prof(m,l) + SUM(SUM(SUM(help3d*efact3d,DIM=3),DIM=2),DIM=1)*vdist2d(j,i)*mass_beams(m)*vdist2d(j,i)
-                     ipower_prof(m,l) = ipower_prof(m,l) + SUM(SUM(SUM(help3d*ifact3d,DIM=3),DIM=2),DIM=1)*mass_beams(m)/vdist2d(j,i)
-                  END DO
-               END DO
-            END DO
+            pperp_prof(m,mystart:myend)  = pperp_prof(m,mystart:myend)  * mass_beams(m)   / dvol(mystart:myend) !p_perp
+            momll_prof(m,mystart:myend)  = j_prof(m,mystart:myend)      * mass_beams(m)   / dvol(mystart:myend) ! mvll
+            j_prof(m,mystart:myend)      = j_prof(m,mystart:myend)      * charge_beams(m) / dvol(mystart:myend)
+            epower_prof(m,mystart:myend) = epower_prof(m,mystart:myend) * mass_beams(m)   / dvol(mystart:myend)
+            ipower_prof(m,mystart:myend) = ipower_prof(m,mystart:myend) * mass_beams(m)   / dvol(mystart:myend)
+         END DO
+
+         IF (myworkid==master) PRINT *,'CALC: dist5d_norm'
+         ! First normalize the 5D phase space density by dVolume
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
+         DO i = mystart, myend
+            vp_temp = 1.0/(rdistaxis(i)*dr*dphi*dz) ! 1./R*dr*dphi*dz
+            dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
          END DO
 
          ! Normalize to velocity space volume element
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist5, mystart, myend)
          DO k = mystart, myend ! VPERP
-            vp_temp = h4dist*h5dist/(vperpaxis(k)*pi2)
+            vp_temp = 1.0/(vperpaxis(k)*pi2*dvll*dvperp)
             dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)*vp_temp
          END DO
 
+         IF (myworkid==master) PRINT *,'CALC: DONE'
          ! DEALLOCATIONS
-         CALL mpidealloc(rho3d,win_rho3d)
-         CALL mpidealloc(efact3d,win_efact)
-         CALL mpidealloc(ifact3d,win_ifact)
+         CALL mpidealloc(rho4d,win_rho4d)
+         CALL mpidealloc(efact4d,win_efact)
+         CALL mpidealloc(ifact4d,win_ifact)
          CALL mpidealloc(vdist2d,win_vdist2d)
+         CALL mpidealloc(dVol,win_dVol)
          DEALLOCATE(rdistaxis, vperpaxis, vllaxis)
-         DEALLOCATE(help3d)
+         DEALLOCATE(help4d)
 
       END IF
 
