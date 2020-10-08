@@ -12,7 +12,7 @@
       USE stel_kinds, ONLY: rprec
       USE beams3d_lines
       USE beams3d_grid, ONLY: nr, nphi, nz, B_R, B_PHI, B_Z, raxis, &
-                                 zaxis, phiaxis,vp_spl_s
+                                 zaxis, phiaxis,vp_spl_s, plasma_mass
       USE beams3d_runtime, ONLY: id_string, npoinc, t_end, lbeam, lvac,&
                                  lvmec, charge_beams, &
                                  nbeams, beam, e_beams, charge_beams, &
@@ -53,6 +53,9 @@
       DOUBLE PRECISION, DIMENSION(3)      :: q
 
       INTEGER, PARAMETER :: ndist = 100
+      DOUBLE PRECISION, PARAMETER :: electron_mass = 9.10938356D-31 !m_e
+      DOUBLE PRECISION, PARAMETER :: sqrt_pi       = 1.7724538509   !pi^(1/2)
+      DOUBLE PRECISION, PARAMETER :: e_charge      = 1.60217662E-19 !e_c
 #if defined(MPI_OPT)
       INTEGER :: numprocs_local, mylocalid, mylocalmaster, mystart
       INTEGER :: MPI_COMM_LOCAL
@@ -254,6 +257,9 @@
 
          ! Calculte the helpers
          IF (myworkid==master) PRINT *,'CALC: S and DVel'
+         fact_crit = SQRT(2*e_charge/mass_beams(1))*(0.75*sqrt_pi*sqrt(plasma_mass/electron_mass))**(1.0/3.0) ! Wesson pg 226 5.4.9
+         mymass = mass_beams(1)
+         myZ    = NINT(charge_beams(1)/e_charge)
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1*ndist2*ndist3, mystart, myend)
          DO l = mystart, myend
             i = MOD(l-1,ndist1)+1
@@ -266,13 +272,23 @@
             CALL beams3d_SFLX(q,s1)
             rho4d(:,i,j,k) = SQRT(s1)
             CALL beams3d_COLLISIONS(q,modb,ti,s1,s2)
-            efact4d(:,i,j,k) = s1
-            ifact4d(:,i,j,k) = s2*s2*s2*s1 ! vcrit_cube*tau_spit_inv
+            efact4d(:,i,j,k) = s1 ! tau_spit_inv
+            ifact4d(:,i,j,k) = s2 ! vcrit
          END DO
 
-         !IF (myworkid == master) THEN
-         !   WRITE(327,*) rho4d(1,:,1,:)
-         !END IF
+         ! We need to correct for particle mass and charge
+         IF (myworkid == master) THEN
+            DO m = 1, nbeams
+               s1 = mass_beams(1)/mass_beams(m)
+               s2 = NINT(charge_beams(m)/charge_beams(1))
+               efact4d(m,:,:,:) = efact4d(m,:,:,:)*s2*s2*s1
+               ifact4d(m,:,:,:) = ifact4d(m,:,:,:)*sqrt(s1)
+            END DO
+            ifact4d = ifact4d*ifact4d*ifact4d*efact4d ! vcrit_cube*tau_spit_inv
+            WRITE(327,*) rho4d(1,:,1,:)
+            WRITE(328,*) efact4d(1,:,1,:)
+            WRITE(329,*) ifact4d(1,:,1,:)
+         END IF
 
          ! Create the velocity helpers
          IF (myworkid==master) PRINT *,'CALC: vdist2d'
