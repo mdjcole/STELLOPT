@@ -24,10 +24,10 @@ if not data:
 print('BEAMS3D VERSION: ' + str(round(data['VERSION'],2)))
 print('==== Matrix ====')
 varlist={}
-varlist['dense_prof']=np.array([6.76E12, 4.32E12, 5.56E12, 5.42E12])
-varlist['ipower_prof']=np.array([1.42, 0.90, 0.96, 0.93])
-varlist['epower_prof']=np.array([2.47, 1.58, 2.35, 2.30])
-varlist['j_prof']=np.array([-0.022, -0.068, 0.0057, -0.092])
+varlist['dense_prof']=np.array([2.21E13, 2.01E13, 5.77E12, 5.81E12])
+varlist['ipower_prof']=np.array([4.88, 4.45, 1.00, 1.00])
+varlist['epower_prof']=np.array([7.78, 7.10, 2.52, 2.56])
+varlist['j_prof']=np.array([-0.056, -0.382, 0.0033, -0.110])
 #print(data.keys())
 #print(data['dense_prof'][16,0])
 #print(data['dense_prof'][16,1])
@@ -36,46 +36,46 @@ varlist['j_prof']=np.array([-0.022, -0.068, 0.0057, -0.092])
 for temp in varlist:
     ir=16; ib = 0;
     act = varlist[temp][0]
-    cal = data[temp][ir,ib]
+    cal = np.mean(data[temp][0:15,ib])
     cal = np.where(act==0,0,cal)
     div = np.where(act==0,1,act)
     #perct = max(abs(act-cal))
     #print('  '+temp+': '+str(cal[0])+'   '+str(act[0])+'   '+str(int(perct))+'%')
     perct = 100*abs((act-cal)/act)
-    print('  '+temp+'['+str(ir)+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
+    print('  '+temp+'['+'core'+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
     if perct > failtol:
         lfail = 1
     ir=16; ib = 1;
     act = varlist[temp][1]
-    cal = data[temp][ir,ib]
+    cal = np.mean(data[temp][0:15,ib])
     cal = np.where(act==0,0,cal)
     div = np.where(act==0,1,act)
     #perct = max(abs(act-cal))
     #print('  '+temp+': '+str(cal[0])+'   '+str(act[0])+'   '+str(int(perct))+'%')
     perct = 100*abs((act-cal)/act)
-    print('  '+temp+'['+str(ir)+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
+    print('  '+temp+'['+'core'+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
     if perct > failtol:
         lfail = 1
     ir=32; ib = 0;
     act = varlist[temp][2]
-    cal = data[temp][ir,ib]
+    cal = np.mean(data[temp][16:48,ib])
     cal = np.where(act==0,0,cal)
     div = np.where(act==0,1,act)
     #perct = max(abs(act-cal))
     #print('  '+temp+': '+str(cal[0])+'   '+str(act[0])+'   '+str(int(perct))+'%')
     perct = 100*abs((act-cal)/act)
-    print('  '+temp+'['+str(ir)+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
+    print('  '+temp+'['+'mid'+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
     if perct > failtol:
         lfail = 1
     ir=32; ib = 1;
     act = varlist[temp][3]
-    cal = data[temp][ir,ib]
+    cal = np.mean(data[temp][16:48,ib])
     cal = np.where(act==0,0,cal)
     div = np.where(act==0,1,act)
     #perct = max(abs(act-cal))
     #print('  '+temp+': '+str(cal[0])+'   '+str(act[0])+'   '+str(int(perct))+'%')
     perct = 100*abs((act-cal)/act)
-    print('  '+temp+'['+str(ir)+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
+    print('  '+temp+'['+'mid'+','+str(ib)+']: '+str(cal)+'   '+str(act)+'   '+str(int(perct))+'%')
     if perct > failtol:
         lfail = 1
 print('=================')
