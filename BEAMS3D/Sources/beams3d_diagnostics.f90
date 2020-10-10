@@ -226,11 +226,16 @@
          ! ALLOCATE the profile arrays
          CALL mpialloc(dVol, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_dVol)
          CALL mpialloc(dense_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_dense)
-         CALL mpialloc(j_prof,      nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_jprof)
-         CALL mpialloc(epower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_ipower)
-         CALL mpialloc(ipower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_epower)
-         CALL mpialloc(momll_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_momll)
-         CALL mpialloc(pperp_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_pperp)
+         !CALL mpialloc(j_prof,      nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_jprof)
+         !CALL mpialloc(epower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_ipower)
+         !CALL mpialloc(ipower_prof, nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_epower)
+         !CALL mpialloc(momll_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_momll)
+         !CALL mpialloc(pperp_prof,  nbeams, ndistns, myid_sharmem, 0, MPI_COMM_LOCAL, win_pperp)
+         ALLOCATE(j_prof(nbeams,ndistns)); j_prof = 0
+         ALLOCATE(epower_prof(nbeams,ndistns)); epower_prof = 0
+         ALLOCATE(ipower_prof(nbeams,ndistns)); ipower_prof = 0
+         ALLOCATE(momll_prof(nbeams,ndistns)); momll_prof = 0
+         ALLOCATE(pperp_prof(nbeams,ndistns)); pperp_prof = 0
          CALL mpialloc(vdist2d,  ndist4, ndist5, myid_sharmem, 0, MPI_COMM_LOCAL, win_vdist2d)
          CALL mpialloc(efact4d,  nbeams, ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_efact)
          CALL mpialloc(ifact4d,  nbeams, ndist1, ndist2, ndist3, myid_sharmem, 0, MPI_COMM_LOCAL, win_ifact)
@@ -246,6 +251,7 @@
          ! Master needs to calculate dVol from spline
          IF (myworkid==master) PRINT *,'CALC: dVol'
          IF (myworkid == master) THEN
+            efact4d = 0; ifact4d = 0; rho4d = 0
             DO k = 1, ndistns
                s1 = REAL(k-0.5)*drho ! Rho
                s2 = s1*s1
@@ -257,7 +263,7 @@
 
          ! Calculte the helpers
          IF (myworkid==master) PRINT *,'CALC: S and DVel'
-         fact_crit = SQRT(2*e_charge/mass_beams(1))*(0.75*sqrt_pi*sqrt(plasma_mass/electron_mass))**(1.0/3.0) ! Wesson pg 226 5.4.9
+         fact_crit = SQRT(2*e_charge/plasma_mass)*(0.75*sqrt_pi*sqrt(plasma_mass/electron_mass))**(1.0/3.0) ! Wesson pg 226 5.4.9
          mymass = mass_beams(1)
          myZ    = NINT(charge_beams(1)/e_charge)
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1*ndist2*ndist3, mystart, myend)
@@ -282,12 +288,9 @@
                s1 = mass_beams(1)/mass_beams(m)
                s2 = NINT(charge_beams(m)/charge_beams(1))
                efact4d(m,:,:,:) = efact4d(m,:,:,:)*s2*s2*s1
-               ifact4d(m,:,:,:) = ifact4d(m,:,:,:)*sqrt(s1)
+               !ifact4d(m,:,:,:) = ifact4d(m,:,:,:)*sqrt(s1)
             END DO
             ifact4d = ifact4d*ifact4d*ifact4d*efact4d ! vcrit_cube*tau_spit_inv
-            WRITE(327,*) rho4d(1,:,1,:)
-            WRITE(328,*) efact4d(1,:,1,:)
-            WRITE(329,*) ifact4d(1,:,1,:)
          END IF
 
          ! Create the velocity helpers
@@ -299,6 +302,8 @@
             j = FLOOR(REAL(j) / REAL(ndist4))+1
             vdist2d(i,j) = sqrt(vllaxis(i)*vllaxis(i)+vperpaxis(j)*vperpaxis(j))
          END DO
+
+         CALL MPI_BARRIER(MPI_COMM_LOCAL, ierr_mpi)
 
          ! Now calculate the rho density profile [part*m^-3]
          IF (myworkid==master) PRINT *,'CALC: dense_prof'
@@ -362,30 +367,42 @@
             ipower_prof(:,i) = ipower_prof(:,i) + SUM(SUM(SUM(help4d*ifact4d,DIM=4),DIM=3),DIM=2)/vdist2d(j,k)
          END DO
 
+         IF (myworkid == master) THEN
+            CALL MPI_REDUCE(MPI_IN_PLACE, j_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            CALL MPI_REDUCE(MPI_IN_PLACE, pperp_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            CALL MPI_REDUCE(MPI_IN_PLACE, epower_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            CALL MPI_REDUCE(MPI_IN_PLACE, ipower_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            DO m = 1, nbeams
+               pperp_prof(m,:)  = pperp_prof(m,:)  * mass_beams(m)   / dvol(:) !p_perp
+               momll_prof(m,:)  = j_prof(m,:)      * mass_beams(m)   / dvol(:) ! mvll
+               j_prof(m,:)      = j_prof(m,:)      * charge_beams(m) / dvol(:)
+               epower_prof(m,:) = epower_prof(m,:) * mass_beams(m)   / dvol(:)
+               ipower_prof(m,:) = ipower_prof(m,:) * mass_beams(m)   / dvol(:)
+            END DO
+         ELSE
+            CALL MPI_REDUCE(j_prof, j_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            CALL MPI_REDUCE(pperp_prof, pperp_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            CALL MPI_REDUCE(epower_prof, epower_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            CALL MPI_REDUCE(ipower_prof, ipower_prof, nbeams*ndistns, MPI_DOUBLE_PRECISION, MPI_SUM, master, MPI_COMM_LOCAL, ierr_mpi)
+            DEALLOCATE(j_prof, pperp_prof, epower_prof, ipower_prof)
+         END IF
+
          ! Now finish the values
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
-         DO m = 1, nbeams
-            pperp_prof(m,mystart:myend)  = pperp_prof(m,mystart:myend)  * mass_beams(m)   / dvol(mystart:myend) !p_perp
-            momll_prof(m,mystart:myend)  = j_prof(m,mystart:myend)      * mass_beams(m)   / dvol(mystart:myend) ! mvll
-            j_prof(m,mystart:myend)      = j_prof(m,mystart:myend)      * charge_beams(m) / dvol(mystart:myend)
-            epower_prof(m,mystart:myend) = epower_prof(m,mystart:myend) * mass_beams(m)   / dvol(mystart:myend)
-            ipower_prof(m,mystart:myend) = ipower_prof(m,mystart:myend) * mass_beams(m)   / dvol(mystart:myend)
-         END DO
 
          IF (myworkid==master) PRINT *,'CALC: dist5d_norm'
          ! First normalize the 5D phase space density by dVolume
-         !CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
-         !DO i = mystart, myend
-         !   vp_temp = 1.0/(rdistaxis(i)*dr*dphi*dz) ! 1./R*dr*dphi*dz
-         !   dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
-         !END DO
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist1, mystart, myend)
+         DO i = mystart, myend
+            vp_temp = 1.0/(rdistaxis(i)*dr*dphi*dz) ! 1./R*dr*dphi*dz
+            dist5d_prof(:,i,:,:,:,:) = dist5d_prof(:,i,:,:,:,:)*vp_temp
+         END DO
 
          ! Normalize to velocity space volume element
-         !CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist5, mystart, myend)
-         !DO k = mystart, myend ! VPERP
-         !   vp_temp = 1.0/(vperpaxis(k)*pi2*dvll*dvperp)
-         !   dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)*vp_temp
-         !END DO
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndist5, mystart, myend)
+         DO k = mystart, myend ! VPERP
+            vp_temp = 1.0/(vperpaxis(k)*pi2*dvll*dvperp)
+            dist5d_prof(:,:,:,:,:,k) = dist5d_prof(:,:,:,:,:,k)*vp_temp
+         END DO
 
          IF (myworkid==master) PRINT *,'CALC: DONE'
          ! DEALLOCATIONS
