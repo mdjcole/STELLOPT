@@ -28,8 +28,8 @@
                   win_jprof, win_dist5d, win_momll, win_pperp
       REAL(rprec) :: xlast,ylast,zlast ! for storing position
       REAL(rprec) :: moment, mycharge, myZ, mymass, myv_neut(3), &
-                     B_temp(4), rand_prob, cum_prob, tau, next_t, &
-                     dt_out, partvmax, fact_crit, fact_pa, fact_vsound, &
+                     rand_prob, cum_prob, tau, next_t, &
+                     partvmax, fact_crit, fact_pa, fact_vsound, &
                      partpmax, h1dist, h2dist, h3dist, h4dist, h5dist, &
                      rmin_dist, rmax_dist, zmin_dist, zmax_dist
       LOGICAL, ALLOCATABLE     :: neut_lines(:,:)

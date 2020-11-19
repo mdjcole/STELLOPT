@@ -274,6 +274,9 @@
          !CALL beams3d_init_spec
       END IF
 
+      ! Adjust the torodial distribution function grid
+      ndist2 = MAX(ndist2,4*NINT(pi2/phimax)) ! Min 4 per field period
+
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       !!              Initialize Vessel (we need nbeams here)
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

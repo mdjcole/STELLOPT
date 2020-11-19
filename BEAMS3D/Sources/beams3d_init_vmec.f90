@@ -125,13 +125,13 @@
          WRITE(6,'(A,F9.5,A,F9.5,A)') '   R       = [',rmin_surf,',',rmax_surf,']'
          WRITE(6,'(A,F8.5,A,F8.5,A)') '   Z       = [',-zmax_surf,',',zmax_surf,']'
          IF (ABS(Itor) > 1E8) THEN
-            WRITE(6,'(A,F7.3,A,F7.3,A)') '   BETA    = ',betatot,';  I  = ',Itor*1E-9,' [GA]'
+            WRITE(6,'(A,F7.2,A,F7.2,A)') '   BETA    = ',betatot,';  I  = ',Itor*1E-9,' [GA]'
          ELSEIF (ABS(Itor) > 1E5) THEN
-            WRITE(6,'(A,F7.3,A,F7.3,A)') '   BETA    = ',betatot,';  I  = ',Itor*1E-6,' [MA]'
+            WRITE(6,'(A,F7.2,A,F7.2,A)') '   BETA    = ',betatot,';  I  = ',Itor*1E-6,' [MA]'
          ELSEIF (ABS(Itor) > 1E2) THEN
-            WRITE(6,'(A,F7.3,A,F7.3,A)') '   BETA    = ',betatot,';  I  = ',Itor*1E-3,' [kA]'
+            WRITE(6,'(A,F7.2,A,F7.2,A)') '   BETA    = ',betatot,';  I  = ',Itor*1E-3,' [kA]'
          ELSE
-            WRITE(6,'(A,F7.3,A,F7.3,A)') '   BETA    = ',betatot,';  I  = ',Itor,' [A]'
+            WRITE(6,'(A,F7.2,A,F7.2,A)') '   BETA    = ',betatot,';  I  = ',Itor,' [A]'
          END IF
          WRITE(6,'(A,F7.3,A)')        '   AMINOR  = ',reff_eq,' [m]'
          WRITE(6,'(A,F7.3,A)')        '   PHIEDGE = ',phiedge_eq,' [Wb]'

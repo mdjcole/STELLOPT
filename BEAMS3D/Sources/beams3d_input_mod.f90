@@ -55,6 +55,9 @@
 !                           (note set to negative value to use non-adaptive integration)
 !            int_type       Field line integration method
 !                           'NAG','LSODE','RKH68'
+!            plasma_mass    Mean plasma mass in [kg]
+!            plasma_Zavg    <Z> = sum(n_k*Z_k^2)/sum(n_k*Z_k)
+!            plasma_Zmean   [Z] = sum(n_k*Z_k^2*(m_k/plasma_mass))/sum(n_k*Z_k)
 !
 !            NOTE:  Some grid parameters may be overriden (such as
 !                   phimin and phimax) to properly represent a given
@@ -79,7 +82,7 @@
                                fusion_scale, nr_dist, nphi_dist, & 
                                nz_dist, nvpara_dist, nvperp_dist, &
                                partvmax, rmin_dist, rmax_dist, &
-                               zmin_dist, zmax_dist
+                               zmin_dist, zmax_dist, lendt_m
       
 !-----------------------------------------------------------------------
 !     Subroutines
@@ -152,6 +155,7 @@
       plasma_Zavg  = 1.0
       plasma_mass = 1.6726219E-27 ! Assume Hydrogen
       therm_factor = 1.5 ! Factor at which to thermalize particles
+      lendt_m = 0.05 ! Max distance a particle travels
 
       ! Distribution Function Defaults
       ndistns = 16
@@ -215,6 +219,7 @@
          IF (lfusion) THEN
             r_start_in = -1
             nbeams = 4
+            IF (lfusion_alpha) nbeams = 1
          END IF
          nte = 0
          DO WHILE ((TE_AUX_S(nte+1) >= 0.0).and.(nte<MAXPROFLEN))
