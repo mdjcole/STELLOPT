@@ -22,25 +22,31 @@
 !     Local Variables
 !        i           Helper index
 !-----------------------------------------------------------------------
-      INTEGER ::  i, nfp, ns_local, ier
+      INTEGER ::  i, nfp, ier
       REAL(rprec) :: dR, dZ, dphi, s1, s2, ds, a1, a2, detinv
       REAL(rprec), DIMENSION(4) :: fmat
       REAL(rprec), DIMENSION(4,4) :: A, B
       REAL(rprec), DIMENSION(:), ALLOCATABLE :: slocal, dVds, Vtemp
       REAL(rprec), DIMENSION(:,:,:), ALLOCATABLE :: dV3d, temp
+
+      INTEGER, PARAMETER :: ns_local = 64
+      INTEGER, PARAMETER :: nr_local = 64
+      INTEGER, PARAMETER :: nphi_local = 64
+      INTEGER, PARAMETER :: nz_local = 64
+
 !-----------------------------------------------------------------------
 !     Begin Subroutine
 !-----------------------------------------------------------------------
 
       ! Cylindrical coordinates dV=R*dR*dZ*dPHI
-      ns_local = nr
+      !ns_local = nr
       nfp = NINT(pi2/phimax)
-      dR = (rmax-rmin)/nr
-      dZ = (zmax-zmin)/nz
-      dphi = (phimax-phimin)/nphi
-      ALLOCATE(dV3d(nr,nphi,nz),temp(nr,nphi,nz))
-      DO i = 1, nr
-         dV3d(i,:,:) = raxis(i)*dR*dZ*dphi
+      dR = (rmax-rmin)/nr_local
+      dZ = (zmax-zmin)/nz_local
+      dphi = (phimax-phimin)/nphi_local
+      ALLOCATE(dV3d(nr_local,nphi_local,nz_local))
+      DO i = 1, nr_local
+         dV3d(i,:,:) = (rmin+dR*REAL(i-0.5))*dR*dZ*dphi
       END DO
 
       ! Create an Saxis
@@ -57,12 +63,15 @@
          s1 = slocal(i-1)
          s2 = slocal(i)
          ds   = s2-s1
-         temp = 0
-         WHERE(S_ARR<=s2) temp = dV3d
-         Vtemp(i) = SUM(SUM(SUM(temp,DIM=3),DIM=2),DIM=1)*nfp
+         Vtemp(i) = SUM(SUM(SUM(dV3d, DIM=3, MASK=(S_ARR<=s2)), DIM=2), DIM=1)
+         !temp = 0
+         !WHERE(S_ARR<=s2) temp = dV3d
+         !Vtemp(i) = SUM(SUM(SUM(temp,DIM=3),DIM=2),DIM=1)*nfp
          !PRINT *,slocal(i),Vtemp(i)
       END DO
-      DEALLOCATE(dV3d, temp)
+      ! Adjust for S_ARR being defined over a field period
+      Vtemp = Vtemp * nfp
+      DEALLOCATE(dV3d)
 
       ! We fit a 3rd order polynomial to the volume
       ! f  = a0 + a1*s + a2*s*s + a3*s*s*s
@@ -117,12 +126,8 @@
       ! Now create functional form of dVds
       ALLOCATE(dVds(ns_local))
       dVds = 0
-      dVds(1) = fmat(2)
-      DO i = 2, ns_local
-         s1 = REAL(i-1)/REAL(ns_local)
-         s2 = REAL(i)/REAL(ns_local)
-         ds   = s2-s1
-         s1 = s1 + 0.5*ds
+      DO i = 1, ns_local
+         s1 = REAL(i-1)/REAL(ns_local-1)
          dVds(i) = fmat(2) + 2*fmat(3)*s1 + 3*fmat(4)*s1*s1
       END DO
 

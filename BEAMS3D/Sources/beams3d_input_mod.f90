@@ -29,7 +29,8 @@
 !-----------------------------------------------------------------------
       IMPLICIT NONE
       ! These are helpers to give the ns1_prof variables user friendly names
-      INTEGER :: nr_dist, nphi_dist, nz_dist, nvpara_dist, nvperp_dist
+      INTEGER :: nr_dist, nphi_dist, nz_dist, nvpara_dist, nvperp_dist, &
+                 nrho_dist
 
 !-----------------------------------------------------------------------
 !     Input Namelists
@@ -83,7 +84,7 @@
                                nz_dist, nvpara_dist, nvperp_dist, &
                                partvmax, rmin_dist, rmax_dist, &
                                zmin_dist, zmax_dist, lendt_m, &
-                               ndistns
+                               nrho_dist
       
 !-----------------------------------------------------------------------
 !     Subroutines
@@ -159,7 +160,7 @@
       lendt_m = 0.05 ! Max distance a particle travels
 
       ! Distribution Function Defaults
-      ndistns = -1
+      nrho_dist = -1
       nr_dist = 32
       nphi_dist=16
       nz_dist=32
@@ -195,6 +196,9 @@
          ndist3=nz_dist
          ndist4=nvpara_dist
          ndist5=nvperp_dist
+         ndistns = nrho_dist
+
+         ! Set ndistns if not user defined
          IF (ndistns<0) ndistns = (ndist1+ndist3)/4
 
          NE_AUX_F = NE_AUX_F*ne_scale
