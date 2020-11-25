@@ -11,6 +11,7 @@
 !-----------------------------------------------------------------------
       USE beams3d_grid
       USE beams3d_runtime, ONLY: pi2, handle_err, EZSPLINE_ERR
+      USE beams3d_physics_mod, ONLY: beams3d_SFLX
       IMPLICIT NONE
       
 !-----------------------------------------------------------------------
@@ -22,21 +23,29 @@
 !     Local Variables
 !        i           Helper index
 !-----------------------------------------------------------------------
-      INTEGER ::  i, nfp, ier
+      INTEGER ::  i, j, k, l, nfp, ier
       REAL(rprec) :: dR, dZ, dphi, s1, s2, ds, a1, a2, detinv
+      REAL(rprec), DIMENSION(3) :: q
       REAL(rprec), DIMENSION(4) :: fmat
       REAL(rprec), DIMENSION(4,4) :: A, B
       REAL(rprec), DIMENSION(:), ALLOCATABLE :: slocal, dVds, Vtemp
-      REAL(rprec), DIMENSION(:,:,:), ALLOCATABLE :: dV3d, temp
+      REAL(rprec), DIMENSION(:,:,:), ALLOCATABLE :: dV3d, S_BAK
 
       INTEGER, PARAMETER :: ns_local = 64
-      INTEGER, PARAMETER :: nr_local = 64
+      INTEGER, PARAMETER :: nr_local = 256
       INTEGER, PARAMETER :: nphi_local = 64
-      INTEGER, PARAMETER :: nz_local = 64
+      INTEGER, PARAMETER :: nz_local = 256
+
+      !INTEGER :: ns_local, nr_local, nphi_local, nz_local
 
 !-----------------------------------------------------------------------
 !     Begin Subroutine
 !-----------------------------------------------------------------------
+ 
+      ! Set the grid resolution to the background grid
+      !   In the future we'll use all the threads to calc a new s_grid
+      !ns_local = 32
+      !nr_local = nr; nphi_local = nphi; nz_local = nz
 
       ! Cylindrical coordinates dV=R*dR*dZ*dPHI
       !ns_local = nr
@@ -47,6 +56,19 @@
       ALLOCATE(dV3d(nr_local,nphi_local,nz_local))
       DO i = 1, nr_local
          dV3d(i,:,:) = (rmin+dR*REAL(i-0.5))*dR*dZ*dphi
+      END DO
+
+      ! Create S background grid
+      ALLOCATE(S_BAK(nr_local,nphi_local,nz_local))
+      DO l = 1, nr_local*nphi_local*nz_local
+         i = MOD(l-1,nr_local)+1
+         j = MOD(l-1,nr_local*nphi_local)
+         j = FLOOR(REAL(j) / REAL(nr_local))+1
+         k = CEILING(REAL(l) / REAL(nr_local*nphi_local))
+         q(1) = (rmin+dR*REAL(i-0.5))
+         q(2) = (phimin+dphi*REAL(j-0.5))
+         q(3) = (zmin+dZ*REAL(k-0.5))
+         CALL beams3d_SFLX(q,S_BAK(i,j,k))
       END DO
 
       ! Create an Saxis
@@ -63,7 +85,7 @@
          s1 = slocal(i-1)
          s2 = slocal(i)
          ds   = s2-s1
-         Vtemp(i) = SUM(SUM(SUM(dV3d, DIM=3, MASK=(S_ARR<=s2)), DIM=2), DIM=1)
+         Vtemp(i) = SUM(SUM(SUM(dV3d, DIM=3, MASK=(S_BAK<=s2)), DIM=2), DIM=1)
          !temp = 0
          !WHERE(S_ARR<=s2) temp = dV3d
          !Vtemp(i) = SUM(SUM(SUM(temp,DIM=3),DIM=2),DIM=1)*nfp
@@ -71,7 +93,7 @@
       END DO
       ! Adjust for S_ARR being defined over a field period
       Vtemp = Vtemp * nfp
-      DEALLOCATE(dV3d)
+      DEALLOCATE(dV3d,S_BAK)
 
       ! We fit a 3rd order polynomial to the volume
       ! f  = a0 + a1*s + a2*s*s + a3*s*s*s
