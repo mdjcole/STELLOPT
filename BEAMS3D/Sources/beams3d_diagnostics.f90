@@ -251,12 +251,12 @@
          ! Master needs to calculate dVol from spline
          IF (myworkid==master) PRINT *,'CALC: dVol'
          IF (myworkid == master) THEN
-            efact4d = 0; ifact4d = 0; rho4d = 0
+            efact4d = 0; ifact4d = 0; rho4d = 0; dense_prof = 0
             DO k = 1, ndistns
                s1 = REAL(k-0.5)*drho ! Rho
                s2 = s1*s1
                CALL EZspline_interp(Vp_spl_s, s2, vp_temp, ier)
-               dVol(k) = vp_temp*2*s1/REAL(ndistns)
+               dVol(k) = vp_temp*2*s1*drho
             END DO
 !            dVol = dVol
          END IF
@@ -311,9 +311,10 @@
          DO l = mystart, myend ! Edges
             s1 = REAL(l-1)*drho
             s2 = REAL(l)*drho
-            help4d = SUM(SUM(dist5d_prof(:,:,:,:,:,:),DIM=6),DIM=5)
-            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
-            dense_prof(:,l) = SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)/dVol(l)
+            help4d = SUM(SUM(dist5d_prof,DIM=6),DIM=5)
+            !WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
+            !dense_prof(:,l) = SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)/dVol(l)
+            dense_prof(:,l) = SUM(SUM(SUM(help4d,DIM=4,MASK=((rho4d>s1) .and. (rho4d<=s2))),DIM=3),DIM=2)/dVol(l)
          END DO
 
          ! Now calculate the Current Profile [A*m^-2]
