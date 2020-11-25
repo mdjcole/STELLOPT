@@ -82,7 +82,8 @@
                                fusion_scale, nr_dist, nphi_dist, & 
                                nz_dist, nvpara_dist, nvperp_dist, &
                                partvmax, rmin_dist, rmax_dist, &
-                               zmin_dist, zmax_dist, lendt_m
+                               zmin_dist, zmax_dist, lendt_m, &
+                               ndistns
       
 !-----------------------------------------------------------------------
 !     Subroutines
@@ -158,7 +159,7 @@
       lendt_m = 0.05 ! Max distance a particle travels
 
       ! Distribution Function Defaults
-      ndistns = 16
+      ndistns = -1
       nr_dist = 32
       nphi_dist=16
       nz_dist=32
@@ -194,7 +195,7 @@
          ndist3=nz_dist
          ndist4=nvpara_dist
          ndist5=nvperp_dist
-         ndistns = (ndist1+ndist3)/4
+         IF (ndistns<0) ndistns = (ndist1+ndist3)/4
 
          NE_AUX_F = NE_AUX_F*ne_scale
          TE_AUX_F = TE_AUX_F*te_scale
