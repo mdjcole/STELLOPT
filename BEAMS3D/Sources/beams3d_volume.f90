@@ -41,14 +41,8 @@
 !-----------------------------------------------------------------------
 !     Begin Subroutine
 !-----------------------------------------------------------------------
- 
-      ! Set the grid resolution to the background grid
-      !   In the future we'll use all the threads to calc a new s_grid
-      !ns_local = 32
-      !nr_local = nr; nphi_local = nphi; nz_local = nz
 
       ! Cylindrical coordinates dV=R*dR*dZ*dPHI
-      !ns_local = nr
       nfp = NINT(pi2/phimax)
       dR = (rmax-rmin)/nr_local
       dZ = (zmax-zmin)/nz_local
@@ -79,17 +73,11 @@
 
       ! Calculated Volume profile     
       ALLOCATE(Vtemp(ns_local))
-      !PRINT *,'VOLUME'
       Vtemp = 0
       DO i = 2, ns_local
-         s1 = slocal(i-1)
+         !s1 = slocal(i-1)
          s2 = slocal(i)
-         ds   = s2-s1
          Vtemp(i) = SUM(SUM(SUM(dV3d, DIM=3, MASK=(S_BAK<=s2)), DIM=2), DIM=1)
-         !temp = 0
-         !WHERE(S_ARR<=s2) temp = dV3d
-         !Vtemp(i) = SUM(SUM(SUM(temp,DIM=3),DIM=2),DIM=1)*nfp
-         !PRINT *,slocal(i),Vtemp(i)
       END DO
       ! Adjust for S_ARR being defined over a field period
       Vtemp = Vtemp * nfp
@@ -113,9 +101,6 @@
       A(:,1) = 1
       A(:,3) = A(:,2)*A(:,2)
       A(:,4) = A(:,2)*A(:,2)*A(:,2)
-!      PRINT *,'MATRIX'
-!      PRINT *,A
-!      PRINT *,fmat
 
       detinv = &
       1/(A(1,1)*(A(2,2)*(A(3,3)*A(4,4)-A(3,4)*A(4,3))+A(2,3)*(A(3,4)*A(4,2)-A(3,2)*A(4,4))+A(2,4)*(A(3,2)*A(4,3)-A(3,3)*A(4,2)))&
@@ -141,8 +126,6 @@
       B(4,4) = detinv*(A(1,1)*(A(2,2)*A(3,3)-A(2,3)*A(3,2))+A(1,2)*(A(2,3)*A(3,1)-A(2,1)*A(3,3))+A(1,3)*(A(2,1)*A(3,2)-A(2,2)*A(3,1)))
 
       fmat=MATMUL(B,fmat)
-      !PRINT *,'COEFS'
-      !PRINT *,fmat
       DEALLOCATE(Vtemp)
 
       ! Now create functional form of dVds
@@ -153,19 +136,7 @@
          dVds(i) = fmat(2) + 2*fmat(3)*s1 + 3*fmat(4)*s1*s1
       END DO
 
-
-      ! TEST
-      !PRINT *,'============'
-      !DO i = 1, ns_local
-      !   s1 = REAL(i-1)/REAL(ns_local)
-      !   s2 = REAL(i)/REAL(ns_local)
-      !   s1 = s1 + 0.5*(s2-s1)
-      !   CALL EZspline_interp(Vp_spl_s,s1,ds,ier)
-      !   PRINT *,i,dVds(i),ds
-      !END DO
-
       IF (EZspline_allocated(Vp_spl_s))   CALL EZspline_free(Vp_spl_s,ier)
-      !bcs1_s=(/ 0, 0 /)
       CALL EZspline_init(Vp_spl_s,ns_local,(/ 0, 0 /),ier)
       IF (ier /=0) CALL handle_err(EZSPLINE_ERR,'beams3d_volume',ier)
       Vp_spl_s%isHermite   = 1
