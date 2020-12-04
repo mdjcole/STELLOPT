@@ -258,7 +258,6 @@
                CALL EZspline_interp(Vp_spl_s, s2, vp_temp, ier)
                dVol(k) = vp_temp*2*s1*drho
             END DO
-!            dVol = dVol
          END IF
 
          ! Calculte the helpers
@@ -308,12 +307,10 @@
          ! Now calculate the rho density profile [part*m^-3]
          IF (myworkid==master) PRINT *,'CALC: dense_prof'
          CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
+         help4d = SUM(SUM(dist5d_prof,DIM=6),DIM=5)
          DO l = mystart, myend ! Edges
             s1 = REAL(l-1)*drho
             s2 = REAL(l)*drho
-            help4d = SUM(SUM(dist5d_prof,DIM=6),DIM=5)
-            !WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
-            !dense_prof(:,l) = SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)/dVol(l)
             dense_prof(:,l) = SUM(SUM(SUM(help4d,DIM=4,MASK=((rho4d>s1) .and. (rho4d<=s2))),DIM=3),DIM=2)/dVol(l)
          END DO
 
@@ -322,50 +319,60 @@
          j_prof = 0
          momll_prof = 0
          pperp_prof = 0
-         IF (myworkid==master) PRINT *,'CALC: j, momll'
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns*ndist4, mystart, myend)
-         DO l = mystart, myend ! Edges
-            i = MOD(l-1,ndistns)+1
-            j = MOD(l-1,ndistns*ndist4)
-            j = FLOOR(REAL(j) / REAL(ndistns))+1
-            s1 = REAL(i-1)*drho
-            s2 = REAL(i)*drho
-            help4d = SUM(dist5d_prof(:,:,:,:,j,:),DIM=5)
-            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
-            j_prof(:,i) = j_prof(:,i) + SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)*vllaxis(j)
+         IF (myworkid==master) PRINT *,'CALC: j'
+         help4d = 0
+         DO l = 1, ndist4
+            help4d = help4d + SUM(dist5d_prof(:,:,:,:,l,:),DIM=5)*vllaxis(l)
          END DO
-         !IF (myworkid == master) momll_prof = j_prof
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
+         DO l = mystart, myend ! Edges
+            s1 = REAL(l-1)*drho
+            s2 = REAL(l)*drho
+            j_prof(:,l) = j_prof(:,l) + SUM(SUM(SUM(help4d,DIM=4,MASK=((rho4d>s1) .and. (rho4d<=s2))),DIM=3),DIM=2)
+         END DO
 
          ! Now calculate the Perpendicular Pressure Profile [Pa]
          IF (myworkid==master) PRINT *,'CALC: pperp'
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns*ndist5, mystart, myend)
+         help4d = 0
+         DO l = 1, ndist5
+            help4d = help4d + SUM(dist5d_prof(:,:,:,:,:,l),DIM=5)*vperpaxis(l)*vperpaxis(l)
+         END DO
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
          DO l = mystart, myend ! Edges
-            i = MOD(l-1,ndistns)+1
-            j = MOD(l-1,ndistns*ndist5)
-            j = FLOOR(REAL(j) / REAL(ndistns))+1
-            s1 = REAL(i-1)*drho
-            s2 = REAL(i)*drho
-            help4d = SUM(dist5d_prof(:,:,:,:,:,j),DIM=5)
-            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
-            pperp_prof(:,i) = pperp_prof(:,i) + SUM(SUM(SUM(help4d,DIM=4),DIM=3),DIM=2)*vperpaxis(j)*vperpaxis(j)
+            s1 = REAL(l-1)*drho
+            s2 = REAL(l)*drho
+            pperp_prof(:,l) = pperp_prof(:,l) + SUM(SUM(SUM(help4d,DIM=4,MASK=((rho4d>s1) .and. (rho4d<=s2))),DIM=3),DIM=2)
          END DO
 
          ! Now calculate the Heating Profile [W*m^-3]
          epower_prof = 0
          ipower_prof = 0
-         IF (myworkid==master) PRINT *,'CALC: e_power, i_power'
-         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns*ndist4*ndist5, mystart, myend)
-         DO l = mystart, myend
-            i = MOD(l-1,ndistns)+1
-            j = MOD(l-1,ndistns*ndist4)
-            j = FLOOR(REAL(j) / REAL(ndistns))+1
-            k = CEILING(REAL(l) / REAL(ndistns*ndist4))
-            s1 = REAL(i-1)*drho
-            s2 = REAL(i)*drho
-            help4d = dist5d_prof(:,:,:,:,j,k)
-            WHERE ((rho4d<=s1) .or. (rho4d>s2)) help4d = 0
-            epower_prof(:,i) = epower_prof(:,i) + SUM(SUM(SUM(help4d*efact4d,DIM=4),DIM=3),DIM=2)*vdist2d(j,k)*vdist2d(j,k)
-            ipower_prof(:,i) = ipower_prof(:,i) + SUM(SUM(SUM(help4d*ifact4d,DIM=4),DIM=3),DIM=2)/vdist2d(j,k)
+         IF (myworkid==master) PRINT *,'CALC: e_power'
+         help4d = 0
+         DO l = 1, ndist4*ndist5
+            i = MOD(l-1,ndist4)+1
+            j = MOD(l-1,ndist4*ndist5)
+            j = FLOOR(REAL(j) / REAL(ndist4))+1
+            help4d = help4d + dist5d_prof(:,:,:,:,i,j)*efact4d*vdist2d(i,j)*vdist2d(i,j)
+         END DO
+         CALL MPI_CALC_MYRANGE(MPI_COMM_LOCAL, 1, ndistns, mystart, myend)
+         DO l = mystart, myend ! Edges
+            s1 = REAL(l-1)*drho
+            s2 = REAL(l)*drho
+            epower_prof(:,l) = epower_prof(:,l) + SUM(SUM(SUM(help4d,DIM=4,MASK=((rho4d>s1) .and. (rho4d<=s2))),DIM=3),DIM=2)
+         END DO
+         IF (myworkid==master) PRINT *,'CALC: i_power'
+         help4d = 0
+         DO l = 1, ndist4*ndist5
+            i = MOD(l-1,ndist4)+1
+            j = MOD(l-1,ndist4*ndist5)
+            j = FLOOR(REAL(j) / REAL(ndist4))+1
+            help4d = help4d + dist5d_prof(:,:,:,:,i,j)*ifact4d/vdist2d(i,j)
+         END DO
+         DO l = mystart, myend ! Edges
+            s1 = REAL(l-1)*drho
+            s2 = REAL(l)*drho
+            ipower_prof(:,l) = ipower_prof(:,l) + SUM(SUM(SUM(help4d,DIM=4,MASK=((rho4d>s1) .and. (rho4d<=s2))),DIM=3),DIM=2)
          END DO
 
          IF (myworkid == master) THEN
