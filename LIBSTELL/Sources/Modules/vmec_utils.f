@@ -119,6 +119,89 @@ C-----------------------------------------------
       
       END SUBROUTINE GetBcyl_WOUT
 
+      SUBROUTINE GetBcyl_WOUT2(R1, Phi, Z1, Br, Bphi, Bz,
+     1                        sflx, uflx, lam1, info)
+      USE read_wout_mod, phi_wout=>phi, ns_w=>ns, ntor_w=>ntor,
+     1     mpol_w=>mpol, ntmax_w=>ntmax, lthreed_w=>lthreed,
+     2     lasym_w=>lasym
+      IMPLICIT NONE
+C-----------------------------------------------
+C   D u m m y   A r g u m e n t s
+C-----------------------------------------------
+      INTEGER, OPTIONAL, INTENT(out) :: info
+      REAL(rprec), INTENT(in)  :: R1, Z1, Phi
+      REAL(rprec), INTENT(out) :: Br, Bphi, Bz
+      REAL(rprec), INTENT(out), OPTIONAL :: sflx, uflx, lam1
+C-----------------------------------------------
+C   L o c a l   V a r i a b l e s
+C-----------------------------------------------
+      REAL(rprec), PARAMETER :: fmin_acceptable = 1.E-12_dp
+      INTEGER     :: nfe, info_loc
+      REAL(rprec) :: r_cyl(3), c_flx(3), fmin
+      REAL(rprec) :: Ru1, Zu1, Rv1, Zv1
+      REAL(rprec) :: bsupu1, bsupv1
+C-----------------------------------------------
+      IF (.not.lwout_opened) THEN
+         WRITE(6, '(2a,/,a)')
+     1   ' This form of GetBcyl can only be called if WOUT has been',
+     2   ' previously opened!',' Try GetBcyl_VMEC form instead.'
+         RETURN
+      END IF
+
+      CALL LoadRZL
+
+!     Computes cylindrical components of the magnetic field, Br, Bphi,
+!     Bz,
+!     at the specified cylindrical coordinate point (R1, Phi, Z1), where
+!     Phi is the true geometric toroidal angle (NOT N*Phi)
+!
+!     INPUT
+!     R1, Phi, Z1  : cylindrical coordinates at which evaluation is to
+!     take place
+!     
+!     OUTPUT
+!     Br, Bphi, Bz : computed cylindrical components of B at input point
+!     sflx, uflx   : computed flux and theta angle at the cylindrical
+!     point
+!
+!     1. Convert to point in flux-coordinates: cflux = (s, u, v=N*phi)
+!        and evaluate Ru, Zu, Rv, Zv at that point
+!
+      r_cyl(1) = R1;  r_cyl(2) = nfp*Phi;  r_cyl(3) = Z1
+      c_flx(1) = 0;   c_flx(2) = 0;        c_flx(3) = r_cyl(2)
+      IF (PRESENT(sflx)) c_flx(1) = sflx
+      IF (PRESENT(uflx)) c_flx(2) = uflx
+      CALL cyl2flx(rzl_local, r_cyl, c_flx, ns_w, ntor_w, mpol_w,
+     1     ntmax_w, lthreed_w, lasym_w, info_loc, nfe, fmin,
+     2     RU=Ru1, ZU=Zu1, RV=Rv1, ZV=Zv1)
+      Rv1 = nfp*Rv1;  Zv1 = nfp*Zv1
+
+      IF (info_loc.eq.-1 .and. (fmin .le. fmin_acceptable)) info_loc = 0
+
+      IF (PRESENT(info)) info = info_loc
+      IF (info_loc .ne. 0) RETURN
+
+      IF (PRESENT(sflx)) sflx = c_flx(1)
+      IF (PRESENT(uflx)) uflx = c_flx(2)
+
+      IF (c_flx(1) .gt. one) THEN
+         Br = 0;  Bphi = 0;  Bz = 0
+         RETURN
+      END IF
+!
+!     2. Evaluate Bsupu, Bsupv at this point
+!
+      CALL tosuvspace (c_flx(1), c_flx(2), c_flx(3),
+     1                 BSUPU=bsupu1, BSUPV=bsupv1, LAM=lam1)
+!
+!     3. Form Br, Bphi, Bz
+!
+      Br   = Ru1*bsupu1 + Rv1*bsupv1
+      Bphi = R1 *bsupv1
+      Bz   = Zu1*bsupu1 + Zv1*bsupv1
+
+      END SUBROUTINE GetBcyl_WOUT2
+      
       SUBROUTINE GetAcyl_WOUT(R1, Phi, Z1, Ar, Aphi, Az, 
      1                        sflx, uflx, info)
       USE read_wout_mod, phi_wout=>phi, ns_w=>ns, ntor_w=>ntor,
@@ -1231,5 +1314,338 @@ C-----------------------------------------------
       END IF
 
       END SUBROUTINE get_flxcoord
+
+      SUBROUTINE GetLcyl_WOUT(R1, Phi, Z1, Br, Bphi, Bz,
+     1                        sflx, uflx, info)
+      USE read_wout_mod, phi_wout=>phi, ns_w=>ns, ntor_w=>ntor,
+     1     mpol_w=>mpol, ntmax_w=>ntmax, lthreed_w=>lthreed,
+     2     lasym_w=>lasym
+      IMPLICIT NONE
+C-----------------------------------------------
+C   D u m m y   A r g u m e n t s
+C-----------------------------------------------
+      INTEGER, OPTIONAL, INTENT(out) :: info
+      REAL(rprec) :: R1, Z1, Phi
+      REAL(rprec) :: Br, Bphi, Bz
+      REAL(rprec) :: sflx, uflx, lam1
+C-----------------------------------------------
+C   L o c a l   V a r i a b l e s
+C-----------------------------------------------
+      REAL(rprec), PARAMETER :: fmin_acceptable = 1.E-12_dp
+      INTEGER     :: nfe, info_loc,kkk
+      REAL(rprec) :: r_cyl(3), c_flx(3), fmin
+      REAL(rprec) :: Ru1, Zu1, Rv1, Zv1
+      REAL(rprec) :: bsupu1, bsupv1
+      REAL(rprec) :: c_flx1,c_flx2,diff,flam,dlam,lamA,lamB,pi2,diff0
+      REAL(rprec) :: flam0,flam1,flam2,lamA2,lamA3
+C-----------------------------------------------
+      IF (.not.lwout_opened) THEN
+         WRITE(6, '(2a,/,a)')
+     1   ' This form of GetBcyl can only be called if WOUT has been',
+     2   ' previously opened!',' Try GetBcyl_VMEC form instead.'
+         RETURN
+      END IF
+!
+      CALL LoadRZL
+!
+      r_cyl(1) = R1  ; r_cyl(2) = nfp*Phi; r_cyl(3) = Z1
+      c_flx(1) = sflx; c_flx(2) = uflx   ; c_flx(3) = r_cyl(2)
+!
+      CALL flx2cyl(rzl_local,c_flx,r_cyl,ns_w,ntor_w, mpol_w,
+     1             ntmax_w, lthreed_w, lasym_w, info_loc)
+      R1  = r_cyl(1)
+      Z1  = r_cyl(3)
+!
+      END SUBROUTINE GetLcyl_WOUT
+
+      SUBROUTINE GetLcyl_WOUT2(R1, Phi, Z1, Br, Bphi, Bz,
+     1                        sflx, uflx, lam1, info)
+      USE read_wout_mod, phi_wout=>phi, ns_w=>ns, ntor_w=>ntor,
+     1     mpol_w=>mpol, ntmax_w=>ntmax, lthreed_w=>lthreed,
+     2     lasym_w=>lasym
+      IMPLICIT NONE
+C-----------------------------------------------
+C   D u m m y   A r g u m e n t s
+C-----------------------------------------------
+      INTEGER, OPTIONAL, INTENT(out) :: info
+      REAL(rprec) :: R1, Z1, Phi
+      REAL(rprec) :: Br, Bphi, Bz
+      REAL(rprec) :: sflx, uflx, lam1
+C-----------------------------------------------
+C   L o c a l   V a r i a b l e s
+C-----------------------------------------------
+      REAL(rprec), PARAMETER :: fmin_acceptable = 1.E-12_dp
+      INTEGER     :: nfe, info_loc,kkk
+      REAL(rprec) :: r_cyl(3), c_flx(3), fmin
+      REAL(rprec) :: Ru1, Zu1, Rv1, Zv1
+      REAL(rprec) :: bsupu1, bsupv1
+      REAL(rprec) :: c_flx1,c_flx2,diff,flam,dlam,lamA,lamB,pi2,diff0
+      REAL(rprec) :: flam0,flam1,flam2,lamA2,lamA3
+C-----------------------------------------------
+      IF (.not.lwout_opened) THEN
+         WRITE(6, '(2a,/,a)')
+     1   ' This form of GetBcyl can only be called if WOUT has been',
+     2   ' previously opened!',' Try GetBcyl_VMEC form instead.'
+         RETURN
+      END IF
+!
+      CALL LoadRZL
+!
+      r_cyl(1) = R1  ;  r_cyl(2) = nfp*Phi;  r_cyl(3) = Z1
+      c_flx(1) = sflx;  c_flx(2) = uflx   ;  c_flx(3) = r_cyl(2)
+      pi2 = 2.d0*3.14159265358979323846264338d0
+      diff0= pi2/2000.d0
+      diff = diff0
+!
+      if(lam1.lt.0.d0) lam1 = lam1+pi2
+      lam1 = modulo(lam1,pi2)
+!
+      info_loc=-1
+      do kkk=1,500
+         c_flx1 = c_flx(2)
+         c_flx2 = c_flx(2)+min(0.0005d0*diff,diff0)
+         if(c_flx1.lt.0.d0) c_flx1 = c_flx1+pi2
+         if(c_flx2.lt.0.d0) c_flx2 = c_flx2+pi2
+         c_flx1 = modulo(c_flx1,pi2)
+         c_flx2 = modulo(c_flx2,pi2)
+         CALL tosuvspace(c_flx(1),c_flx1,c_flx(3),LAM=lamA)
+         CALL tosuvspace(c_flx(1),c_flx2,c_flx(3),LAM=lamB)
+         lamA = lamA + c_flx1
+         lamB = lamB + c_flx2
+         if(lamA.lt.0.d0) lamA = lamA+pi2
+         if(lamB.lt.0.d0) lamB = lamB+pi2
+         lamA = modulo(lamA,pi2)
+         lamB = modulo(lamB,pi2)
+         lamA2= lamA-pi2
+         lamA3= lamA+pi2
+!        print *, "test",c_flx1,c_flx2,lamA,lamB
+         flam0= lamA - lam1
+         flam1= lamA2- lam1
+         flam2= lamA3- lam1
+         flam = flam1
+         if(abs(flam0).lt.min(abs(flam1),abs(flam2))) flam = flam0
+         if(abs(flam1).lt.min(abs(flam0),abs(flam2))) flam = flam1
+         if(abs(flam2).lt.min(abs(flam1),abs(flam0))) flam = flam2
+         dlam = lamB - lamA
+         if(dlam.le.-pi2) dlam = dlam + pi2
+         if(dlam.ge. pi2) dlam = dlam - pi2
+         dlam = dlam/(min(0.0005d0*diff,diff0))
+         diff = flam/dlam
+!        print *, "newton test",kkk,lamA,lam1,diff,c_flx1
+         if(abs(diff).lt.0.2e-9) then
+            info_loc=1
+            exit
+         end if
+!        print *, "test",c_flx1,"=>",c_flx1-diff
+         c_flx(2) = c_flx1 - diff
+         diff = abs(diff)
+      end do
+!
+      if(info_loc.eq.-1) then
+         print *,"error in Newton method", diff,c_flx1,lam1,lamA,lamB
+         c_flx(2) = uflx
+         do kkk=1,100
+            c_flx1 = c_flx(2)
+            c_flx2 = c_flx(2)+min(0.0005d0*diff,diff0)
+            print *, "c_flx1,c_flx2 A",kkk,c_flx1,c_flx2
+            if(c_flx1.lt.0.d0) c_flx1 = c_flx1+pi2
+            if(c_flx2.lt.0.d0) c_flx2 = c_flx2+pi2
+            c_flx1 = modulo(c_flx1,pi2)
+            c_flx2 = modulo(c_flx2,pi2)
+            print *, "c_flx1,c_flx2 B",kkk,c_flx1,c_flx2
+            CALL tosuvspace(c_flx(1),c_flx1,c_flx(3),LAM=lamA)
+            CALL tosuvspace(c_flx(1),c_flx2,c_flx(3),LAM=lamB)
+            lamA = lamA + c_flx1
+            lamB = lamB + c_flx2
+            print *, "lamA, lamB, lam1",lamA, lamB, lam1
+            if(lamA.lt.0.d0) lamA = lamA+pi2
+            if(lamB.lt.0.d0) lamB = lamB+pi2
+            lamA = modulo(lamA,pi2)
+            lamB = modulo(lamB,pi2)
+            lamA2= lamA+pi2
+            print *, "lamA, lamB, lam1, lamA2",lamA, lamB, lam1, lamA2
+            flam0= lamA - lam1
+            flam1= lamA2- lam1
+            flam = flam1
+            if(abs(flam0).lt.abs(flam1)) flam = flam0
+            dlam =(lamB - lamA)/(min(0.0005d0*diff,diff0))
+            diff = flam/dlam
+            if(abs(diff).lt.0.2e-9) then
+               info_loc=1
+               exit
+            end if
+            c_flx(2) = c_flx1 - diff
+            diff = abs(diff)
+            print *, "c_flx(2),c_flx1,diff",c_flx(2),c_flx1,diff,flam
+         end do
+         stop
+      end if
+!
+      uflx = c_flx(2)
+      lam1 = lamA
+!
+      r_cyl(1) = R1  ; r_cyl(2) = nfp*Phi; r_cyl(3) = Z1
+      c_flx(1) = sflx; c_flx(2) = uflx   ; c_flx(3) = r_cyl(2)
+!
+      CALL flx2cyl(rzl_local,c_flx,r_cyl,ns_w,ntor_w, mpol_w,
+     1             ntmax_w, lthreed_w, lasym_w, info_loc)
+      R1  = r_cyl(1)
+      Z1  = r_cyl(3)
+!
+      END SUBROUTINE GetLcyl_WOUT2
+
+      SUBROUTINE GetBcyl_WOUT0(R1, Phi, Z1, Br, Bphi, Bz,
+     1                        sflx, uflx, info)
+      USE read_wout_mod, phi_wout=>phi, ns_w=>ns, ntor_w=>ntor,
+     1     mpol_w=>mpol, ntmax_w=>ntmax, lthreed_w=>lthreed,
+     2     lasym_w=>lasym
+      IMPLICIT NONE
+C-----------------------------------------------
+C   D u m m y   A r g u m e n t s
+C-----------------------------------------------
+      INTEGER, OPTIONAL, INTENT(out) :: info
+      REAL(rprec), INTENT(in)  :: R1, Z1, Phi
+      REAL(rprec), INTENT(out) :: Br, Bphi, Bz
+      REAL(rprec), INTENT(out), OPTIONAL :: sflx, uflx
+C-----------------------------------------------
+C   L o c a l   V a r i a b l e s
+C-----------------------------------------------
+      REAL(rprec), PARAMETER :: fmin_acceptable = 1.E-12_dp
+      INTEGER     :: nfe, info_loc
+      REAL(rprec) :: r_cyl(3), c_flx(3), fmin
+      REAL(rprec) :: Ru1, Zu1, Rv1, Zv1
+      REAL(rprec) :: bsupu1, bsupv1
+C-----------------------------------------------
+      IF (.not.lwout_opened) THEN
+         WRITE(6, '(2a,/,a)')
+     1   ' This form of GetBcyl can only be called if WOUT has been',
+     2   ' previously opened!',' Try GetBcyl_VMEC form instead.'
+         RETURN
+      END IF
+
+      CALL LoadRZL
+
+!     Computes cylindrical components of the magnetic field, Br, Bphi,
+!     Bz,
+!     at the specified cylindrical coordinate point (R1, Phi, Z1), where
+!     Phi is the true geometric toroidal angle (NOT N*Phi)
+!
+!     INPUT
+!     R1, Phi, Z1  : cylindrical coordinates at which evaluation is to
+!     take place
+!     
+!     OUTPUT
+!     Br, Bphi, Bz : computed cylindrical components of B at input point
+!     sflx, uflx   : computed flux and theta angle at the cylindrical
+!     point
+!
+!     1. Convert to point in flux-coordinates: cflux = (s, u, v=N*phi)
+!        and evaluate Ru, Zu, Rv, Zv at that point
+!
+      r_cyl(1) = R1  ;  r_cyl(2) = nfp*Phi;  r_cyl(3) = Z1
+      c_flx(1) = sflx;  c_flx(2) = uflx   ;  c_flx(3) = r_cyl(2)
+!
+      CALL flx2cyl(rzl_local, c_flx, r_cyl, ns_w, ntor_w, mpol_w,
+     1     ntmax_w, lthreed_w, lasym_w, info_loc,
+     2     RU=Ru1, ZU=Zu1, RV=Rv1, ZV=Zv1)
+      Rv1 = nfp*Rv1;  Zv1 = nfp*Zv1
+
+      info_loc = 0
+      IF (PRESENT(info)) info = info_loc
+      IF (info_loc .ne. 0) RETURN
+
+      IF (c_flx(1) .gt. one) THEN
+         Br = 0;  Bphi = 0;  Bz = 0
+         RETURN
+      END IF
+!
+!     2. Evaluate Bsupu, Bsupv at this point
+!
+      CALL tosuvspace (c_flx(1), c_flx(2), c_flx(3),
+     1                 BSUPU=bsupu1, BSUPV=bsupv1)
+!
+!     3. Form Br, Bphi, Bz
+!
+      Br   = Ru1*bsupu1 + Rv1*bsupv1
+      Bphi = R1 *bsupv1
+      Bz   = Zu1*bsupu1 + Zv1*bsupv1
+
+      END SUBROUTINE GetBcyl_WOUT0
+
+      SUBROUTINE InvAcyl_WOUT(R1, Phi, Z1, Br, Bphi, Bz,
+     1                        sflx, uflx, lam1, info)
+      USE read_wout_mod, phi_wout=>phi, ns_w=>ns, ntor_w=>ntor,
+     1     mpol_w=>mpol, ntmax_w=>ntmax, lthreed_w=>lthreed,
+     2     lasym_w=>lasym, chi_wout=>chi, phipf_wout => phipf,
+     3     isigng_w=>isigng
+      IMPLICIT NONE
+C-----------------------------------------------
+C   D u m m y   A r g u m e n t s
+C-----------------------------------------------
+      INTEGER, OPTIONAL, INTENT(out) :: info
+      REAL(rprec), INTENT(out)  :: R1, Z1
+      REAL(rprec), INTENT(inout):: Phi
+c     REAL(rprec), INTENT(out)  :: Ar, Aphi, Az
+      REAL(rprec), INTENT(out)  :: Br, Bphi, Bz
+      REAL(rprec), INTENT(in)   :: sflx, uflx
+C-----------------------------------------------
+C   L o c a l   V a r i a b l e s
+C-----------------------------------------------
+      REAL(rprec), PARAMETER :: fmin_acceptable = 1.E-12_dp
+      INTEGER     :: nfe, info_loc, js_lo, js_hi
+      REAL(rprec) :: r_cyl(3), c_flx(3), fmin
+      REAL(rprec) :: Ru1, Zu1, Rv1, Zv1
+      REAL(rprec) :: Rs1, Zs1, c_flx2(3), r_cyl2(3)
+      REAL(rprec) :: lam1, ds
+      REAL(rprec) :: g11,g12,g13,g22,g23,g33
+      REAL(rprec) :: g11i,g12i,g13i,g22i,g23i,g33i
+      REAL(rprec) :: phi_flux, chi_flux,wegt, phip_flux
+      REAL(rprec) :: asubs1, asubu1, asubv1, gdet
+      REAL(rprec) :: asups1, asupu1, asupv1
+      REAL(rprec) :: bsupu1, bsupv1
+C-----------------------------------------------
+      IF (.not.lwout_opened) THEN
+         WRITE(6, '(2a,/,a)')
+     1   ' This form of GetBcyl can only be called if WOUT has been',
+     2   ' previously opened!',' Try GetBcyl_VMEC form instead.'
+         RETURN
+      END IF
+
+      CALL LoadRZL
+
+!     Computes cylindrical components of the vector potential field, Ar,
+!     Aphi, Az,
+!     at the specified cylindrical coordinate point (R1, Phi, Z1), where
+!     Phi is the true geometric toroidal angle (NOT N*Phi)
+!
+!     INPUT
+!     R1, Phi, Z1  : cylindrical coordinates at which evaluation is to
+!     take place
+!     
+!     OUTPUT
+!     Ar, Aphi, Az : computed cylindrical components of A at input point
+!     sflx, uflx   : computed flux and theta angle at the cylindrical
+!     point
+!
+!     1. Convert to point in flux-coordinates: cflux = (s, u, v=N*phi)
+!        and evaluate Ru, Zu, Rv, Zv at that point
+!
+      r_cyl(1) = R1;  r_cyl(2) = nfp*Phi;  r_cyl(3) = Z1
+      c_flx(1) = sflx;   c_flx(2) = uflx;  c_flx(3) = r_cyl(2)
+!
+      CALL flx2cyl(rzl_local,c_flx,r_cyl,ns_w,ntor_w, mpol_w,
+     1             ntmax_w, lthreed_w, lasym_w, info_loc,
+     2             Ru=Ru1,Rv=Rv1,Zu=Zu1,Zv=Zv1)
+      Rv1 = nfp*Rv1;  Zv1 = nfp*Zv1
+      R1  = r_cyl(1)
+      Z1  = r_cyl(3)
+      CALL tosuvspace(c_flx(1),c_flx(2),c_flx(3),
+     1             BSUPU=bsupu1, BSUPV=bsupv1,LAM=lam1)
+!
+      Br   = Ru1*bsupu1 + Rv1*bsupv1
+      Bphi = R1 *bsupv1
+      Bz   = Zu1*bsupu1 + Zv1*bsupv1
+!     
+      END SUBROUTINE InvAcyl_WOUT
 
       END MODULE vmec_utils
